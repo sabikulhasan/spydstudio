@@ -59,8 +59,9 @@ p { max-width: 60ch; text-wrap: pretty; }
 
 /* Scroll reveals: one-time, short and small. The pending state is only added by JS and is
    cleared whenever motion is off, so content survives a script failure. */
-.reveal { transition: opacity .26s var(--ease-out), transform .26s var(--ease-out); }
-.reveal.pending { opacity: 0; transform: translateY(12px); }
+.reveal { transition: opacity .5s var(--ease-out), transform .5s var(--ease-out); }
+.reveal.pending { opacity: 0; transform: translateY(18px); }
+.reveal-late { transition-delay: .08s; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }

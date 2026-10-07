@@ -77,16 +77,22 @@
     $('.skip-link')?.focus({ preventScroll: true });
   });
 
-  /* Reveals start hidden only once the observer exists, so content survives JS failure. */
+  /* Reveals start hidden only once scripts run, so content survives JS failure. Anything whose top
+     is above the bottom of the screen is shown, including sections skipped by a jump or anchor. */
   if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
-      if (e.isIntersecting) { e.target.classList.remove('pending'); io.unobserve(e.target); }
-    }), { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    $$('.reveal').forEach((el) => {
-      const box = el.getBoundingClientRect();
-      if (!motion.off && box.top > innerHeight) el.classList.add('pending');
-      io.observe(el);
-    });
+    let pending = $$('.reveal').filter((el) => !motion.off && el.getBoundingClientRect().top > innerHeight);
+    pending.forEach((el) => el.classList.add('pending'));
+    let raf = 0;
+    const check = () => {
+      raf = 0;
+      pending = pending.filter((el) => {
+        if (motion.off || el.getBoundingClientRect().top < innerHeight - 40) { el.classList.remove('pending'); return false; }
+        return true;
+      });
+      if (!pending.length) removeEventListener('scroll', onRevealScroll);
+    };
+    const onRevealScroll = () => { if (!raf) raf = requestAnimationFrame(check); };
+    if (pending.length) { addEventListener('scroll', onRevealScroll, { passive: true }); addEventListener('resize', onRevealScroll); }
 
     /* Process connector: highlights once when the section first comes into view. */
     const flowIo = new IntersectionObserver((entries) => entries.forEach((e) => {

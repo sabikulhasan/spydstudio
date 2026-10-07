@@ -2,7 +2,7 @@
    Cards are small near the centre and grow as they move outward. Nothing intercepts the wheel,
    touch or keys: the page scrolls normally and the gallery reads the scroll position.
 
-   The enhanced scene runs only when the viewport is at least 1024 × 740, motion is on and the
+   The enhanced scene runs only when the viewport is at least 1024 × 600, motion is on and the
    content fits the sticky stage. Every other case keeps the static collage from the HTML.
 
      usableHeight = viewportHeight - headerHeight
@@ -23,7 +23,7 @@
   const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
   const media = JSON.parse(document.getElementById('hero-media').textContent);
 
-  const HERO = { slots: 24, frameW: 468, frameH: 624, minRail: 360, minW: 1024, minH: 740 };
+  const HERO = { slots: 24, frameW: 468, frameH: 624, minRail: 220, minW: 1024, minH: 600 };
   let enhanced = false, cards = null, layer = null, raf = 0, lastShown = -1;
   let geo = { start: 0, travel: 1, stage: 0 };
 
