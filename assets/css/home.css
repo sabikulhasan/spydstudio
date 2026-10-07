@@ -34,7 +34,14 @@
 
 /* Enhanced: the stage is pinned under the header for a short scroll track. */
 .hero.is-enhanced .hero-stage { position: sticky; top: var(--header-h); padding-block: 32px 20px; }
-.hero.is-enhanced .hero-rail { flex: 1 1 auto; height: auto; min-height: 240px; max-height: 430px; margin-block: auto; }
+/* Short desktop windows: tighter hero so copy, actions and a usable gallery fit one screen. */
+@media (min-width: 1024px) and (max-height: 860px) {
+  .hero-copy h1 { font-size: min(var(--display), 7.4vh); }
+  .hero-stage, .hero.is-enhanced .hero-stage { row-gap: 16px; padding-block: 20px 12px; }
+  .hero-sub { margin-top: 10px; }
+  .hero-actions { margin-top: 16px; }
+}
+.hero.is-enhanced .hero-rail { flex: 1 1 auto; height: auto; min-height: 220px; max-height: 430px; margin-block: auto; }
 .hero-cards[hidden] { display: none; }
 .hero-card {
   position: absolute; left: 0; top: 0; width: 468px; height: 624px;
@@ -63,8 +70,10 @@
 .svc-panels.is-enhanced { gap: 0; }
 .svc-panel { display: grid; gap: var(--s2); align-content: start; }
 .svc-panel[hidden] { display: none; }
-.svc-panels.is-enhanced .svc-panel { animation: svc-in .2s var(--ease-out); }
-@keyframes svc-in { from { opacity: 0; } }
+.svc-panels.is-enhanced .svc-panel > * { animation: svc-in .38s var(--ease-out) backwards; }
+.svc-panels.is-enhanced .svc-panel > :nth-child(2) { animation-delay: .05s; }
+.svc-panels.is-enhanced .svc-panel > :nth-child(n+3) { animation-delay: .1s; }
+@keyframes svc-in { from { opacity: 0; transform: translateY(14px); } }
 .svc-panel p { color: var(--on-ink-2); }
 .svc-list { display: grid; gap: 0; margin: var(--s1) 0 0; border-top: 1px solid #2E2E2E; }
 .svc-list li { padding-block: 12px; border-bottom: 1px solid #2E2E2E; font-weight: 600; }
@@ -118,19 +127,23 @@
 .flow-step p { color: var(--slate); }
 .flow-get { font-size: var(--caption); line-height: 20px; padding-top: var(--s1); border-top: 1px solid var(--rule); margin-top: auto; }
 .flow-get b { color: var(--ink); }
-/* Connector: a static rule between steps; it highlights once when the section enters view. */
-.flow-step:not(:last-child)::after {
+/* Connector: a grey rule between steps, with an orange line that draws along it once when the
+   section enters view (left to right on desktop, top to bottom when stacked). Text never moves. */
+.flow-step:not(:last-child)::after, .flow-step:not(:last-child)::before {
   content: ""; position: absolute; left: 32px; bottom: calc(-1 * var(--grid-gap) - 1px); width: 2px; height: var(--grid-gap);
-  background: var(--rule); transition: background-color .3s;
+  background: var(--rule);
 }
-.flow.is-lit .flow-step::after { background: var(--vermilion); }
-.flow.is-lit .flow-step:nth-child(2)::after { transition-delay: .3s; }
-.flow.is-lit .flow-step:nth-child(3)::after { transition-delay: .6s; }
-@media (min-width: 768px) { .flow { grid-template-columns: repeat(2, 1fr); } .flow-step::after { display: none; } }
+.flow-step:not(:last-child)::before { z-index: 1; background: var(--vermilion); transform: scaleY(0); transform-origin: top; transition: transform .45s var(--ease-out); }
+.flow.is-lit .flow-step::before { transform: none; }
+.flow.is-lit .flow-step:nth-child(2)::before { transition-delay: .45s; }
+.flow.is-lit .flow-step:nth-child(3)::before { transition-delay: .9s; }
+@media (min-width: 768px) { .flow { grid-template-columns: repeat(2, 1fr); } .flow-step::after, .flow-step::before { display: none; } }
 @media (min-width: 1100px) {
   .flow { grid-template-columns: repeat(4, 1fr); }
-  .flow-step::after { display: block; }
-  .flow-step:not(:last-child)::after { left: auto; right: calc(-1 * var(--grid-gap) - 1px); top: 44px; bottom: auto; width: var(--grid-gap); height: 2px; }
+  .flow-step::after, .flow-step::before { display: block; }
+  .flow-step:not(:last-child)::after, .flow-step:not(:last-child)::before { left: auto; right: calc(-1 * var(--grid-gap) - 1px); top: 44px; bottom: auto; width: var(--grid-gap); height: 2px; }
+  .flow-step:not(:last-child)::before { transform: scaleX(0); transform-origin: left; }
+  .flow.is-lit .flow-step::before { transform: none; }
 }
 
 /* ---------- FAQ ---------- */
