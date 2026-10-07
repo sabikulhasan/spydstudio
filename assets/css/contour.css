@@ -51,3 +51,30 @@ html[data-motion="on"][data-contour-active="true"] body.home .contour-glow::befo
   body.home { --contour-w: 720px; --contour-h: 540px; }
   body.home .contour-glow::before { animation: none; }
 }
+
+/* Quiet text areas: a feathered wash in the surface colour sits behind each text block, so the
+   lines dissolve before they reach the copy and stay visible in the gaps between content.
+   The wash spreads past its block and fades out over that spread; the sections that hold one
+   clip sideways (none of them is a sticky ancestor), so it can never widen the page. */
+body.home { --halo-x: 120px; --halo-y: 56px; }
+@media (max-width: 767px) { body.home { --halo-x: 40px; --halo-y: 32px; } }
+body.home :is(.directions, #services, .process-home, .faq) { overflow-x: clip; }
+body.home .hero-note > p { --halo-x: calc(var(--gutter) - 4px); --halo-y: 16px; }
+body.home :is(.hero-note > p, .section-head > *, .direction figcaption, .process-lead, .process-rows-wrap, .faq .split > :first-child > *, .faq-list, .services-intro, .svc-panel > :not(.svc-media)) {
+  position: relative; isolation: isolate;
+}
+body.home :is(.hero-note > p, .section-head > *, .direction figcaption, .process-lead, .process-rows-wrap, .faq .split > :first-child > *, .faq-list, .services-intro, .svc-panel > :not(.svc-media))::before {
+  content: ''; position: absolute; z-index: -1; pointer-events: none;
+  inset: calc(-1 * var(--halo-y)) calc(-1 * var(--halo-x));
+  background: var(--halo-bg, #FFF7EC);
+  /* Eased ramp (0 → 1 over the spread) so line ends dissolve gradually instead of stopping in a column. */
+  --halo-fx: linear-gradient(90deg, transparent, rgba(0,0,0,.08) calc(var(--halo-x) * .25), rgba(0,0,0,.3) calc(var(--halo-x) * .5), rgba(0,0,0,.7) calc(var(--halo-x) * .75), #000 var(--halo-x), #000 calc(100% - var(--halo-x)), rgba(0,0,0,.7) calc(100% - var(--halo-x) * .75), rgba(0,0,0,.3) calc(100% - var(--halo-x) * .5), rgba(0,0,0,.08) calc(100% - var(--halo-x) * .25), transparent);
+  --halo-fy: linear-gradient(transparent, rgba(0,0,0,.08) calc(var(--halo-y) * .25), rgba(0,0,0,.3) calc(var(--halo-y) * .5), rgba(0,0,0,.7) calc(var(--halo-y) * .75), #000 var(--halo-y), #000 calc(100% - var(--halo-y)), rgba(0,0,0,.7) calc(100% - var(--halo-y) * .75), rgba(0,0,0,.3) calc(100% - var(--halo-y) * .5), rgba(0,0,0,.08) calc(100% - var(--halo-y) * .25), transparent);
+  -webkit-mask-image: var(--halo-fx), var(--halo-fy);
+  -webkit-mask-composite: source-in;
+  mask-image: var(--halo-fx), var(--halo-fy);
+  mask-composite: intersect;
+}
+body.home #services { --halo-bg: #0B0B0B; }
+/* Photos and video beside a wash stay above it. */
+body.home :is(.direction-frame, .svc-media) { position: relative; z-index: 1; }
