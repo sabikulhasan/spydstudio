@@ -23,11 +23,12 @@
      Licensed Avenir Next can be added later as a webfont; it is not taken from local machines.
      Sizes interpolate between the mobile and desktop values in the type table. */
   --font: "Nunito Sans", system-ui, sans-serif;
-  --display: clamp(38px, 2.44vw + 28.85px, 64px);   /* hero: 38/41 → 64/70 */
-  --display-lh: 1.09;
-  --section: clamp(32px, 1.5vw + 26.4px, 48px);   /* section heading: 32/38 → 48/54 */
-  --sub: clamp(26px, .56vw + 23.9px, 32px);   /* subsection: 26/32 → 32/40 */
-  --card: clamp(22px, .19vw + 21.3px, 24px);   /* card / utility heading: 22/28 → 24/32 */
+  --display: clamp(38px, 2.44vw + 28.85px, 64px);   /* hero: 38/41 → 64/68, weight 900 */
+  --display-lh: 1.07;
+  --cta-display: clamp(34px, 1.32vw + 29px, 48px);  /* closing call to action: 34/39 → 48/54, weight 900 */
+  --section: clamp(30px, 1.13vw + 25.8px, 42px);   /* section heading: 30/36 → 42/48, weight 600 */
+  --sub: clamp(26px, .38vw + 24.6px, 30px);   /* inner-page subsection: 26/32 → 30/38, weight 600 */
+  --card: clamp(22px, .38vw + 20.6px, 26px);   /* service / project title: 22/28 → 26/32, weight 600 */
   --body: clamp(16px, .19vw + 15.3px, 18px);   /* body: 16/25 → 18/28 */
   --body-lh: 1.56;
   --caption: 14px;                                /* caption / helper: 14/20 */
@@ -35,10 +36,14 @@
   /* Space: 8 px base. */
   --s1: 8px; --s2: 16px; --s3: 24px; --s4: 32px; --s5: 48px; --s6: 64px; --s7: 96px; --s8: 128px;
   --gutter: 20px;
-  --section-pad: 48px;
+  --section-pad: 52px;
   --grid-gap: 16px;
   --max: 1200px;
-  --radius: 12px;
+  --radius: 12px;         /* cards and panels on inner pages */
+  --radius-media: 14px;   /* project and editorial image frames */
+  --radius-art: 16px;     /* service art surfaces */
+  --radius-panel: 20px;   /* contained call-to-action panel */
+  --radius-ui: 8px;       /* buttons and controls */
   --header-h: 64px;       /* measured by site.js; this is the fallback */
 
   /* Motion */

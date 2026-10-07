@@ -9,7 +9,7 @@
 /* Buttons. Text on orange is ink: white on orange fails WCAG AA (3.4:1). */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  min-height: 48px; padding: 12px 20px; border-radius: 8px; border: 1px solid transparent;
+  min-height: 48px; padding: 12px 22px; border-radius: var(--radius-ui); border: 1px solid transparent;
   font-weight: 600; font-size: 16px; line-height: 1.2; text-decoration: none; white-space: nowrap;
   transition: background-color .2s, border-color .2s;
 }
@@ -132,11 +132,73 @@ a.row:hover::before, a.row:focus-visible::before { transform: scaleX(1); }
 .faq-item[open] summary::after { content: "−"; color: var(--ink); }
 .faq-item p { padding-bottom: 22px; color: var(--slate); }
 
-/* Closing call to action: ivory, one accent bar, no watermark. */
-.cta-band { padding-block: var(--section-pad); border-top: 1px solid var(--rule); }
-.cta-band .wrap { display: grid; justify-items: start; gap: var(--s3); }
-.cta-band h2 { max-width: 18ch; }
-.cta-band p { color: var(--slate); }
+/* Closing call to action: a contained ink panel with one editorial crop and the one 7° accent. */
+.cta-band { padding-block: var(--section-pad); }
+.cta-panel { display: grid; gap: var(--s4); padding: var(--s3); border-radius: var(--radius-panel); }
+.cta-copy { display: grid; justify-items: start; align-content: center; gap: var(--s3); }
+.cta-title { font-size: var(--cta-display); font-weight: 900; line-height: 1.13; letter-spacing: -.025em; max-width: 14ch; }
+.cta-panel p { color: var(--on-ink-2); max-width: 44ch; }
+.cta-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px var(--s4); }
+.cta-art img { width: 100%; height: 100%; min-height: 280px; max-height: 360px; object-fit: cover; border-radius: var(--radius-media); }
+@media (min-width: 900px) {
+  .cta-panel { grid-template-columns: 65fr 35fr; gap: var(--s5); padding: 56px; align-items: stretch; }
+  .cta-panel { align-items: center; }
+  .cta-art img { aspect-ratio: 4 / 5; height: auto; max-height: 400px; }
+}
+
+/* Service art: one restrained media surface per service (home services and service pages). */
+.svc-media { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius-art); overflow: hidden; background: #181818; }
+.svc-media > video, .svc-media > img { width: 100%; height: 100%; object-fit: cover; }
+.svc-media .svc-video { background: #181818; }
+/* Websites: a finished studio page inside one browser frame. */
+.art-browser { position: absolute; inset: 7% 7% 0; display: grid; grid-template-rows: auto 1fr; border-radius: 10px 10px 0 0; overflow: hidden; background: var(--ivory); box-shadow: 0 12px 32px rgb(11 11 11 / .25); }
+.art-browser-bar { display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: #EAE3D9; }
+.art-browser-bar i { width: 9px; height: 9px; border-radius: 50%; background: #C9C1B6; }
+.art-browser-bar span { margin-left: 10px; padding: 1px 12px; border-radius: 999px; background: var(--ivory); font-size: 11px; line-height: 18px; color: var(--slate); }
+.art-browser img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+.svc-media:has(.art-browser) { background: #2A2622; }
+/* Marketing: an editorial photo beside a simple plan sheet. No charts or invented numbers.
+   Sizes use the surface's width (cqw), so the sheet fits the 16:9 frame at every size. */
+.svc-media { container-type: inline-size; }
+.art-plan { position: absolute; inset: 0; display: grid; grid-template-columns: 52fr 48fr; grid-template-rows: 100%; }
+.art-plan img { width: 100%; height: 100%; min-height: 0; object-fit: cover; }
+.art-sheet { display: grid; align-content: center; gap: 2cqw; padding: 3.6cqw; background: var(--ivory); color: var(--ink); }
+.art-sheet-head { font-size: max(13px, 2.9cqw); line-height: 1.2; font-weight: 900; letter-spacing: -.01em; color: var(--ink) !important; }
+.art-sheet dl { display: grid; margin: 0; border-top: 1px solid var(--rule); }
+.art-sheet dl div { display: grid; padding-block: 1.1cqw; border-bottom: 1px solid var(--rule); }
+.art-sheet dt { font-size: max(9px, 1.6cqw); line-height: 1.4; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--slate); }
+.art-sheet dd { margin: 0; font-size: max(11px, 2.3cqw); line-height: 1.3; font-weight: 600; }
+@container (max-width: 520px) { .art-sheet dl div:nth-child(4) { display: none; } }
+/* Documents & Decks: three original slide layouts, sized with container units so type stays legible. */
+.art-deck { position: absolute; inset: 0; display: grid; grid-template-columns: 58fr 42fr; grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 5%; background: #EAE3D9; }
+.slide { container-type: inline-size; position: relative; overflow: hidden; border-radius: 8px; background: var(--ivory); color: var(--ink); box-shadow: 0 12px 32px rgb(11 11 11 / .08); }
+.slide-cover { grid-row: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; background: var(--ink); color: var(--white); align-self: center; aspect-ratio: 4 / 3; }
+.slide-cover img, .slide-image img { width: 100%; height: 100%; object-fit: cover; }
+.slide-copy { display: grid; align-content: end; gap: 4cqw; padding: 7cqw; }
+.slide-kicker { font-size: max(9px, 4.6cqw); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--on-ink-2); }
+.slide-title { font-size: max(14px, 9cqw); font-weight: 900; line-height: 1.05; letter-spacing: -.02em; }
+.slide-line { font-size: max(10px, 4.4cqw); color: var(--vermilion); font-weight: 600; }
+.slide-cover .slide-kicker { font-size: max(10px, 3.4cqw); }
+.slide-cover .slide-title { font-size: max(16px, 7.2cqw); }
+.slide-cover .slide-line { font-size: max(10px, 3.2cqw); }
+.slide-cover .slide-copy { gap: 3cqw; padding: 6cqw; }
+.slide-list { display: grid; align-content: center; gap: 3cqw; padding: 8cqw; }
+.slide-list .slide-kicker { color: var(--slate); }
+.slide-list .slide-title { font-size: max(12px, 9cqw); }
+.slide-steps { padding-top: 3cqw; border-top: 2px solid var(--ink); font-size: max(9px, 5.2cqw); font-weight: 600; color: var(--slate); }
+.slide-image { display: grid; grid-template-columns: 42% 1fr; }
+.slide-image .slide-copy { align-content: center; }
+.slide-image .slide-kicker { color: var(--slate); }
+.slide-image .slide-copy { padding: 6cqw; }
+/* Narrow surfaces: two slides at a legible size instead of three cramped ones. */
+@container (max-width: 520px) {
+  .art-deck { grid-template-columns: 56fr 44fr; }
+  .slide-list { display: none; }
+  .slide-image { grid-row: 1 / -1; align-self: center; aspect-ratio: 3 / 4; grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) auto; }
+  .slide-image .slide-copy { padding: 8cqw; gap: 2cqw; }
+  .slide-image .slide-title { font-size: max(12px, 11cqw); }
+}
+.slide-image .slide-title { font-size: max(12px, 8.4cqw); }
 
 /* Footer. */
 .site-footer { background: var(--ink); color: var(--white); padding-block: var(--s6) var(--s4); }

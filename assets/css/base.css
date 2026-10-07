@@ -17,13 +17,13 @@ button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
 h1, h2, h3, h4, p, ul, ol, figure, blockquote { margin: 0; }
 ul[class], ol[class] { list-style: none; padding: 0; }
-/* Hierarchy comes from scale and spacing: 900 for display and section headings,
-   600 for card headings and controls, 400 for body. Only these three weights are loaded. */
+/* Hierarchy comes from scale and weight: 900 only for the hero and the closing call to action,
+   600 for section, subsection and card headings, 400 for body. Only these three weights are loaded. */
 h1, h2, h3 { text-wrap: balance; }
-.display, h1 { font-size: var(--display); font-weight: 900; line-height: var(--display-lh); letter-spacing: -.02em; }
-.h-section { font-size: var(--section); font-weight: 900; line-height: 1.13; letter-spacing: -.02em; }
-h2, .h-sub { font-size: var(--sub); font-weight: 900; line-height: 1.24; letter-spacing: -.015em; }
-h3, .h-card { font-size: var(--card); font-weight: 600; line-height: 1.3; letter-spacing: -.005em; }
+.display, h1 { font-size: var(--display); font-weight: 900; line-height: var(--display-lh); letter-spacing: -.025em; }
+.h-section { font-size: var(--section); font-weight: 600; line-height: 1.14; letter-spacing: -.02em; }
+h2, .h-sub { font-size: var(--sub); font-weight: 600; line-height: 1.24; letter-spacing: -.015em; }
+h3, .h-card { font-size: var(--card); font-weight: 600; line-height: 1.24; letter-spacing: -.01em; }
 p { max-width: 60ch; text-wrap: pretty; }
 .lead { font-size: clamp(18px, .38vw + 16.6px, 22px); line-height: 1.5; }
 .muted { color: var(--slate); }
@@ -31,6 +31,10 @@ p { max-width: 60ch; text-wrap: pretty; }
   font-size: var(--caption); line-height: 20px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
   color: var(--slate);
 }
+/* One short eyebrow per main section, in ink (never small orange text on ivory). */
+.eyebrow { font-size: 13px; line-height: 20px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); margin-bottom: var(--s2); }
+.on-ink .eyebrow { color: var(--on-ink-2); }
+@media (min-width: 1024px) { .eyebrow { font-size: 14px; } }
 .on-ink { background: var(--ink); color: var(--white); }
 .on-ink .muted, .on-ink .label { color: var(--on-ink-2); }
 .accent-text { color: var(--vermilion); }

@@ -3,102 +3,112 @@
   <div class="hero-track" id="hero-track">
     <div class="hero-stage" id="hero-stage">
       <div class="hero-copy wrap" id="hero-copy">
-        <h1 class="display" id="hero-title">Video ads and UGC content, built around your brand.</h1>
+        <p class="eyebrow hero-eyebrow">SPY-D Studio · Observe. Understand. Create.</p>
+        <h1 class="display" id="hero-title"><span class="line">Video ads &amp; UGC content.</span> <span class="line">Built around your brand.</span></h1>
         <p class="hero-sub">We study your product, audience and offer before we script, create and edit.</p>
-        <div class="btn-row hero-actions">
+        <div class="hero-actions">
           <a class="btn btn-primary" href="{{root}}contact/">Start a project <span class="arrow" aria-hidden="true">→</span></a>
-          <a class="btn btn-ghost" href="#selected-work">See selected work</a>
+          <a class="text-link" href="#selected-work">Explore creative directions <span class="arrow" aria-hidden="true">→</span></a>
         </div>
       </div>
       <div class="hero-rail" id="hero-rail" aria-hidden="true">
         <div class="hero-collage" id="hero-collage">
-          <img src="{{root}}assets/img/placeholders/card-04.svg" alt="" width="600" height="800" decoding="async">
-          <img src="{{root}}assets/img/placeholders/card-02.svg" alt="" width="600" height="800" decoding="async">
-          <img src="{{root}}assets/img/placeholders/card-03.svg" alt="" width="600" height="800" decoding="async">
-          <img src="{{root}}assets/img/placeholders/card-01.svg" alt="" width="600" height="800" decoding="async">
-          <img src="{{root}}assets/img/placeholders/card-07.svg" alt="" width="600" height="800" decoding="async">
-          <img src="{{root}}assets/img/placeholders/card-06.svg" alt="" width="600" height="800" decoding="async">
+          <img src="{{root}}assets/media/editorial/P05-fashion-blue-640.webp" srcset="{{root}}assets/media/editorial/P05-fashion-blue-320.webp 320w, {{root}}assets/media/editorial/P05-fashion-blue-640.webp 640w" sizes="(min-width: 1024px) 330px, 240px" alt="" width="640" height="960" decoding="async" fetchpriority="high" style="object-position:50% 62%">
+          <img src="{{root}}assets/media/editorial/P01-product-beige-640.webp" srcset="{{root}}assets/media/editorial/P01-product-beige-320.webp 320w, {{root}}assets/media/editorial/P01-product-beige-640.webp 640w" sizes="(min-width: 1024px) 330px, 240px" alt="" width="640" height="959" decoding="async" style="object-position:72% 62%">
+          <img src="{{root}}assets/media/editorial/P02-creator-640.webp" srcset="{{root}}assets/media/editorial/P02-creator-320.webp 320w, {{root}}assets/media/editorial/P02-creator-640.webp 640w" sizes="(min-width: 1024px) 330px, 240px" alt="" width="640" height="960" decoding="async" style="object-position:55% 46%">
+          <img src="{{root}}assets/media/editorial/P03-product-flatlay-640.webp" srcset="{{root}}assets/media/editorial/P03-product-flatlay-320.webp 320w, {{root}}assets/media/editorial/P03-product-flatlay-640.webp 640w" sizes="(min-width: 1024px) 330px, 240px" alt="" width="640" height="960" decoding="async" style="object-position:50% 55%">
+          <img src="{{root}}assets/media/editorial/P04-coffee-640.webp" srcset="{{root}}assets/media/editorial/P04-coffee-320.webp 320w, {{root}}assets/media/editorial/P04-coffee-640.webp 640w" sizes="(min-width: 1024px) 330px, 240px" alt="" width="640" height="960" decoding="async" style="object-position:50% 62%">
+          <img src="{{root}}assets/media/editorial/P06-product-floral-640.webp" srcset="{{root}}assets/media/editorial/P06-product-floral-320.webp 320w, {{root}}assets/media/editorial/P06-product-floral-640.webp 640w" sizes="(min-width: 1024px) 330px, 240px" alt="" width="640" height="960" decoding="async" style="object-position:50% 55%">
         </div>
       </div>
       <div class="hero-note wrap" id="hero-note">
-        <p>Studio sample visuals of the formats we make: product video, creator-style clips, campaigns, web pages and decks. Not client work.</p>
+        <p>Product stories · Creator content · Campaign visuals</p>
         <p class="motion-control"><button class="link-btn" type="button" data-motion-toggle hidden>Pause motion</button><span data-motion-status hidden>Motion reduced by your device</span></p>
       </div>
     </div>
   </div>
-  <!-- Gallery inventory for the enhanced scene. "brand": true marks logo artwork, which is
-       shown at most once per loop. Replace with approved project stills when available. -->
+  <!-- Gallery inventory for the enhanced scene: editorial artwork (see assets/media/media-inventory.json).
+       The same 640px files as the static collage, so nothing downloads twice. focalPoint is a CSS object-position. -->
   <script type="application/json" id="hero-media">[
-    {"src": "{{root}}assets/img/placeholders/card-04.svg"},
-    {"src": "{{root}}assets/img/placeholders/card-02.svg"},
-    {"src": "{{root}}assets/img/placeholders/card-03.svg"},
-    {"src": "{{root}}assets/img/placeholders/card-01.svg", "brand": true},
-    {"src": "{{root}}assets/img/placeholders/card-07.svg"},
-    {"src": "{{root}}assets/img/placeholders/card-06.svg"}
+    {"src": "{{root}}assets/media/editorial/P05-fashion-blue-640.webp", "width": 640, "height": 960, "focalPoint": "50% 62%"},
+    {"src": "{{root}}assets/media/editorial/P01-product-beige-640.webp", "width": 640, "height": 959, "focalPoint": "72% 62%"},
+    {"src": "{{root}}assets/media/editorial/P02-creator-640.webp", "width": 640, "height": 960, "focalPoint": "55% 46%"},
+    {"src": "{{root}}assets/media/editorial/P03-product-flatlay-640.webp", "width": 640, "height": 960, "focalPoint": "50% 55%"},
+    {"src": "{{root}}assets/media/editorial/P04-coffee-640.webp", "width": 640, "height": 960, "focalPoint": "50% 62%"},
+    {"src": "{{root}}assets/media/editorial/P06-product-floral-640.webp", "width": 640, "height": 960, "focalPoint": "50% 55%"}
   ]</script>
 </section>
 
-<section class="section selected-work" id="selected-work" aria-labelledby="selected-work-title">
-  <div class="wrap reveal">
-{{featuredWork}}
+<section class="section directions" id="selected-work" aria-labelledby="directions-title">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2 class="h-section" id="directions-title">Creative directions</h2>
+      <p class="muted">Explore different ways to present a product, a person or an idea.</p>
+    </div>
+    <div class="direction-grid reveal reveal-late">
+      <figure class="direction">
+        <div class="direction-frame"><img src="{{root}}assets/media/editorial/P01-product-beige-640.webp" srcset="{{root}}assets/media/editorial/P01-product-beige-320.webp 320w, {{root}}assets/media/editorial/P01-product-beige-640.webp 640w, {{root}}assets/media/editorial/P01-product-beige-960.webp 960w" sizes="(min-width: 1024px) 384px, (min-width: 768px) 50vw, 100vw" alt="A pump bottle casting a long shadow in warm amber light." width="640" height="959" loading="lazy" decoding="async" style="object-position:72% 62%"></div>
+        <figcaption><span class="direction-title">Product stories</span><span class="direction-sub">Video ads and visual storytelling</span></figcaption>
+      </figure>
+      <figure class="direction">
+        <div class="direction-frame"><img src="{{root}}assets/media/editorial/P02-creator-640.webp" srcset="{{root}}assets/media/editorial/P02-creator-320.webp 320w, {{root}}assets/media/editorial/P02-creator-640.webp 640w, {{root}}assets/media/editorial/P02-creator-960.webp 960w" sizes="(min-width: 1024px) 384px, (min-width: 768px) 50vw, 100vw" alt="A woman holding a skincare bottle and looking at it in natural light." width="640" height="960" loading="lazy" decoding="async" style="object-position:55% 46%"></div>
+        <figcaption><span class="direction-title">Creator content</span><span class="direction-sub">Creator-style content</span></figcaption>
+      </figure>
+      <figure class="direction">
+        <div class="direction-frame"><img src="{{root}}assets/media/editorial/P05-fashion-blue-640.webp" srcset="{{root}}assets/media/editorial/P05-fashion-blue-320.webp 320w, {{root}}assets/media/editorial/P05-fashion-blue-640.webp 640w, {{root}}assets/media/editorial/P05-fashion-blue-960.webp 960w" sizes="(min-width: 1024px) 384px, (min-width: 768px) 50vw, 100vw" alt="A model in a sculptural blue outfit seated against a blue backdrop." width="640" height="960" loading="lazy" decoding="async" style="object-position:50% 62%"></div>
+        <figcaption><span class="direction-title">Campaign visuals</span><span class="direction-sub">Campaign art direction</span></figcaption>
+      </figure>
+    </div>
   </div>
 </section>
+{{featuredWork}}
 
 <section class="section services on-ink" id="services" aria-labelledby="services-title">
   <div class="wrap services-grid">
     <div class="services-intro reveal">
+      <p class="eyebrow">What we create</p>
       <h2 class="h-section" id="services-title">Video and content first. More support when you need it.</h2>
       <p class="muted">Most projects start with video ads or UGC content. Websites, marketing and decks are there when the work needs them.</p>
       <div class="svc-buttons" role="group" aria-label="Choose a service" data-svc-buttons hidden>
-        <button type="button" aria-pressed="true" aria-controls="svc-video-ads">Video Ads</button>
-        <button type="button" aria-pressed="false" aria-controls="svc-ugc-content">UGC Content</button>
-        <button type="button" aria-pressed="false" aria-controls="svc-websites">Websites</button>
-        <button type="button" aria-pressed="false" aria-controls="svc-marketing">Marketing</button>
-        <button type="button" aria-pressed="false" aria-controls="svc-documents-decks">Documents &amp; Decks</button>
+        <button type="button" aria-pressed="true" aria-controls="svc-video-ads">Video Ads <span class="arrow" aria-hidden="true">→</span></button>
+        <button type="button" aria-pressed="false" aria-controls="svc-ugc-content">UGC Content <span class="arrow" aria-hidden="true">→</span></button>
+        <button type="button" aria-pressed="false" aria-controls="svc-websites">Websites <span class="arrow" aria-hidden="true">→</span></button>
+        <button type="button" aria-pressed="false" aria-controls="svc-marketing">Marketing <span class="arrow" aria-hidden="true">→</span></button>
+        <button type="button" aria-pressed="false" aria-controls="svc-documents-decks">Documents &amp; Decks <span class="arrow" aria-hidden="true">→</span></button>
       </div>
     </div>
     <div class="svc-panels reveal reveal-late" data-svc-panels>
       <article class="svc-panel" id="svc-video-ads" aria-labelledby="svc-video-ads-title">
-        <div class="svc-figure svc-formats" aria-hidden="true">
-          <span class="fmt fmt-v">9:16</span><span class="fmt fmt-s">1:1</span><span class="fmt fmt-w">16:9</span>
-        </div>
-        <h3 class="h-sub" id="svc-video-ads-title">Video Ads</h3>
+        <figure class="svc-media">{{partial_art_video_ads}}</figure>
+        <div class="svc-head"><h3 class="h-card" id="svc-video-ads-title">Video Ads</h3><p class="svc-meta">9:16 · 1:1 · 16:9</p></div>
         <p>Scripted promotional video, product demos and edits of your footage, cut for the platforms you advertise on.</p>
         <ul class="svc-list"><li>Scripted promos</li><li>Product demos</li><li>Ad edits</li><li>Platform cut-downs</li></ul>
         <a class="svc-link" href="{{root}}services/video-ads/">More about Video Ads <span class="arrow" aria-hidden="true">→</span></a>
       </article>
       <article class="svc-panel" id="svc-ugc-content" aria-labelledby="svc-ugc-content-title">
-        <div class="svc-figure svc-phone" aria-hidden="true">
-          <div class="phone"><span>Hook</span><span>Product in use</span><span>Call to action</span></div>
-        </div>
-        <h3 class="h-sub" id="svc-ugc-content-title">UGC Content</h3>
+        <figure class="svc-media">{{partial_art_ugc_content}}</figure>
+        <div class="svc-head"><h3 class="h-card" id="svc-ugc-content-title">UGC Content</h3><p class="svc-meta">Paid and organic feeds</p></div>
         <p>Creator-style content built for paid and organic feeds, with opening variations you can test.</p>
         <ul class="svc-list"><li>Creator-style clips</li><li>Product explanations</li><li>Hook variations</li><li>Paid and organic versions</li></ul>
         <a class="svc-link" href="{{root}}services/ugc-content/">More about UGC Content <span class="arrow" aria-hidden="true">→</span></a>
       </article>
       <article class="svc-panel" id="svc-websites" aria-labelledby="svc-websites-title">
-        <div class="svc-figure svc-browser" aria-hidden="true">
-          <div class="browser"><span class="browser-bar"></span><span class="browser-hero">Landing page</span><span class="browser-cols"><i></i><i></i><i></i></span></div>
-        </div>
-        <h3 class="h-sub" id="svc-websites-title">Websites</h3>
+        <figure class="svc-media">{{partial_art_websites}}</figure>
+        <div class="svc-head"><h3 class="h-card" id="svc-websites-title">Websites</h3><p class="svc-meta">Landing pages · Small sites</p></div>
         <p>Landing pages and small business sites that carry the same message as your ads.</p>
         <ul class="svc-list"><li>Landing pages</li><li>Small business sites</li><li>Responsive layout</li><li>Handover</li></ul>
         <a class="svc-link" href="{{root}}services/websites/">More about Websites <span class="arrow" aria-hidden="true">→</span></a>
       </article>
       <article class="svc-panel" id="svc-marketing" aria-labelledby="svc-marketing-title">
-        <div class="svc-figure svc-steps" aria-hidden="true">
-          <span>Plan</span><span>Run</span><span>Report</span>
-        </div>
-        <h3 class="h-sub" id="svc-marketing-title">Marketing</h3>
+        <figure class="svc-media">{{partial_art_marketing}}</figure>
+        <div class="svc-head"><h3 class="h-card" id="svc-marketing-title">Marketing</h3><p class="svc-meta">Separate scope</p></div>
         <p>Campaign planning and ad management, with reporting. The scope is agreed separately from production.</p>
         <ul class="svc-list"><li>Campaign planning</li><li>Ad management</li><li>Reporting, subject to agreed scope</li></ul>
         <a class="svc-link" href="{{root}}services/marketing/">More about Marketing <span class="arrow" aria-hidden="true">→</span></a>
       </article>
       <article class="svc-panel" id="svc-documents-decks" aria-labelledby="svc-documents-decks-title">
-        <div class="svc-figure svc-slides" aria-hidden="true">
-          <span>Company profile</span><span>Proposal</span><span>Presentation</span>
-        </div>
-        <h3 class="h-sub" id="svc-documents-decks-title">Documents &amp; Decks</h3>
+        <figure class="svc-media">{{partial_art_documents_decks}}</figure>
+        <div class="svc-head"><h3 class="h-card" id="svc-documents-decks-title">Documents &amp; Decks</h3><p class="svc-meta">Profiles · Proposals · Decks</p></div>
         <p>Company profiles, proposals and presentations that explain the business clearly.</p>
         <ul class="svc-list"><li>Company profiles</li><li>Proposals</li><li>Presentations</li></ul>
         <a class="svc-link" href="{{root}}services/documents-decks/">More about Documents &amp; Decks <span class="arrow" aria-hidden="true">→</span></a>
@@ -108,40 +118,27 @@
 </section>
 
 <section class="section process-home" id="how-it-works" aria-labelledby="process-title">
-  <div class="wrap">
-    <h2 class="h-section reveal" id="process-title">How a project works</h2>
-    <p class="section-intro muted reveal">Four steps from first message to final files. You know what is being made, and why, before production starts.</p>
-    <ol class="flow reveal reveal-late" data-flow>
-      <li class="flow-step">
-        <span class="flow-num">01</span>
-        <h3 class="h-card">Brief</h3>
-        <p>We discuss the product, audience, goal and existing material.</p>
-        <p class="flow-get"><b>You receive:</b> a clear record of the requirement.</p>
-      </li>
-      <li class="flow-step">
-        <span class="flow-num">02</span>
-        <h3 class="h-card">Brand study</h3>
-        <p>We review the offer, audience and relevant competitors.</p>
-        <p class="flow-get"><b>You receive:</b> the proposed message and approach.</p>
-      </li>
-      <li class="flow-step">
-        <span class="flow-num">03</span>
-        <h3 class="h-card">Written plan</h3>
-        <p>We agree scope, formats, timeline and review points before production starts.</p>
-        <p class="flow-get"><b>You receive:</b> a written plan to approve.</p>
-      </li>
-      <li class="flow-step">
-        <span class="flow-num">04</span>
-        <h3 class="h-card">Production &amp; delivery</h3>
-        <p>We create the agreed work, review it with you and deliver the agreed files.</p>
-        <p class="flow-get"><b>You receive:</b> the final files. Paid-media management is a separate scope.</p>
-      </li>
-    </ol>
-    <a class="text-link" href="{{root}}process/">See the full process <span class="arrow" aria-hidden="true">→</span></a>
+  <div class="wrap process-grid">
+    <div class="process-lead reveal">
+      <p class="eyebrow">From observation to output</p>
+      <h2 class="h-section" id="process-title">How a project works</h2>
+      <p class="section-intro muted">Four steps from first message to final files. You know what is being made, and why, before production starts.</p>
+      <figure class="process-art">
+        <img src="{{root}}assets/media/editorial/P06-product-floral-640.webp" srcset="{{root}}assets/media/editorial/P06-product-floral-640.webp 640w, {{root}}assets/media/editorial/P06-product-floral-960.webp 960w" sizes="(min-width: 1024px) 500px, 100vw" alt="A hand holding an amber dropper bottle against a bed of peach and white flowers." width="640" height="960" loading="lazy" decoding="async" style="object-position:50% 55%">
+        <figcaption>Brief → Direction → Production → Delivery</figcaption>
+      </figure>
+    </div>
+    <div class="process-rows-wrap reveal reveal-late">
+      <ol class="process-rows">
+        <li><span class="flow-num">01</span><div><h3 class="h-card">Brief</h3><p>We discuss the product, audience, goal and existing material.</p><p class="flow-get"><b>You receive:</b> a clear record of the requirement.</p></div></li>
+        <li><span class="flow-num">02</span><div><h3 class="h-card">Brand study</h3><p>We review the offer, audience and relevant competitors.</p><p class="flow-get"><b>You receive:</b> the proposed message and approach.</p></div></li>
+        <li><span class="flow-num">03</span><div><h3 class="h-card">Written plan</h3><p>We agree scope, formats, timeline and review points before production starts.</p><p class="flow-get"><b>You receive:</b> a written plan to approve.</p></div></li>
+        <li><span class="flow-num">04</span><div><h3 class="h-card">Production &amp; delivery</h3><p>We create the agreed work, review it with you and deliver it.</p><p class="flow-get"><b>You receive:</b> the final files. Paid-media management is a separate scope.</p></div></li>
+      </ol>
+      <a class="text-link" href="{{root}}process/">See the full process <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
   </div>
 </section>
-
-{{partial_cta}}
 
 <section class="section faq" aria-labelledby="faq-title">
   <div class="wrap split">
@@ -177,3 +174,5 @@
     </div>
   </div>
 </section>
+
+{{partial_cta}}

@@ -28,7 +28,8 @@
   let geo = { start: 0, travel: 1, stage: 0 };
 
   /* Twenty-four slots keep the paired left/right geometry; they reuse the small inventory, so
-     each image downloads once. Built only when the enhanced scene first runs. */
+     each image downloads once. Built only when the enhanced scene first runs. Each inventory
+     record is { src, width, height, focalPoint }; focalPoint is a CSS object-position. */
   function buildCards() {
     // Twelve visible-at-once slots: the full inventory, then again without logo artwork.
     const plain = media.filter((m) => !m.brand);
@@ -39,10 +40,12 @@
     for (let i = 0; i < HERO.slots; i++) {
       const fig = document.createElement('div');
       fig.className = 'hero-card';
+      const item = loop[i % loop.length];
       const img = new Image();
-      img.src = loop[i % loop.length].src;
+      img.src = item.src; // same URL as the static collage, so nothing downloads twice
       img.alt = ''; img.draggable = false; img.decoding = 'async';
-      img.width = 600; img.height = 800;
+      img.width = item.width || 600; img.height = item.height || 800;
+      if (item.focalPoint) img.style.objectPosition = item.focalPoint;
       fig.append(img);
       layer.append(fig);
       cards.push(fig);
