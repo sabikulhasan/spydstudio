@@ -13,7 +13,8 @@ they are. Output files are committed so GitHub Pages can serve them as-is.
 Tokens such as {{root}}, {{email}} or {{whatsappUrl}} are replaced in every file.
 
 Project cards come from assets/data/work.json. Only items with "publish": true and
-"rightsConfirmed": true that pass validation are rendered, into {{featuredWork}} (home),
+"rightsConfirmed": true that pass validation are rendered, into {{featuredWork}} (home, its own
+Selected work section, separate from the editorial Creative directions artwork),
 {{allWork}} (work page) and {{serviceWork_video_ads}} etc. (service pages). Refused
 items are listed as warnings. assets/js/work.js only adds filters and playback.
 """
@@ -171,17 +172,19 @@ def work_grid(items, root, extra=""):
 
 
 def featured_work(items, root):
+    """Home page: actual, approved portfolio items get their own Selected work section, kept apart
+    from the editorial Creative directions artwork. With none published, nothing is rendered here;
+    the Work page keeps the honest "Ask for examples" route."""
     featured = [i for i in items if i.get("featured")][:3] or items[:3]
     if not featured:
-        return f"""<div class="work-empty">
-      <h2 class="h-section" id="selected-work-title">See examples relevant to your project</h2>
-      <p>Our public portfolio is being prepared. Ask us for examples suited to your business.</p>
-      <a class="btn btn-primary" href="{root}contact/">Ask for examples <span class="arrow" aria-hidden="true">→</span></a>
-    </div>"""
-    return (f'<h2 class="h-section" id="selected-work-title">Selected work</h2>\n'
+        return ""
+    return (f'<section class="section selected-cases" id="portfolio" aria-labelledby="portfolio-title">\n'
+            f'  <div class="wrap reveal">\n'
+            f'<h2 class="h-section" id="portfolio-title">Selected work</h2>\n'
             f'<p class="section-intro muted">A closer look at what we create.</p>\n'
             + work_grid(featured, root)
-            + f'\n<a class="text-link" href="{root}work/">See all work <span class="arrow" aria-hidden="true">→</span></a>')
+            + f'\n<a class="text-link" href="{root}work/">See all work <span class="arrow" aria-hidden="true">→</span></a>\n'
+            f'  </div>\n</section>')
 
 
 def all_work(items, root, site):

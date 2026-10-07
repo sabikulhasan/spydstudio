@@ -350,7 +350,7 @@ Changes from §1–9:
 
 Still placeholder or missing:
 1. **Outlined logo files.** The wordmark is live text taken from the supplied SVGs; it renders in Avenir Next on Apple devices and in Nunito Sans elsewhere. Outlined `spyd-horizontal*.svg` files would fix that.
-2. Hero and showcase images are SAMPLE placeholders.
+2. ~~Hero and showcase images are SAMPLE placeholders.~~ Replaced by curated editorial artwork (see `assets/media/media-inventory.json`); real portfolio cases are still needed for the Work page.
 3. `work.json` is empty, so the Work page shows a "Portfolio coming soon" state.
 4. No booking link. The booking card appears automatically when `bookingUrl` is set.
 5. No form service. Messages go through WhatsApp or email.

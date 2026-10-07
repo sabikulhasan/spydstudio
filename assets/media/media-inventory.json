@@ -1,0 +1,288 @@
+{
+  "_help": [
+    "Provenance for every image and video under assets/media/. Editorial items (P01–P06, M01–M02) are Pexels media used as website artwork and service illustrations:",
+    "they are not client work, commissions, endorsements or testimonials, and must never be added to assets/data/work.json. Credits stay here, not as badges on the site."
+  ],
+  "updated": "2026-10-08",
+  "license_summary": "Pexels allows free website use and modification without required attribution; its restrictions include no implied endorsement by depicted people or brands.",
+  "public_caption_policy": "Use service/category captions. Keep credits and license details in the handoff; do not invent authorship, clients or results.",
+  "editorial": [
+    {
+      "id": "P01",
+      "type": "photo",
+      "creator": "Mikhail Nilov",
+      "source_page": "https://www.pexels.com/photo/white-plastic-pump-bottle-with-shadow-on-beige-background-7814991/",
+      "download_url": "https://images.pexels.com/photos/7814991/pexels-photo-7814991.jpeg?auto=compress&cs=tinysrgb&w=960",
+      "license": "https://www.pexels.com/license/",
+      "caption": "Product stories",
+      "focalPoint": "72% 62%",
+      "paths": [
+        {
+          "path": "assets/media/editorial/P01-product-beige-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 5306,
+          "sha256": "ea1351b90484d6db9a899bab6e1320e3092f17b8d40e703fa03d91677e6f2773"
+        },
+        {
+          "path": "assets/media/editorial/P01-product-beige-640.webp",
+          "width": 640,
+          "height": 959,
+          "bytes": 13644,
+          "sha256": "a685e1a29bf4c87fc828c9b046db03f69818e02a00a3533ab13802f982285b40"
+        },
+        {
+          "path": "assets/media/editorial/P01-product-beige-960.webp",
+          "width": 960,
+          "height": 1439,
+          "bytes": 28014,
+          "sha256": "148f42c2984b5e92915351bb51ffef313757693b3a08fdb721ace493db16a512"
+        }
+      ],
+      "usage": "Editorial website artwork and service illustrations. Not a client commission, endorsement or testimonial."
+    },
+    {
+      "id": "P02",
+      "type": "photo",
+      "creator": "Anna Nekrashevich",
+      "source_page": "https://www.pexels.com/photo/a-woman-holding-a-beauty-product-6475989/",
+      "download_url": "https://images.pexels.com/photos/6475989/pexels-photo-6475989.jpeg?auto=compress&cs=tinysrgb&w=960",
+      "license": "https://www.pexels.com/license/",
+      "caption": "Creator content",
+      "focalPoint": "55% 46%",
+      "paths": [
+        {
+          "path": "assets/media/editorial/P02-creator-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 8490,
+          "sha256": "4f1e2fccff91601cae0bca5329aa6e7de3d5161323190b9db52a5b0bb544a676"
+        },
+        {
+          "path": "assets/media/editorial/P02-creator-640.webp",
+          "width": 640,
+          "height": 960,
+          "bytes": 25566,
+          "sha256": "895d052d9d92fa65577d479ddcad77e3cd1a6f5b5c0b58e7a09e1a2d670a2444"
+        },
+        {
+          "path": "assets/media/editorial/P02-creator-960.webp",
+          "width": 960,
+          "height": 1440,
+          "bytes": 52174,
+          "sha256": "58e172f2b061696796e6f72bb4bdf7d094abf66b69f66d1c824e0c7cdc49557e"
+        }
+      ],
+      "usage": "Editorial website artwork and service illustrations. Not a client commission, endorsement or testimonial."
+    },
+    {
+      "id": "P03",
+      "type": "photo",
+      "creator": "mearlywan",
+      "source_page": "https://www.pexels.com/photo/vial-and-bottle-of-cosmetics-on-white-background-16378444/",
+      "download_url": "https://images.pexels.com/photos/16378444/pexels-photo-16378444.jpeg?auto=compress&cs=tinysrgb&w=960",
+      "license": "https://www.pexels.com/license/",
+      "caption": "Product detail",
+      "focalPoint": "50% 55%",
+      "paths": [
+        {
+          "path": "assets/media/editorial/P03-product-flatlay-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 16272,
+          "sha256": "344c461c3aae82f8d64dddde3c93018695b88a55e5ba54f594277b36d1ef4b0a"
+        },
+        {
+          "path": "assets/media/editorial/P03-product-flatlay-640.webp",
+          "width": 640,
+          "height": 960,
+          "bytes": 67154,
+          "sha256": "5e02bc409d2775fd980cc26729a0169ff29f470df1a4f6ed62c1918382b0e272"
+        },
+        {
+          "path": "assets/media/editorial/P03-product-flatlay-960.webp",
+          "width": 960,
+          "height": 1440,
+          "bytes": 126474,
+          "sha256": "b2b5964956c3a8c15be012d6efd16e105d6b46ce2e603f111ae1be6f495ac63c"
+        }
+      ],
+      "usage": "Editorial website artwork and service illustrations. Not a client commission, endorsement or testimonial."
+    },
+    {
+      "id": "P04",
+      "type": "photo",
+      "creator": "Dicky Agustian",
+      "source_page": "https://www.pexels.com/photo/minimalist-iced-coffee-in-ribbed-glass-32972523/",
+      "download_url": "https://images.pexels.com/photos/32972523/pexels-photo-32972523.jpeg?auto=compress&cs=tinysrgb&w=960",
+      "license": "https://www.pexels.com/license/",
+      "caption": "Food and drink",
+      "focalPoint": "50% 62%",
+      "paths": [
+        {
+          "path": "assets/media/editorial/P04-coffee-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 4128,
+          "sha256": "bd9934c2ab4bb29162b1d16137e598d6875da02740f473ca6e800a2a9e166e23"
+        },
+        {
+          "path": "assets/media/editorial/P04-coffee-640.webp",
+          "width": 640,
+          "height": 960,
+          "bytes": 13212,
+          "sha256": "fe2e18bbc4b9df62fec4ba9cffe211e0f22663603e89ee371dcab963cc06b24c"
+        },
+        {
+          "path": "assets/media/editorial/P04-coffee-960.webp",
+          "width": 960,
+          "height": 1440,
+          "bytes": 26726,
+          "sha256": "4e28625b87a15ce23c47d82130ee9a720d76185b756afc553e8fc336c51155c6"
+        }
+      ],
+      "usage": "Editorial website artwork and service illustrations. Not a client commission, endorsement or testimonial."
+    },
+    {
+      "id": "P05",
+      "type": "photo",
+      "creator": "Omotayo Samuel",
+      "source_page": "https://www.pexels.com/photo/artistic-portrait-of-woman-in-blue-fashion-30755173/",
+      "download_url": "https://images.pexels.com/photos/30755173/pexels-photo-30755173.jpeg?auto=compress&cs=tinysrgb&w=960",
+      "license": "https://www.pexels.com/license/",
+      "caption": "Campaign visuals",
+      "focalPoint": "50% 62%",
+      "paths": [
+        {
+          "path": "assets/media/editorial/P05-fashion-blue-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 8914,
+          "sha256": "78167b334245f4a9e5fa0fea13618555cd8e3e29fa45717c466b4dd123d71edd"
+        },
+        {
+          "path": "assets/media/editorial/P05-fashion-blue-640.webp",
+          "width": 640,
+          "height": 960,
+          "bytes": 21990,
+          "sha256": "43e5aab363c92415a716d21db991587862cf8dd65b186f6a4d91e305661fe3e9"
+        },
+        {
+          "path": "assets/media/editorial/P05-fashion-blue-960.webp",
+          "width": 960,
+          "height": 1440,
+          "bytes": 40848,
+          "sha256": "766efd46fa4cba20c2b45079876ef26987baf80bae6ed8b354f6acf0913caa62"
+        }
+      ],
+      "usage": "Editorial website artwork and service illustrations. Not a client commission, endorsement or testimonial."
+    },
+    {
+      "id": "P06",
+      "type": "photo",
+      "creator": "Antoni Shkraba",
+      "source_page": "https://www.pexels.com/photo/close-up-of-a-woman-holding-a-bottle-with-a-cosmetic-product-6728397/",
+      "download_url": "https://images.pexels.com/photos/6728397/pexels-photo-6728397.jpeg?auto=compress&cs=tinysrgb&w=960",
+      "license": "https://www.pexels.com/license/",
+      "caption": "Product in use",
+      "focalPoint": "50% 55%",
+      "paths": [
+        {
+          "path": "assets/media/editorial/P06-product-floral-320.webp",
+          "width": 320,
+          "height": 480,
+          "bytes": 18084,
+          "sha256": "e8076ab0cd2112c1d8eb644330017bc5d6ca9d976b6590959922b7bf83cb87ea"
+        },
+        {
+          "path": "assets/media/editorial/P06-product-floral-640.webp",
+          "width": 640,
+          "height": 960,
+          "bytes": 41286,
+          "sha256": "64c4e303188825ff2d4e136d951cb332fc8479b7777b1d617767b306c6677060"
+        },
+        {
+          "path": "assets/media/editorial/P06-product-floral-960.webp",
+          "width": 960,
+          "height": 1440,
+          "bytes": 72214,
+          "sha256": "f27eb33c83f10c980130e151007db549b8f9f8b496571ab7b1b36d787d0ed33e"
+        }
+      ],
+      "usage": "Editorial website artwork and service illustrations. Not a client commission, endorsement or testimonial."
+    },
+    {
+      "id": "M01",
+      "type": "video",
+      "creator": "Artem Podrez",
+      "source_page": "https://www.pexels.com/video/a-person-holding-a-cosmetic-product-6802246/",
+      "download_url": "https://videos.pexels.com/video-files/6802246/6802246-hd_1920_1080_30fps.mp4",
+      "license": "https://www.pexels.com/license/",
+      "path": "assets/media/editorial/M01-product-motion-1280.mp4",
+      "poster": "assets/media/editorial/M01-poster-1280.webp",
+      "source_excerpt_seconds": [
+        0,
+        8.166667
+      ],
+      "duration_seconds": 8.166016,
+      "width": 1280,
+      "height": 720,
+      "codec": "h264",
+      "bytes": 229285,
+      "usage": "Editorial motion artwork or service illustration; not a commissioned SPY-D case.",
+      "sha256": "4650767049db1eb8e3a2c39553660c3b70472bdc211c5789009bd33864b1edb5",
+      "posters": [
+        "assets/media/editorial/M01-poster-640.webp",
+        "assets/media/editorial/M01-poster-1280.webp"
+      ]
+    },
+    {
+      "id": "M02",
+      "type": "video",
+      "creator": "SHVETS production",
+      "source_page": "https://www.pexels.com/video/a-woman-looking-at-the-bottles-of-serum-9698144/",
+      "download_url": "https://videos.pexels.com/video-files/9698144/9698144-hd_1920_1080_25fps.mp4",
+      "license": "https://www.pexels.com/license/",
+      "path": "assets/media/editorial/M02-creator-motion-1280.mp4",
+      "poster": "assets/media/editorial/M02-poster-1280.webp",
+      "source_excerpt_seconds": [
+        2,
+        10
+      ],
+      "duration_seconds": 8.0,
+      "width": 1280,
+      "height": 720,
+      "codec": "h264",
+      "bytes": 903083,
+      "usage": "Editorial motion artwork or service illustration; not a commissioned SPY-D case.",
+      "sha256": "9edeaea77a2ff7a7d06954860b74e7e984b9ffbcfff3f00ecb1b4996e34a9ada",
+      "posters": [
+        "assets/media/editorial/M02-poster-640.webp",
+        "assets/media/editorial/M02-poster-1280.webp"
+      ]
+    }
+  ],
+  "studio": [
+    {
+      "id": "S01",
+      "type": "screenshot",
+      "creator": "SPY-D Studio",
+      "source": "Screenshot of this website's home page, rendered from this repository",
+      "caption": "Websites",
+      "paths": [
+        {
+          "path": "assets/media/studio/site-home-1280.webp",
+          "width": 1280,
+          "height": 800
+        },
+        {
+          "path": "assets/media/studio/site-home-640.webp",
+          "width": 640,
+          "height": 400
+        }
+      ],
+      "usage": "Studio-owned page shown as Websites service artwork. Regenerate when the home page changes.",
+      "license": "Owned by SPY-D Studio"
+    }
+  ]
+}
