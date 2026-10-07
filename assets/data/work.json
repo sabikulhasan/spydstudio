@@ -1,4 +1,12 @@
 {
-  "_help": "Add one entry per video to the items list. id is the YouTube video ID (the part after watch?v= or shorts/). service is one of: video-ads, ugc-content, websites, marketing, documents-decks. format is shown on the card, e.g. 9:16 · 30s. vertical: true for Shorts and other 9:16 videos. concept: true labels self-initiated or concept work, as the brand guide requires. featured: true also shows the item on the home page in a later update.",
+  "_help": [
+    "One entry per project. Rebuild with python3 tools/build.py after editing: the build renders the cards into the home, work and service pages.",
+    "An item is shown only when publish and rightsConfirmed are both true and it passes validation; anything refused is printed by the build.",
+    "Fields: slug, title, service (video-ads, ugc-content, websites, marketing, documents-decks), client (name or null), concept (true for self-initiated work),",
+    "conceptNotice (optional; defaults to 'Self-initiated concept — not commissioned by the featured brand.'), brief, contribution (what SPY-D actually did),",
+    "poster (path under assets/media/work/ or an https URL), posterAlt, posterWidth, posterHeight, posterSrcset (optional list of [path, width]), focalPoint (CSS object-position),",
+    "mediaType (image, youtube or video), id (YouTube ID for youtube), videoSrc (for video), viewUrl (optional https link for image items), format (e.g. 9:16 · 30s),",
+    "vertical (true for portrait work), featured (true to show on the home page, up to three), outcome (only verified, owner-supplied text), publish, rightsConfirmed."
+  ],
   "items": []
 }

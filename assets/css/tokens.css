@@ -19,26 +19,33 @@
   --white: #FFFFFF;
   --ink-2: #161616;       /* raised surface on ink */
 
-  /* Type: Avenir Next is not licensed for the web; Nunito Sans is the approved fallback. */
-  --font: "Avenir Next", "Nunito Sans", system-ui, sans-serif;
-  --display: clamp(40px, 4.6vw, 64px);
-  --h1: clamp(34px, 3.6vw, 48px);
-  --h2: clamp(26px, 2.4vw, 32px);
-  --h3: clamp(20px, 1.8vw, 24px);
-  --body: clamp(16px, 1.1vw, 18px);
-  --caption: 14px;
+  /* Type: Nunito Sans is the approved web font and the only family loaded (400, 600, 900).
+     Licensed Avenir Next can be added later as a webfont; it is not taken from local machines.
+     Sizes interpolate between the mobile and desktop values in the type table. */
+  --font: "Nunito Sans", system-ui, sans-serif;
+  --display: clamp(38px, 2.44vw + 28.85px, 64px);   /* hero: 38/41 → 64/70 */
+  --display-lh: 1.09;
+  --section: clamp(32px, 1.5vw + 26.4px, 48px);   /* section heading: 32/38 → 48/54 */
+  --sub: clamp(26px, .56vw + 23.9px, 32px);   /* subsection: 26/32 → 32/40 */
+  --card: clamp(22px, .19vw + 21.3px, 24px);   /* card / utility heading: 22/28 → 24/32 */
+  --body: clamp(16px, .19vw + 15.3px, 18px);   /* body: 16/25 → 18/28 */
+  --body-lh: 1.56;
+  --caption: 14px;                                /* caption / helper: 14/20 */
 
   /* Space: 8 px base. */
   --s1: 8px; --s2: 16px; --s3: 24px; --s4: 32px; --s5: 48px; --s6: 64px; --s7: 96px; --s8: 128px;
-  --gutter: 16px;
+  --gutter: 20px;
+  --section-pad: 48px;
+  --grid-gap: 16px;
   --max: 1200px;
   --radius: 12px;
-  --header-h: 72px;       /* measured by site.js; this is the fallback */
+  --header-h: 64px;       /* measured by site.js; this is the fallback */
 
   /* Motion */
   --ease-out: cubic-bezier(.2, .7, .2, 1);
   --angle: -7deg;         /* the hatband angle, for accent bars */
 }
 
-@media (min-width: 600px) { :root { --gutter: 24px; } }
-@media (min-width: 1200px) { :root { --gutter: 32px; } }
+@media (max-width: 359px) { :root { --display: 36px; } }
+@media (min-width: 768px) { :root { --gutter: 24px; --section-pad: 64px; --grid-gap: 20px; } }
+@media (min-width: 1024px) { :root { --gutter: 32px; --section-pad: 88px; --grid-gap: 24px; --header-h: 72px; } }

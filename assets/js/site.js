@@ -4,28 +4,39 @@
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const root = document.documentElement;
 
-  /* Motion: the OS preference, plus any panel's pause button, switch motion off site-wide. */
+  /* Motion. The OS reduced-motion preference is authoritative: under it the page shows a status
+     instead of a button that cannot work. Otherwise a visitor can pause motion, and the choice
+     is remembered across pages. Listeners receive the new state and re-read the scroll position. */
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const KEY = 'spyd-motion';
+  const stored = () => { try { return localStorage.getItem(KEY) === 'paused'; } catch { return false; } };
   const listeners = new Set();
   const motion = {
-    off: reduced.matches,
-    set(off) {
-      motion.off = off;
-      root.dataset.motion = off ? 'off' : 'on';
+    paused: stored(),
+    get os() { return reduced.matches; },
+    get off() { return reduced.matches || motion.paused; },
+    sync() {
+      root.dataset.motion = motion.off ? 'off' : 'on';
       $$('[data-motion-toggle]').forEach((b) => {
-        b.setAttribute('aria-pressed', String(off));
-        b.textContent = off ? 'Play motion' : 'Pause motion';
+        b.hidden = reduced.matches;
+        b.setAttribute('aria-pressed', String(motion.paused));
+        b.textContent = motion.paused ? 'Resume motion' : 'Pause motion';
       });
-      if (off) $$('.reveal.pending').forEach((e) => e.classList.remove('pending'));
-      listeners.forEach((fn) => fn(off));
+      $$('[data-motion-status]').forEach((s) => { s.hidden = !reduced.matches; });
+      if (motion.off) $$('.reveal.pending').forEach((e) => e.classList.remove('pending'));
+      listeners.forEach((fn) => fn(motion.off));
+    },
+    setPaused(paused) {
+      motion.paused = paused;
+      try { if (paused) localStorage.setItem(KEY, 'paused'); else localStorage.removeItem(KEY); } catch { /* private mode */ }
+      motion.sync();
     },
     onChange(fn) { listeners.add(fn); },
   };
   window.SPYDMotion = motion;
-  reduced.addEventListener('change', (e) => motion.set(e.matches));
+  reduced.addEventListener('change', () => motion.sync());
   document.addEventListener('click', (e) => {
-    const toggle = e.target.closest('[data-motion-toggle]');
-    if (toggle) motion.set(reduced.matches || !motion.off);
+    if (e.target.closest('[data-motion-toggle]') && !reduced.matches) motion.setPaused(!motion.paused);
   });
 
   /* Header height feeds the sticky offsets of pinned sections. */
@@ -77,13 +88,12 @@
       io.observe(el);
     });
 
-    /* Looping panels pause offscreen and on hidden tabs. */
-    const loopIo = new IntersectionObserver((entries) => entries.forEach((e) => {
-      e.target.classList.toggle('paused', !e.isIntersecting);
-    }));
-    $$('[data-loop]').forEach((el) => loopIo.observe(el));
+    /* Process connector: highlights once when the section first comes into view. */
+    const flowIo = new IntersectionObserver((entries) => entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add('is-lit'); flowIo.unobserve(e.target); }
+    }), { threshold: 0.4 });
+    $$('[data-flow]').forEach((el) => flowIo.observe(el));
   }
-  document.addEventListener('visibilitychange', () => root.classList.toggle('tab-hidden', document.hidden));
 
   /* FAQ: one answer open at a time; native click and keyboard behaviour. */
   $$('[data-faq]').forEach((list) => {
@@ -101,5 +111,5 @@
     },
   };
 
-  motion.set(motion.off);
+  motion.sync();
 })();

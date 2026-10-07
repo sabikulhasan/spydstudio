@@ -1,57 +1,63 @@
-/* Home hero: centre-out scale gallery.
-   Cards are small near the centre and grow as they travel outward. Wheel input over the
-   gallery advances a finite cycle while the page stays put; once the cycle completes, the
-   next downward gesture scrolls the page. Horizontal drag and arrow keys drive the same value.
-   Geometry follows the reference build spec (BUILD_INSTRUCTIONS.md, step 4.2). */
+/* Home hero: a short, reversible centre-out zoom driven by native page scroll.
+   Cards are small near the centre and grow as they move outward. Nothing intercepts the wheel,
+   touch or keys: the page scrolls normally and the gallery reads the scroll position.
+
+   The enhanced scene runs only when the viewport is at least 1024 × 740, motion is on and the
+   content fits the sticky stage. Every other case keeps the static collage from the HTML.
+
+     usableHeight = viewportHeight - headerHeight
+     stageHeight  = min(860, usableHeight)
+     travel       = clamp(0.65 * usableHeight, 360, 640)
+     trackHeight  = stageHeight + travel
+     p            = clamp((scrollY - (trackTop - headerHeight)) / travel, 0, 1)
+     shown        = 2 + 8 * p                                                        */
 (() => {
+  const hero = document.getElementById('hero');
+  if (!hero) return;
+  const track = document.getElementById('hero-track');
+  const stage = document.getElementById('hero-stage');
   const rail = document.getElementById('hero-rail');
-  if (!rail) return;
+  const collage = document.getElementById('hero-collage');
+  const header = document.getElementById('site-header');
   const motion = window.SPYDMotion || { off: false, onChange() {} };
   const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
-
   const media = JSON.parse(document.getElementById('hero-media').textContent);
-  const HERO = {
-    slots: 24,          // 12 pairs: one left and one right card per level
-    start: 2,           // settled progress after the entrance
-    end: 24,            // finite forward cycle; after this the page scrolls normally
-    wheelGain: 0.0032,  // progress units per wheel pixel
-    maxWheelStep: 1.8,  // clamp per wheel event
-    maxLag: 3.6,        // max target-to-displayed lag
-    settleRate: 8.5, dragRate: 14, entranceRate: 2.8,
-    frameW: 468, frameH: 624,
-  };
 
-  let shown = motion.off ? HERO.start : 0;
-  let target = HERO.start;
-  let frame = 0, last = 0, drag = null, entering = !motion.off;
+  const HERO = { slots: 24, frameW: 468, frameH: 624, minRail: 360, minW: 1024, minH: 740 };
+  let enhanced = false, cards = null, layer = null, raf = 0, lastShown = -1;
+  let geo = { start: 0, travel: 1, stage: 0 };
 
-  const cards = [];
-  for (let i = 0; i < HERO.slots; i++) {
-    const item = media[i % media.length];
-    const fig = document.createElement('figure');
-    fig.className = 'hero-card';
-    fig.setAttribute('aria-hidden', 'true');
-    const art = document.createElement('div');
-    art.className = 'hero-art';
-    const img = new Image();
-    img.src = item.src; img.alt = ''; img.draggable = false; img.decoding = 'async';
-    img.width = 600; img.height = 800;
-    if (i > 8) img.loading = 'lazy';
-    art.append(img);
-    const cap = document.createElement('figcaption');
-    cap.textContent = item.caption;
-    fig.append(art, cap);
-    rail.append(fig);
-    cards.push({ fig, img, cap });
+  /* Twenty-four slots keep the paired left/right geometry; they reuse the small inventory, so
+     each image downloads once. Built only when the enhanced scene first runs. */
+  function buildCards() {
+    // Twelve visible-at-once slots: the full inventory, then again without logo artwork.
+    const plain = media.filter((m) => !m.brand);
+    const loop = media.concat(Array.from({ length: media.length }, (_, k) => plain[k % plain.length]));
+    layer = document.createElement('div');
+    layer.className = 'hero-cards';
+    cards = [];
+    for (let i = 0; i < HERO.slots; i++) {
+      const fig = document.createElement('div');
+      fig.className = 'hero-card';
+      const img = new Image();
+      img.src = loop[i % loop.length].src;
+      img.alt = ''; img.draggable = false; img.decoding = 'async';
+      img.width = 600; img.height = 800;
+      fig.append(img);
+      layer.append(fig);
+      cards.push(fig);
+    }
+    rail.append(layer);
   }
 
-  function draw() {
+  /* One uniform scale per card, so images are never distorted and the radius needs no animation. */
+  function draw(shown) {
     const w = rail.clientWidth, h = rail.clientHeight, pairs = HERO.slots / 2;
     if (w <= 0 || h <= 0) return;
-    cards.forEach(({ fig, img, cap }, i) => {
+    cards.forEach((fig, i) => {
       const side = i % 2 === 0 ? -1 : 1;
       const level = (((Math.floor(i / 2) + shown / 2) % pairs) + pairs) % pairs;
-      if (level >= 6) { fig.style.opacity = '0'; fig.style.visibility = 'hidden'; return; }
+      if (level >= 6) { fig.style.visibility = 'hidden'; return; }
       fig.style.visibility = '';
       const distance = 18 * Math.expm1(0.7 * level) * w / 1440;
       const next = 18 * Math.expm1(0.7 * (level + 1)) * w / 1440;
@@ -59,103 +65,113 @@
       const natural = Math.max(1, next - distance - gap);
       const maxW = Math.min(0.336 * w, HERO.frameW), soft = 0.625 * maxW;
       const range = maxW * (1 + 0.5 * clamp((w - 1600) / 320)) - soft;
-      const width = natural <= soft ? natural : soft + range * (1 - Math.exp(-(natural - soft) / range));
-      const height = Math.min(width / 0.75 * (w <= 600 ? 2 : 1), h * 0.96);
+      let width = natural <= soft ? natural : soft + range * (1 - Math.exp(-(natural - soft) / range));
+      width = Math.min(width, h * 0.96 * 0.75);
+      const scale = width / HERO.frameW;
+      const height = HERO.frameH * scale;
       const left = side > 0 ? w / 2 + distance + gap / 2 : w / 2 - distance - gap / 2 - width;
-      const top = (h - height) / 2;
-      const sx = width / HERO.frameW, sy = height / HERO.frameH, cover = Math.max(sx, sy);
       const fade = clamp(level / 0.55);
-      const radius = 10 + 14 * (1 - clamp(level / 5)) ** 2;
-      fig.style.transform = `translate3d(${left}px,${top}px,0) scale(${sx},${sy})`;
-      fig.style.borderRadius = `${Math.min(radius, width / 2) / sx}px / ${Math.min(radius, height / 2) / sy}px`;
-      fig.style.opacity = String(fade * fade * (3 - 2 * fade));
+      fig.style.transform = `translate3d(${left.toFixed(1)}px,${((h - height) / 2).toFixed(1)}px,0) scale(${scale.toFixed(4)})`;
+      fig.style.opacity = (fade * fade * (3 - 2 * fade)).toFixed(3);
       fig.style.zIndex = String(Math.floor(level) + 1);
-      img.style.transform = `scale(${cover / sx},${cover / sy})`;
-      // Captions counter-scale so text stays at reading size; only shown on wide cards.
-      const readable = clamp((width - 86) / 84);
-      cap.style.transform = `scale(${1 / sx},${1 / sy})`;
-      cap.style.top = `${-26 / sy}px`;
-      cap.style.width = `${Math.max(width - 8, 0)}px`;
-      cap.style.opacity = String(readable * readable * (3 - 2 * readable));
-      cap.style.textAlign = side < 0 ? 'right' : 'left';
-      cap.style.left = side < 0 ? 'auto' : '0';
-      cap.style.right = side < 0 ? '0' : 'auto';
-      cap.style.transformOrigin = side < 0 ? '100% 0' : '0 0';
     });
-    rail.dataset.progress = shown.toFixed(3);
   }
 
-  function tick(time) {
-    frame = 0;
-    if (motion.off || document.hidden) { last = 0; draw(); return; }
-    const dt = last ? Math.min((time - last) / 1000, 0.05) : 1 / 60;
-    last = time;
-    const rate = drag ? HERO.dragRate : entering ? HERO.entranceRate : HERO.settleRate;
-    shown += (target - shown) * (1 - Math.exp(-rate * dt));
-    if (Math.abs(target - shown) < 0.0005) { shown = target; entering = false; last = 0; draw(); return; }
-    draw();
-    frame = requestAnimationFrame(tick);
-  }
-  function request() { if (!motion.off && !frame) { last = 0; frame = requestAnimationFrame(tick); } }
-  function advance(delta) {
-    if (motion.off) return;
-    entering = false;
-    target = clamp(target + delta, 0, HERO.end);
-    target = clamp(target, shown - HERO.maxLag, shown + HERO.maxLag);
-    request();
+  const headerHeight = () => (header ? header.offsetHeight : 72);
+
+  function progress() {
+    return clamp((scrollY - geo.start) / geo.travel);
   }
 
-  rail.addEventListener('wheel', (e) => {
-    if (motion.off || document.hidden || e.ctrlKey || e.metaKey) return; // keep browser zoom native
-    const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1;
-    const delta = (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * unit;
-    if (Math.abs(delta) < 0.01) return;
-    const finished = shown >= HERO.end - 0.001 && target >= HERO.end - 0.001;
-    const atStart = shown <= 0.001 && target <= 0.001;
-    if ((delta > 0 && finished) || (delta < 0 && atStart) || !e.cancelable) return; // release to the page
-    e.preventDefault();
-    advance(clamp(delta * HERO.wheelGain, -HERO.maxWheelStep, HERO.maxWheelStep));
-  }, { passive: false });
-
-  // Horizontal drag moves the gallery; touch-action: pan-y keeps vertical swipes scrolling the page.
-  rail.addEventListener('pointerdown', (e) => {
-    if (e.button !== 0 || !e.isPrimary) return;
-    const box = rail.getBoundingClientRect();
-    entering = false;
-    drag = { id: e.pointerId, x: e.clientX, dir: e.clientX < box.left + box.width / 2 ? -1 : 1 };
-    rail.setPointerCapture(e.pointerId);
-  });
-  rail.addEventListener('pointermove', (e) => {
-    if (!drag || e.pointerId !== drag.id || motion.off) return;
-    const dx = e.clientX - drag.x;
-    drag.x = e.clientX;
-    advance(dx / Math.max(rail.clientWidth, 1) * drag.dir * 7.4);
-  });
-  for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
-    rail.addEventListener(type, () => { drag = null; if (type === 'pointercancel') target = shown; });
+  function update() {
+    raf = 0;
+    if (!enhanced) return;
+    const p = progress();
+    const shown = 2 + 8 * p;
+    if (Math.abs(shown - lastShown) < 0.0005) return; // nothing changed (e.g. well past the hero)
+    lastShown = shown;
+    draw(shown);
+    hero.dataset.progress = p.toFixed(3);
   }
-  rail.addEventListener('keydown', (e) => {
-    if (!['ArrowLeft', 'ArrowRight'].includes(e.key) || motion.off) return;
-    e.preventDefault();
-    advance(e.key === 'ArrowLeft' ? -1 : 1);
-  });
+  const schedule = () => { if (enhanced && !raf) raf = requestAnimationFrame(update); };
 
-  motion.onChange((off) => {
-    if (off) { if (frame) cancelAnimationFrame(frame); frame = 0; drag = null; target = shown = Math.max(shown, HERO.start); draw(); }
-    else request();
-  });
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) request(); });
-  new ResizeObserver(draw).observe(rail);
-  draw();
-  request();
+  /* Does the copy plus a usable gallery fit the stage? Measured in the static layout's terms. */
+  function fits(stageHeight) {
+    const style = getComputedStyle(stage);
+    const pad = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+    const gaps = 2 * (parseFloat(style.rowGap) || 0);
+    const copy = document.getElementById('hero-copy').offsetHeight;
+    const note = document.getElementById('hero-note').offsetHeight;
+    return copy + note + pad + gaps + HERO.minRail <= stageHeight;
+  }
 
-  /* Inquiry box: hand the typed brief to the contact form. The text is never overwritten. */
-  const form = document.getElementById('hero-form');
-  if (form) form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const text = form.elements.brief.value.trim();
-    const url = new URL(form.action, location.href);
-    if (text) url.searchParams.set('message', text.slice(0, 500));
-    location.href = url.href;
-  });
+  /* Switch modes. When the extra scroll track appears or disappears, keep the visitor near the
+     same place: past the hero they keep their position relative to the content below; inside it
+     they land at the matching side of the hero/work boundary. */
+  function setMode(next, stageHeight, travel) {
+    const top = track.getBoundingClientRect().top + scrollY;
+    const headerH = headerHeight();
+    const was = enhanced;
+    const oldTravel = geo.travel;
+    const oldStart = geo.start;
+    const pBefore = was ? progress() : 0;
+    const oldBottom = top + track.offsetHeight;
+    const pastHero = scrollY >= oldBottom - headerH - 1;
+
+    enhanced = next;
+    hero.classList.toggle('is-enhanced', next);
+    if (next) {
+      if (!cards) buildCards();
+      collage.hidden = true;
+      layer.hidden = false;
+      track.style.height = `${stageHeight + travel}px`;
+      stage.style.height = `${stageHeight}px`;
+      geo = { start: top - headerH, travel, stage: stageHeight };
+    } else {
+      if (layer) layer.hidden = true;
+      collage.hidden = false;
+      track.style.height = '';
+      stage.style.height = '';
+      delete hero.dataset.progress;
+    }
+
+    if (was === next) return;
+    const behavior = 'instant';
+    if (was && !next) {
+      if (pastHero) scrollTo({ top: Math.max(0, scrollY - oldTravel), behavior });
+      else if (scrollY > oldStart) {
+        // Inside the scene: early half stays at the hero, late half goes to the work below.
+        const work = document.getElementById('selected-work');
+        if (pBefore >= 0.5 && work) scrollTo({ top: work.getBoundingClientRect().top + scrollY - headerH, behavior });
+        else scrollTo({ top: oldStart, behavior });
+      }
+    } else if (!was && next && pastHero) {
+      scrollTo({ top: scrollY + travel, behavior });
+    }
+  }
+
+  function measure() {
+    const vw = innerWidth, vh = innerHeight;
+    const usable = vh - headerHeight();
+    const stageHeight = Math.min(860, usable);
+    const travel = clamp(0.65 * usable, 360, 640);
+    const allowed = vw >= HERO.minW && vh >= HERO.minH && !motion.off && fits(stageHeight);
+    setMode(allowed, stageHeight, travel);
+    lastShown = -1;
+    if (enhanced) update();
+  }
+
+  let resizeRaf = 0;
+  const remeasure = () => { if (!resizeRaf) resizeRaf = requestAnimationFrame(() => { resizeRaf = 0; measure(); }); };
+
+  addEventListener('scroll', schedule, { passive: true });
+  addEventListener('resize', remeasure);
+  addEventListener('orientationchange', remeasure);
+  if (header) new ResizeObserver(remeasure).observe(header);
+  new ResizeObserver(remeasure).observe(document.getElementById('hero-copy'));
+  motion.onChange(remeasure);
+  document.fonts?.ready.then(remeasure);
+  addEventListener('load', remeasure);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) { lastShown = -1; schedule(); } });
+  measure();
 })();

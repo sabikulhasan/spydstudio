@@ -1,85 +1,74 @@
-/* Work grid: reads assets/data/work.json and renders lite YouTube cards.
-   Only a thumbnail loads until someone selects a card; then the privacy-enhanced
-   player replaces it. Used on /work/ (with filters) and on service pages
-   (data-service filters to one service, data-limit caps the count). */
+/* Work cards are rendered into the HTML by tools/build.py from assets/data/work.json, so the
+   projects are readable without JavaScript. This script adds:
+   - service filters on /work/ (with a message and reset when a category is empty), and
+   - click-to-play: a privacy-enhanced YouTube player or native <video> loads only after a
+     visitor selects it. Opening one player closes any other. */
 (() => {
-  const grids = [...document.querySelectorAll('[data-work]')];
-  if (!grids.length) return;
-  const dataUrl = new URL('../data/work.json', document.currentScript.src);
-  const NAMES = { 'video-ads': 'Video Ads', 'ugc-content': 'UGC Content', websites: 'Websites', marketing: 'Marketing', 'documents-decks': 'Documents & Decks' };
-  const cfg = window.SPYD || {};
-  const contactUrl = new URL('../../contact/', document.currentScript.src).href;
-  const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+  const playing = new Map(); // frame -> original children
 
-  function card(item) {
-    const fig = el('article', 'work-card');
-    fig.dataset.service = item.service;
-    const frame = el('div', 'work-frame' + (item.vertical ? ' is-vertical' : ''));
-    const play = el('button', 'work-play');
-    play.type = 'button';
-    play.setAttribute('aria-label', `Play video: ${item.title}`);
-    const thumb = new Image();
-    thumb.src = `https://i.ytimg.com/vi/${encodeURIComponent(item.id)}/hqdefault.jpg`;
-    thumb.alt = '';
-    thumb.loading = 'lazy';
-    thumb.width = 480; thumb.height = 360;
-    const icon = el('span', 'work-icon');
-    icon.setAttribute('aria-hidden', 'true');
-    play.append(thumb, icon);
-    play.addEventListener('click', () => {
-      const iframe = document.createElement('iframe');
-      iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(item.id)}?autoplay=1&rel=0`;
-      iframe.title = item.title;
-      iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
-      iframe.allowFullscreen = true;
-      frame.replaceChildren(iframe);
-      iframe.focus();
-    });
-    frame.append(play);
-    const meta = el('div', 'work-meta');
-    const tags = el('div', 'work-tags');
-    tags.append(el('span', 'tag', NAMES[item.service] || item.service));
-    if (item.format) tags.append(el('span', 'tag', item.format));
-    if (item.concept) tags.append(el('span', 'tag tag-concept', 'Concept'));
-    meta.append(el('h3', 'work-title', item.title), el('p', 'muted', item.client || (item.concept ? 'Self-initiated work' : '')), tags);
-    fig.append(frame, meta);
-    return fig;
+  function close(frame) {
+    const original = playing.get(frame);
+    if (!original) return;
+    frame.querySelectorAll('video').forEach((v) => v.pause());
+    frame.replaceChildren(...original);
+    playing.delete(frame);
   }
 
-  function empty(grid, filtered) {
-    const box = el('div', 'work-empty');
-    box.append(el('h3', '', filtered ? 'Nothing in this category yet.' : 'Portfolio coming soon.'));
-    box.append(el('p', 'muted', 'We are adding finished pieces here. Until then, see recent posts on Facebook or ask us for examples relevant to your business.'));
-    const row = el('div', 'btn-row');
-    const fb = el('a', 'btn btn-ghost', 'See us on Facebook');
-    fb.href = cfg.facebook || '#'; fb.target = '_blank'; fb.rel = 'noopener';
-    const ask = el('a', 'btn btn-primary', 'Ask for examples');
-    ask.href = contactUrl;
-    row.append(ask, fb);
-    box.append(row);
-    grid.replaceChildren(box);
-  }
-
-  function render(grid, items, filter) {
-    let list = filter && filter !== 'all' ? items.filter((i) => i.service === filter) : items;
-    if (grid.dataset.limit) list = list.slice(0, Number(grid.dataset.limit));
-    if (!list.length) return empty(grid, Boolean(filter && filter !== 'all'));
-    grid.replaceChildren(...list.map(card));
-  }
-
-  fetch(dataUrl)
-    .then((r) => (r.ok ? r.json() : { items: [] }))
-    .catch(() => ({ items: [] }))
-    .then(({ items = [] }) => {
-      grids.forEach((grid) => render(grid, items, grid.dataset.service));
-      const filters = document.querySelector('[data-work-filters]');
-      if (!filters) return;
-      const main = document.querySelector('.work-grid[data-work]:not([data-service])');
-      filters.addEventListener('click', (e) => {
-        const btn = e.target.closest('[data-filter]');
-        if (!btn) return;
-        filters.querySelectorAll('[data-filter]').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
-        render(main, items, btn.dataset.filter);
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.work-play');
+    if (!btn) return;
+    const frame = btn.closest('.work-frame');
+    [...playing.keys()].forEach((f) => { if (f !== frame) close(f); });
+    playing.set(frame, [...frame.childNodes]);
+    let player;
+    if (btn.dataset.youtube) {
+      player = document.createElement('iframe');
+      player.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(btn.dataset.youtube)}?autoplay=1&rel=0`;
+      player.title = btn.dataset.title || 'Video';
+      player.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      player.allowFullscreen = true;
+    } else if (btn.dataset.video) {
+      player = document.createElement('video');
+      player.src = btn.dataset.video;
+      player.controls = true;
+      player.playsInline = true;
+      player.preload = 'none';
+      const poster = frame.querySelector('img');
+      if (poster) player.poster = poster.currentSrc || poster.src;
+      player.setAttribute('aria-label', btn.dataset.title || 'Video');
+      player.addEventListener('error', () => {
+        const note = document.createElement('p');
+        note.className = 'work-error';
+        note.textContent = 'This video could not be loaded.';
+        frame.replaceChildren(...playing.get(frame), note);
+        playing.delete(frame);
       });
-    });
+    } else return;
+    frame.classList.add('is-playing');
+    frame.replaceChildren(player);
+    player.focus();
+    if (player.play) player.play().catch(() => { /* the visitor can press play in the controls */ });
+  });
+
+  const filters = document.querySelector('[data-work-filters]');
+  const grid = document.querySelector('.work-grid[data-work]');
+  if (!filters || !grid) return;
+  const cards = [...grid.querySelectorAll('.work-card')];
+  const empty = document.createElement('div');
+  empty.className = 'work-empty work-empty-filter';
+  empty.hidden = true;
+  empty.innerHTML = '<p>Nothing in this category yet.</p><button class="btn btn-ghost" type="button" data-filter="all">Show all work</button>';
+  grid.after(empty);
+
+  function apply(filter) {
+    filters.querySelectorAll('[data-filter]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
+    let shown = 0;
+    cards.forEach((c) => { c.hidden = filter !== 'all' && c.dataset.service !== filter; if (!c.hidden) shown++; });
+    empty.hidden = shown > 0;
+  }
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-filter]');
+    if (btn && (filters.contains(btn) || empty.contains(btn))) apply(btn.dataset.filter);
+  });
+  filters.hidden = false;
 })();
