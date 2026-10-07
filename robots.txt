@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://sabikulhasan.github.io/spydstudio/sitemap.xml

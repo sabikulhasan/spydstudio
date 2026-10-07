@@ -1,0 +1,44 @@
+/* SPY-D Studio design tokens, from Brand Guidelines v1.2 (Orange direction).
+   Change brand values here; every other stylesheet reads these variables. */
+
+@font-face { font-family: "Nunito Sans"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("../fonts/nunito-sans-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Nunito Sans"; font-weight: 600; font-style: normal; font-display: swap;
+  src: url("../fonts/nunito-sans-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Nunito Sans"; font-weight: 900; font-style: normal; font-display: swap;
+  src: url("../fonts/nunito-sans-latin-900-normal.woff2") format("woff2"); }
+
+:root {
+  /* Colour: calm neutral foundation, orange reserved for emphasis. */
+  --vermilion: #FF4B00;   /* hatband, calls to action, accents. Never small text on ivory. */
+  --ink: #0B0B0B;         /* logo, headings, primary text */
+  --ivory: #FFF7EC;       /* page background */
+  --slate: #6B7280;       /* secondary text and captions on light */
+  --rule: #DCD6CE;        /* 12% ink tint: rules and keylines */
+  --on-ink-2: #A8A29A;    /* secondary text on ink */
+  --white: #FFFFFF;
+  --ink-2: #161616;       /* raised surface on ink */
+
+  /* Type: Avenir Next is not licensed for the web; Nunito Sans is the approved fallback. */
+  --font: "Avenir Next", "Nunito Sans", system-ui, sans-serif;
+  --display: clamp(40px, 4.6vw, 64px);
+  --h1: clamp(34px, 3.6vw, 48px);
+  --h2: clamp(26px, 2.4vw, 32px);
+  --h3: clamp(20px, 1.8vw, 24px);
+  --body: clamp(16px, 1.1vw, 18px);
+  --caption: 14px;
+
+  /* Space: 8 px base. */
+  --s1: 8px; --s2: 16px; --s3: 24px; --s4: 32px; --s5: 48px; --s6: 64px; --s7: 96px; --s8: 128px;
+  --gutter: 16px;
+  --max: 1200px;
+  --radius: 12px;
+  --header-h: 72px;       /* measured by site.js; this is the fallback */
+
+  /* Motion */
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --angle: -7deg;         /* the hatband angle, for accent bars */
+}
+
+@media (min-width: 600px) { :root { --gutter: 24px; } }
+@media (min-width: 1200px) { :root { --gutter: 32px; } }

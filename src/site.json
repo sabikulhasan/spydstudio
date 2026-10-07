@@ -1,0 +1,26 @@
+{
+  "name": "SPY-D Studio",
+  "tagline": "Observe. Understand. Create.",
+  "siteUrl": "https://sabikulhasan.github.io/spydstudio/",
+  "basePath": "/spydstudio/",
+  "email": "work.spystudio@gmail.com",
+  "phoneDisplay": "+880 1611 049489",
+  "whatsapp": "8801611049489",
+  "whatsappMessage": "Hi SPY-D Studio, I'd like to talk about a project.",
+  "facebook": "https://www.facebook.com/spydstudio/",
+  "bookingUrl": "",
+  "formEndpoint": "",
+  "nav": [
+    { "label": "Services", "href": "services/", "section": "services" },
+    { "label": "Work", "href": "work/", "section": "work" },
+    { "label": "Process", "href": "process/", "section": "process" },
+    { "label": "About", "href": "about/", "section": "about" }
+  ],
+  "services": [
+    { "slug": "video-ads", "name": "Video Ads", "line": "Scripted promotional video, product demos, ad edits" },
+    { "slug": "ugc-content", "name": "UGC Content", "line": "Creator-style content built for paid and organic feeds" },
+    { "slug": "websites", "name": "Websites", "line": "Landing pages and small business sites" },
+    { "slug": "marketing", "name": "Marketing", "line": "Campaign planning, ad management, performance reporting" },
+    { "slug": "documents-decks", "name": "Documents & Decks", "line": "Company profiles, proposals, presentations" }
+  ]
+}

@@ -1,0 +1,84 @@
+<!--meta {"title": "Contact", "description": "Start a project with SPY-D Studio. Send a message by form, WhatsApp or email and we'll set up a meeting to discuss it.", "css": ["pages"], "js": ["contact"], "section": "contact"} -->
+<section class="page-hero wrap">
+  <span class="accent-bar" aria-hidden="true"></span>
+  <h1>Start a project.</h1>
+  <p class="lead">Tell us about the business and what you need. We'll reply to set up a meeting, then come back with a written plan.</p>
+</section>
+
+<section class="section-tight wrap contact-grid">
+  <form class="contact-form" id="contact-form" novalidate>
+    <div class="field">
+      <label for="cf-name">Your name</label>
+      <input id="cf-name" name="name" autocomplete="name" required>
+      <p class="field-error" id="cf-name-error" hidden>Please add your name.</p>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="cf-email">Email <span class="optional">(email or WhatsApp)</span></label>
+        <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email">
+        <p class="field-error" id="cf-email-error" hidden>Please check the email address.</p>
+      </div>
+      <div class="field">
+        <label for="cf-phone">WhatsApp or phone</label>
+        <input id="cf-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel">
+      </div>
+    </div>
+    <p class="field-error" id="cf-reach-error" hidden>Please add an email address or a phone number so we can reply.</p>
+    <div class="field">
+      <label for="cf-company">Business name <span class="optional">(optional)</span></label>
+      <input id="cf-company" name="company" autocomplete="organization">
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="cf-service">Service</label>
+        <select id="cf-service" name="service">
+          <option value="">Not sure yet</option>
+          <option value="video-ads">Video Ads</option>
+          <option value="ugc-content">UGC Content</option>
+          <option value="websites">Websites</option>
+          <option value="marketing">Marketing</option>
+          <option value="documents-decks">Documents &amp; Decks</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="cf-timeline">When do you need it? <span class="optional">(optional)</span></label>
+        <select id="cf-timeline" name="timeline">
+          <option value="">Flexible</option>
+          <option>Within 2 weeks</option>
+          <option>Within a month</option>
+          <option>In 1–3 months</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label for="cf-message">About the project</label>
+      <textarea id="cf-message" name="message" rows="6" required maxlength="2000" placeholder="What does the business do, and what should the work achieve?"></textarea>
+      <p class="field-error" id="cf-message-error" hidden>Please tell us a little about the project.</p>
+    </div>
+    <div class="hp" aria-hidden="true"><label for="cf-website">Leave this empty</label><input id="cf-website" name="website" tabindex="-1" autocomplete="off"></div>
+    <div class="form-actions" id="form-actions">
+      <button class="btn btn-primary" type="submit" data-send="whatsapp">Send on WhatsApp <span class="arrow" aria-hidden="true">→</span></button>
+      <button class="btn btn-ghost" type="submit" data-send="email">Send by email</button>
+    </div>
+    <p class="form-note muted" id="form-note">Your message opens in WhatsApp or your email app, ready to send. Nothing is stored on this website.</p>
+    <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+    <noscript><p class="form-note">This form needs JavaScript. You can email <a href="{{mailtoUrl}}">{{email}}</a> or message us on <a href="{{whatsappUrl}}">WhatsApp</a> instead.</p></noscript>
+  </form>
+
+  <aside class="contact-cards" aria-label="Other ways to reach us">
+    <a class="contact-card" href="{{whatsappUrl}}" target="_blank" rel="noopener">
+      <span class="label">WhatsApp</span><span class="contact-value">{{phoneDisplay}}</span><span class="muted">Fastest for a quick question.</span>
+    </a>
+    <div class="contact-card">
+      <span class="label">Email</span>
+      <a class="contact-value" href="{{mailtoUrl}}">{{email}}</a>
+      <button class="link-btn copy-btn" type="button" data-copy="{{email}}">Copy address</button>
+    </div>
+    <a class="contact-card" href="{{facebook}}" target="_blank" rel="noopener">
+      <span class="label">Facebook</span><span class="contact-value">facebook.com/spydstudio</span><span class="muted">See what we're working on.</span>
+    </a>
+    <a class="contact-card" id="booking-card" href="#" target="_blank" rel="noopener" hidden>
+      <span class="label">Book a call</span><span class="contact-value">Pick a time</span><span class="muted">A short call to talk through the project.</span>
+    </a>
+  </aside>
+</section>

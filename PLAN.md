@@ -1,6 +1,6 @@
 # SPY-D Studio website plan
 
-Status: draft for review. Nothing is built yet.
+Status: v1 built (see §10 for what changed after the Framia reference). Remaining placeholders are listed in §10.
 Source of truth for look and voice: *SPY-D Brand Guidelines v1.2* (Orange direction, 2026).
 
 ---
@@ -325,3 +325,33 @@ Each phase lands as its own commit or PR so you can review it on the live previe
 | Show prices? | No (v1) |
 | Analytics | GoatCounter (privacy-friendly, free) |
 | Floating WhatsApp button | Phone only |
+
+---
+
+## 10. Revision: Framia direction (7 Oct 2026)
+
+Decisions from the owner:
+
+| Question | Decision |
+|---|---|
+| Colour direction | Mostly ivory, as in the brand guide. Ink is used for the services showcase, the closing call to action and the footer. Vermilion replaces Framia's lime. |
+| Hero media | Branded placeholder tiles labelled SAMPLE until real stills or YouTube thumbnails exist |
+| Home sections | Core set: zooming hero gallery, pinned services showcase with a workflow finale, two alternating feature rows, closing call to action, FAQ, footer |
+| Pages | Framia-style homepage plus simpler inner pages |
+| Contact | work.spystudio@gmail.com (spelling taken from the guideline PDF's text layer), WhatsApp +880 1611 049489, facebook.com/spydstudio |
+| Service details | Scoped per client in a meeting, so there are no fixed deliverable lists, timelines or prices on the site |
+
+Changes from §1–9:
+- **Typography:** the brand font stack (Avenir Next, then Nunito Sans) is kept instead of Framia's Archivo Narrow, because the brand guide takes precedence.
+- **Hero:** a centre-out scale gallery. Wheel input over it zooms the cards outward while the page stays still, and normal scrolling resumes once the cycle completes. Drag and arrow keys also work. The desktop inquiry box hands the typed brief to the contact form.
+- **Showcase:** pinned for about 5.6 viewport heights on desktop. The five services advance in turn, then an ivory dotted "From brief to delivery" diagram fades in. On phones and with reduced motion it is not pinned; buttons switch between services.
+- **Contact form:** without a form service, it opens WhatsApp or the email app with the message filled in. Formspree or Web3Forms can be switched on later through `formEndpoint`.
+- **Build:** `tools/build.py` turns `src/` into static pages, so the header and footer live in one place.
+
+Still placeholder or missing:
+1. **Outlined logo files.** The wordmark is live text taken from the supplied SVGs; it renders in Avenir Next on Apple devices and in Nunito Sans elsewhere. Outlined `spyd-horizontal*.svg` files would fix that.
+2. Hero and showcase images are SAMPLE placeholders.
+3. `work.json` is empty, so the Work page shows a "Portfolio coming soon" state.
+4. No booking link. The booking card appears automatically when `bookingUrl` is set.
+5. No form service. Messages go through WhatsApp or email.
+6. Real phone testing (touch gestures on the hero gallery) is still to do.

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+{{noindex}}<link rel="canonical" href="{{canonical}}">
+<meta name="theme-color" content="#FFF7EC">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{name}}">
+<meta property="og:title" content="{{title}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:url" content="{{canonical}}">
+<meta property="og:image" content="{{siteUrl}}assets/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="{{root}}assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="{{root}}assets/fonts/nunito-sans-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{root}}assets/fonts/nunito-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{{root}}assets/css/tokens.css">
+<link rel="stylesheet" href="{{root}}assets/css/base.css">
+<link rel="stylesheet" href="{{root}}assets/css/components.css">
+{{extraCss}}<script src="{{root}}assets/js/config.js" defer></script>
+<script src="{{root}}assets/js/site.js" defer></script>
+{{extraJs}}<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"{{name}}","url":"{{siteUrl}}","email":"{{email}}","telephone":"{{phoneDisplay}}","sameAs":["{{facebook}}"],"slogan":"{{tagline}}"}</script>
+</head>
+<body class="{{pageClass}}">
+<a class="skip-link" href="#main">Skip to content</a>
+{{partial_header}}
+<main id="main">
+{{content}}
+</main>
+{{partial_footer}}
+<a class="wa-float" href="{{whatsappUrl}}" target="_blank" rel="noopener" aria-label="Chat with SPY-D Studio on WhatsApp">{{partial_whatsapp}}</a>
+</body>
+</html>
