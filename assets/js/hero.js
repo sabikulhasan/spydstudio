@@ -23,7 +23,7 @@
   const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
   const media = JSON.parse(document.getElementById('hero-media').textContent);
 
-  const HERO = { slots: 24, frameW: 468, frameH: 624, minRail: 360, minW: 1024, minH: 740 };
+  const HERO = { slots: 24, frameW: 468, frameH: 624, minRail: 240, minW: 1024, minH: 740 };
   let enhanced = false, cards = null, layer = null, raf = 0, lastShown = -1;
   let geo = { start: 0, travel: 1, stage: 0 };
 

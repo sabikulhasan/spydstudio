@@ -34,7 +34,7 @@
 
 /* Enhanced: the stage is pinned under the header for a short scroll track. */
 .hero.is-enhanced .hero-stage { position: sticky; top: var(--header-h); padding-block: 32px 20px; }
-.hero.is-enhanced .hero-rail { flex: 1 1 auto; height: auto; min-height: 360px; max-height: 430px; margin-block: auto; }
+.hero.is-enhanced .hero-rail { flex: 1 1 auto; height: auto; min-height: 240px; max-height: 430px; margin-block: auto; }
 .hero-cards[hidden] { display: none; }
 .hero-card {
   position: absolute; left: 0; top: 0; width: 468px; height: 624px;
