@@ -8,7 +8,7 @@ body.home .hero-stage {
   background-color: #FFF7EC;
   background-image:
     radial-gradient(ellipse at 50% 21% var(--contour-space), rgba(255,247,236,.97) 0%, rgba(255,247,236,.90) 25%, rgba(255,247,236,0) 62%),
-    url('../img/contour-light.svg');
+    url('../img/contour-light.svg?v=2');
   background-size: auto, var(--contour-w) var(--contour-h);
   background-position: 0 0, var(--contour-x,0px) var(--contour-y,0px);
 }
@@ -16,7 +16,7 @@ body.home .hero-stage {
 body.home .hero.is-enhanced .hero-stage { position: sticky; }
 body.home .directions, body.home .process-home, body.home .faq, body.home .cta-band {
   background-color: #FFF7EC;
-  background-image: url('../img/contour-light.svg');
+  background-image: url('../img/contour-light.svg?v=2');
   background-size: var(--contour-w) var(--contour-h);
   background-position: var(--contour-x,0px) var(--contour-y,0px);
 }
@@ -24,7 +24,7 @@ body.home #services {
   background-color: #0B0B0B;
   background-image:
     radial-gradient(ellipse at 86% 5% var(--contour-space), rgba(255,75,0,.15), rgba(255,75,0,0) 55%),
-    url('../img/contour-dark.svg');
+    url('../img/contour-dark.svg?v=2');
   background-size: auto, var(--contour-w) var(--contour-h);
   background-position: 0 0, var(--contour-x,0px) var(--contour-y,0px);
 }
