@@ -37,7 +37,11 @@ def label(text, w, h, fill):
 def phone(x, y, w, h, frame, screen, accent):
     return (f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{w * .12}" fill="{frame}"/>'
             f'<rect x="{x + w * .06}" y="{y + w * .06}" width="{w * .88}" height="{h - w * .12}" rx="{w * .08}" fill="{screen}"/>'
-            f'<path d="M{x + w * .42} {y + h * .42} l{w * .2} {h * .08} l{-w * .2} {h * .08}z" fill="{accent}"/>')
+            # A creator-style frame: subject and on-screen caption bars. No play symbol, since
+            # the artwork is not a playable video.
+            f'<circle cx="{x + w / 2}" cy="{y + h * .36}" r="{w * .2}" fill="{accent}"/>'
+            f'<rect x="{x + w * .2}" y="{y + h * .7}" width="{w * .6}" height="{h * .045}" rx="{h * .02}" fill="{accent}"/>'
+            f'<rect x="{x + w * .28}" y="{y + h * .78}" width="{w * .44}" height="{h * .045}" rx="{h * .02}" fill="{accent}" opacity=".6"/>')
 
 
 def card(i, motif, bg, fg, accent, tag):
@@ -68,15 +72,6 @@ def card(i, motif, bg, fg, accent, tag):
     return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}">{"".join(body)}</svg>\n'
 
 
-def scene(i, bg, fg, accent, tag):
-    w, h = 1600, 1000
-    body = [f'<rect width="{w}" height="{h}" fill="{bg}"/>',
-            hat(560 + i * 40, 160, 3.4, fg, accent, -3 + i),
-            bar(1100, 860, 1500, 40, accent, .9),
-            label(tag, w, h, SLATE)]
-    return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}">{"".join(body)}</svg>\n'
-
-
 CARDS = [
     ("crop", INK, WHITE, ORANGE, "Video ads"),
     ("phone", ORANGE, INK, IVORY, "UGC content"),
@@ -91,17 +86,13 @@ CARDS = [
     ("grid", RULE, IVORY, ORANGE, "Landing pages"),
     ("deck", INK, WHITE, ORANGE, "Proposals"),
 ]
-SCENES = ["Video ads", "UGC content", "Websites", "Marketing", "Documents & decks"]
 
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     for i, (motif, bg, fg, accent, tag) in enumerate(CARDS, 1):
         (OUT / f"card-{i:02d}.svg").write_text(card(i, motif, bg, fg, accent, tag))
-    for i, tag in enumerate(SCENES, 1):
-        bg, fg = (INK, "#1E1E1E") if i % 2 else ("#141414", "#262626")
-        (OUT / f"scene-{i}.svg").write_text(scene(i, bg, fg, ORANGE, tag))
-    print(f"wrote {len(CARDS)} cards and {len(SCENES)} scenes to {OUT.relative_to(ROOT)}")
+    print(f"wrote {len(CARDS)} cards to {OUT.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 /* Contact form.
    With formEndpoint set in src/site.json (Formspree or Web3Forms), the form posts there and
-   goes to /thanks/. Without it, the message opens in WhatsApp or the email app, ready to send.
+   goes to /thanks/. Without it, the form prepares a message for WhatsApp or the email app;
+   the visitor reviews and sends it there, so nothing is "received" when a button is pressed.
    ?service=video-ads preselects the service; ?message= or ?brief= prefills the message. */
 (() => {
   const form = document.getElementById('contact-form');
@@ -31,26 +32,46 @@
     setTimeout(() => { btn.textContent = 'Copy address'; }, 2000);
   }));
 
-  function showError(field, errorId, show) {
-    const err = $(errorId);
-    err.hidden = !show;
-    if (field) {
-      field.toggleAttribute('aria-invalid', show);
-      if (show) field.setAttribute('aria-describedby', errorId); else field.removeAttribute('aria-describedby');
-    }
-    return show;
+  /* aria-describedby keeps its helper IDs; error IDs are added and removed individually. */
+  function describe(field, id, on) {
+    const ids = (field.getAttribute('aria-describedby') || '').split(/\s+/).filter((x) => x && x !== id);
+    if (on) ids.push(id);
+    if (ids.length) field.setAttribute('aria-describedby', ids.join(' '));
+    else field.removeAttribute('aria-describedby');
   }
 
+  const checks = [
+    { id: 'cf-name-error', fields: () => [form.name], bad: () => !form.name.value.trim() },
+    { id: 'cf-email-error', fields: () => [form.email], bad: () => Boolean(form.email.value.trim()) && !form.email.checkValidity() },
+    { id: 'cf-reach-error', fields: () => [form.email, form.phone], bad: () => !form.email.value.trim() && !form.phone.value.trim() },
+    { id: 'cf-message-error', fields: () => [form.message], bad: () => !form.message.value.trim() },
+  ];
+
+  function apply() {
+    const invalid = new Set();
+    checks.forEach((c) => {
+      const bad = c.bad();
+      $(c.id).hidden = !bad;
+      c.fields().forEach((f) => { describe(f, c.id, bad); if (bad) invalid.add(f); });
+    });
+    [form.name, form.email, form.phone, form.message].forEach((f) => {
+      if (invalid.has(f)) f.setAttribute('aria-invalid', 'true'); else f.removeAttribute('aria-invalid');
+    });
+    return [form.name, form.email, form.phone, form.message].filter((f) => invalid.has(f));
+  }
+
+  let attempted = false;
   function validate() {
-    const name = form.name.value.trim(), email = form.email.value.trim(), phone = form.phone.value.trim();
-    const bad = [];
-    if (showError(form.name, 'cf-name-error', !name)) bad.push(form.name);
-    if (showError(form.email, 'cf-email-error', Boolean(email) && !form.email.checkValidity())) bad.push(form.email);
-    if (showError(null, 'cf-reach-error', !email && !phone)) bad.push(form.email);
-    if (showError(form.message, 'cf-message-error', !form.message.value.trim())) bad.push(form.message);
-    if (bad.length) bad[0].focus();
+    attempted = true;
+    const bad = apply();
+    if (bad.length) {
+      bad[0].focus();
+      status.textContent = bad.length === 1 ? 'Please correct the highlighted field.' : `Please correct the ${bad.length} highlighted fields.`;
+    }
     return !bad.length;
   }
+  // After a failed attempt, re-check as fields change (on change, not every keystroke announced).
+  form.addEventListener('change', () => { if (attempted) apply(); });
 
   function summary() {
     const f = form;
@@ -66,16 +87,52 @@
     return ['Hi SPY-D Studio,', '', value(f.message), '', ...details].join('\n');
   }
 
+  const fallback = $('copy-fallback');
+  function showFallback(text) {
+    fallback.hidden = false;
+    const area = $('cf-prepared');
+    area.value = text;
+    area.focus();
+    area.select();
+  }
+
+  async function copy(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      fallback.hidden = true;
+      status.textContent = `Message copied. Paste it into WhatsApp or an email to ${cfg.email}.`;
+    } catch {
+      showFallback(text);
+      status.textContent = 'Copying wasn’t allowed by the browser. The message is shown below to select and copy.';
+    }
+  }
+
+  // Exposed so the handoff URLs can be tested without opening anything.
+  window.SPYDContact = {
+    whatsappUrl: () => window.SPYDLinks.whatsapp(summary()),
+    emailUrl: () => {
+      const subject = `Project enquiry${form.company.value.trim() ? ' from ' + form.company.value.trim() : ''}`;
+      return `mailto:${cfg.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(summary())}`;
+    },
+  };
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (form.website.value) return; // honeypot: bots fill hidden fields
     if (!validate()) return;
     const mode = e.submitter?.dataset.send || (cfg.formEndpoint ? 'endpoint' : 'whatsapp');
-    if (mode === 'whatsapp') { window.open(window.SPYDLinks.whatsapp(summary()), '_blank', 'noopener'); status.textContent = 'WhatsApp opened in a new tab with your message.'; return; }
+    // The form is never cleared after a handoff: the visitor may need to try another route.
+    if (mode === 'copy') { copy(summary()); return; }
+    if (mode === 'whatsapp') {
+      // window.open with noopener returns null whether or not a popup blocker stopped it,
+      // so the status never claims a tab opened.
+      window.open(window.SPYDContact.whatsappUrl(), '_blank', 'noopener');
+      status.textContent = 'Draft prepared. Review and send it in WhatsApp. If WhatsApp didn’t open, use “Copy prepared message”.';
+      return;
+    }
     if (mode === 'email') {
-      const subject = `Project enquiry${form.company.value.trim() ? ' from ' + form.company.value.trim() : ''}`;
-      location.href = `mailto:${cfg.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(summary())}`;
-      status.textContent = 'Your email app should open with the message ready to send.';
+      location.href = window.SPYDContact.emailUrl();
+      status.textContent = 'Draft prepared. Review and send it in your email app. If it didn’t open, use “Copy prepared message”.';
       return;
     }
     const button = form.querySelector('[type="submit"]');

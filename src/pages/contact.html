@@ -1,29 +1,30 @@
-<!--meta {"title": "Contact", "description": "Start a project with SPY-D Studio. Send a message by form, WhatsApp or email and we'll set up a meeting to discuss it.", "css": ["pages"], "js": ["contact"], "section": "contact"} -->
+<!--meta {"title": "Contact", "description": "Start a project with SPY-D Studio. Send a message by form, WhatsApp or email and we'll set up a meeting to discuss it.", "css": ["pages"], "js": ["contact"], "section": "contact", "bodyClass": "page-contact"} -->
 <section class="page-hero wrap">
   <span class="accent-bar" aria-hidden="true"></span>
   <h1>Start a project.</h1>
-  <p class="lead">Tell us about the business and what you need. We'll reply to set up a meeting, then come back with a written plan.</p>
+  <p class="lead">Tell us about the business and what you need. We’ll reply to discuss the approach and scope with you.</p>
 </section>
 
 <section class="section-tight wrap contact-grid">
   <form class="contact-form" id="contact-form" novalidate>
     <div class="field">
       <label for="cf-name">Your name</label>
-      <input id="cf-name" name="name" autocomplete="name" required>
+      <input id="cf-name" name="name" autocomplete="name" required aria-required="true">
       <p class="field-error" id="cf-name-error" hidden>Please add your name.</p>
     </div>
     <div class="field-row">
       <div class="field">
-        <label for="cf-email">Email <span class="optional">(email or WhatsApp)</span></label>
-        <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email">
+        <label for="cf-email">Email</label>
+        <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email" aria-describedby="cf-reach-help">
         <p class="field-error" id="cf-email-error" hidden>Please check the email address.</p>
       </div>
       <div class="field">
         <label for="cf-phone">WhatsApp or phone</label>
-        <input id="cf-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel">
+        <input id="cf-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="cf-reach-help">
       </div>
     </div>
-    <p class="field-error" id="cf-reach-error" hidden>Please add an email address or a phone number so we can reply.</p>
+    <p class="field-help" id="cf-reach-help">Provide an email address or WhatsApp/phone number.</p>
+    <p class="field-error" id="cf-reach-error" hidden>Add an email address or a WhatsApp/phone number so we can reply. One of the two is enough.</p>
     <div class="field">
       <label for="cf-company">Business name <span class="optional">(optional)</span></label>
       <input id="cf-company" name="company" autocomplete="organization">
@@ -52,16 +53,21 @@
     </div>
     <div class="field">
       <label for="cf-message">About the project</label>
-      <textarea id="cf-message" name="message" rows="6" required maxlength="2000" placeholder="What does the business do, and what should the work achieve?"></textarea>
+      <textarea id="cf-message" name="message" rows="6" required aria-required="true" maxlength="2000" placeholder="What does the business do, and what should the work achieve?"></textarea>
       <p class="field-error" id="cf-message-error" hidden>Please tell us a little about the project.</p>
     </div>
     <div class="hp" aria-hidden="true"><label for="cf-website">Leave this empty</label><input id="cf-website" name="website" tabindex="-1" autocomplete="off"></div>
+    <p class="form-note" id="form-note">We prepare your message. Review and send it in WhatsApp or your email app. Nothing is stored on this website.</p>
     <div class="form-actions" id="form-actions">
-      <button class="btn btn-primary" type="submit" data-send="whatsapp">Send on WhatsApp <span class="arrow" aria-hidden="true">→</span></button>
-      <button class="btn btn-ghost" type="submit" data-send="email">Send by email</button>
+      <button class="btn btn-primary" type="submit" data-send="whatsapp">Open WhatsApp draft <span class="arrow" aria-hidden="true">→</span></button>
+      <button class="btn btn-ghost" type="submit" data-send="email">Open email draft</button>
+      <button class="link-btn" type="submit" data-send="copy">Copy prepared message</button>
     </div>
-    <p class="form-note muted" id="form-note">Your message opens in WhatsApp or your email app, ready to send. Nothing is stored on this website.</p>
-    <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+    <p class="form-status" id="form-status" role="status"></p>
+    <div class="copy-fallback" id="copy-fallback" hidden>
+      <label for="cf-prepared">Your prepared message. Select it and copy it into WhatsApp or email.</label>
+      <textarea id="cf-prepared" rows="8" readonly></textarea>
+    </div>
     <noscript><p class="form-note">This form needs JavaScript. You can email <a href="{{mailtoUrl}}">{{email}}</a> or message us on <a href="{{whatsappUrl}}">WhatsApp</a> instead.</p></noscript>
   </form>
 

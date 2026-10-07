@@ -1,11 +1,13 @@
 /* Reset, typography and layout primitives. */
 *, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--header-h) + 16px); }
 body {
   margin: 0;
   background: var(--ivory);
   color: var(--ink);
-  font: 400 var(--body)/1.56 var(--font);
+  font: 400 var(--body)/var(--body-lh) var(--font);
+  font-synthesis: none;
   overflow-x: clip;
 }
 img, svg, video, iframe { display: block; max-width: 100%; }
@@ -15,16 +17,18 @@ button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
 h1, h2, h3, h4, p, ul, ol, figure, blockquote { margin: 0; }
 ul[class], ol[class] { list-style: none; padding: 0; }
-h1, h2, h3 { line-height: 1.12; letter-spacing: -.01em; text-wrap: balance; }
-.display { font-size: var(--display); font-weight: 900; line-height: 1.09; letter-spacing: -.02em; }
-h1, .h1 { font-size: var(--h1); font-weight: 900; }
-h2, .h2 { font-size: var(--h2); font-weight: 600; }
-h3, .h3 { font-size: var(--h3); font-weight: 600; }
-p { max-width: 65ch; text-wrap: pretty; }
-.lead { font-size: clamp(18px, 1.5vw, 22px); line-height: 1.5; }
+/* Hierarchy comes from scale and spacing: 900 for display and section headings,
+   600 for card headings and controls, 400 for body. Only these three weights are loaded. */
+h1, h2, h3 { text-wrap: balance; }
+.display, h1 { font-size: var(--display); font-weight: 900; line-height: var(--display-lh); letter-spacing: -.02em; }
+.h-section { font-size: var(--section); font-weight: 900; line-height: 1.13; letter-spacing: -.02em; }
+h2, .h-sub { font-size: var(--sub); font-weight: 900; line-height: 1.24; letter-spacing: -.015em; }
+h3, .h-card { font-size: var(--card); font-weight: 600; line-height: 1.3; letter-spacing: -.005em; }
+p { max-width: 60ch; text-wrap: pretty; }
+.lead { font-size: clamp(18px, .38vw + 16.6px, 22px); line-height: 1.5; }
 .muted { color: var(--slate); }
 .label {
-  font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  font-size: var(--caption); line-height: 20px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
   color: var(--slate);
 }
 .on-ink { background: var(--ink); color: var(--white); }
@@ -32,7 +36,11 @@ p { max-width: 65ch; text-wrap: pretty; }
 .accent-text { color: var(--vermilion); }
 
 .wrap { width: 100%; max-width: calc(var(--max) + 2 * var(--gutter)); margin-inline: auto; padding-inline: var(--gutter); }
-.section { padding-block: clamp(72px, 10vw, 128px); }
+.section { padding-block: var(--section-pad); }
+.section-intro { margin-top: var(--s2); }
+.text-link { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.text-link .arrow { transition: transform .2s var(--ease-out); }
+.text-link:hover .arrow { transform: translateX(3px); }
 .stack > * + * { margin-top: var(--s3); }
 .visually-hidden {
   position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -49,9 +57,10 @@ p { max-width: 65ch; text-wrap: pretty; }
 }
 .skip-link:focus { transform: none; }
 
-/* Scroll reveals. The pending state is only added by JS, so content survives a script failure. */
-.reveal { transition: opacity .7s var(--ease-out), transform .7s var(--ease-out); }
-.reveal.pending { opacity: 0; transform: translateY(24px); }
+/* Scroll reveals: one-time, short and small. The pending state is only added by JS and is
+   cleared whenever motion is off, so content survives a script failure. */
+.reveal { transition: opacity .26s var(--ease-out), transform .26s var(--ease-out); }
+.reveal.pending { opacity: 0; transform: translateY(12px); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
