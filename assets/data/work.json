@@ -1,0 +1,4 @@
+{
+  "_help": "Add one entry per video to the items list. id is the YouTube video ID (the part after watch?v= or shorts/). service is one of: video-ads, ugc-content, websites, marketing, documents-decks. format is shown on the card, e.g. 9:16 · 30s. vertical: true for Shorts and other 9:16 videos. concept: true labels self-initiated or concept work, as the brand guide requires. featured: true also shows the item on the home page in a later update.",
+  "items": []
+}
