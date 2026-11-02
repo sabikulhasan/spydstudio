@@ -1,4 +1,4 @@
-<!--meta {"title": "UGC Content", "description": "UGC Content from SPY-D Studio: creator-style content built for paid and organic feeds. Scoped with you in a meeting, then delivered on the agreed date.", "css": ["pages"], "js": ["work"], "section": "services"} -->
+<!--meta {"title": "UGC Content", "description": "UGC Content from SPY-D Studio: creator-style content built for paid and organic feeds. Scoped with you in a meeting, then delivered on the agreed date.", "css": ["pages"], "js": ["work", "hooks"], "section": "services"} -->
 <section class="page-hero wrap has-art">
   <a class="back-link" href="{{root}}services/">← All services</a>
   <div class="page-hero-grid">
@@ -19,6 +19,36 @@
 <section class="section-tight wrap split">
   <div><h2>What it can include</h2><p class="muted" style="margin-top:16px">Every project is different, so we agree the exact list with you. These are the usual starting points.</p></div>
   <ul class="check-list"><li>Creator-style clips</li><li>Hooks and variations to test</li><li>Content for paid campaigns</li><li>Content for organic posting</li></ul>
+</section>
+
+<section class="section-tight wrap hooks" aria-labelledby="hooks-title" data-hooks>
+  <div class="hooks-copy">
+    <h2 id="hooks-title">Same video, four ways to open it.</h2>
+    <p class="muted">The first seconds decide whether anyone watches the rest. We record the opening several ways and keep the rest of the video the same, so a test shows which opening works, not which video.</p>
+  </div>
+  <div class="hooks-controls">
+    <div class="hook-buttons" role="group" aria-label="Choose an opening">
+      <button type="button" data-hook="problem" aria-pressed="true">Problem</button>
+      <button type="button" data-hook="result" aria-pressed="false">Result</button>
+      <button type="button" data-hook="question" aria-pressed="false">Question</button>
+      <button type="button" data-hook="contrarian" aria-pressed="false">Contrarian</button>
+    </div>
+    <p class="hook-why" aria-live="polite"><b data-hook-label>Problem:</b> <span data-hook-why>Opens on a frustration the viewer already has.</span></p>
+    <div class="hook-timeline" aria-hidden="true">
+      <span class="tl-hook"><b>Hook · 0–3s</b><i>changes</i></span>
+      <span class="tl-body"><b>Body: product and proof</b><i>same in every version</i></span>
+      <span class="tl-cta"><b>Ask</b><i>same</i></span>
+    </div>
+  </div>
+  <figure class="hook-stage">
+    <div class="hook-phone">
+      <img src="{{root}}assets/media/editorial/M02-poster-1280.webp" alt="A woman in a white robe comparing two amber dropper bottles against a pink wall." width="1280" height="720" loading="lazy" decoding="async">
+      <p class="hook-caption"><span data-hook-line>I kept buying serums that did nothing.</span></p>
+      <span class="hook-progress" aria-hidden="true"></span>
+    </div>
+    <figcaption>Illustration made with stock footage, not client work.</figcaption>
+  </figure>
+  <script type="application/json" id="hook-data">{"problem": {"line": "I kept buying serums that did nothing.", "why": "Opens on a frustration the viewer already has.", "label": "Problem"},"result": {"line": "Three weeks in, and my skin finally looks even.", "why": "Leads with the outcome, then shows how.", "label": "Result"},"question": {"line": "Which one would you actually pick?", "why": "Invites the viewer to answer, so they keep watching.", "label": "Question"},"contrarian": {"line": "Stop buying the expensive one first.", "why": "Challenges a common habit to stop the scroll.", "label": "Contrarian"}}</script>
 </section>
 
 <section class="section-tight wrap">

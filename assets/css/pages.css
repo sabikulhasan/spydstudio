@@ -197,3 +197,38 @@ a.contact-card:hover { border-color: var(--ink); transform: translateY(-2px); }
 .fmt-safe-side { right: 0; top: 40%; bottom: 22%; width: 14%; }
 .fmt-frame:not([data-shape="tall"]) .fmt-safe-side { display: none; }
 .fmt-frame:not([data-shape="tall"]) .fmt-safe-top, .fmt-frame:not([data-shape="tall"]) .fmt-safe-bottom { height: 0; overflow: hidden; }
+
+/* UGC page: hook switcher. */
+.hooks { display: grid; gap: var(--s4); grid-template-areas: "copy" "stage" "controls"; }
+@media (min-width: 900px) {
+  .hooks { grid-template-columns: 7fr 5fr; grid-template-areas: "copy stage" "controls stage"; column-gap: var(--s5); row-gap: var(--s3); }
+  .hooks-copy { align-self: end; }
+}
+.hooks-copy { grid-area: copy; display: grid; gap: var(--s2); }
+.hooks-controls { grid-area: controls; display: grid; gap: var(--s3); align-content: start; }
+.hook-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.hook-buttons button { min-height: 44px; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--rule); background: var(--white); font-weight: 600; font-size: 15px; }
+.hook-buttons button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--white); }
+.hook-why { min-height: 3.2em; margin: 0; color: var(--slate); }
+.hook-why b { color: var(--ink); font-weight: 600; }
+.hook-timeline { display: grid; grid-template-columns: 1.5fr 4fr 1fr; gap: 4px; font-size: 13px; }
+.hook-timeline span { display: grid; gap: 2px; padding: 10px 12px; border-radius: 6px; background: #EFE8DE; min-width: 0; }
+.hook-timeline b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hook-timeline i { font-style: normal; color: var(--slate); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hook-timeline .tl-hook { background: var(--vermilion); }
+.hook-timeline .tl-hook i { color: var(--ink); }
+.hook-stage { grid-area: stage; margin: 0; display: grid; gap: var(--s2); justify-items: center; }
+.hook-stage figcaption { font-size: var(--caption); color: var(--slate); }
+.hook-phone { position: relative; width: min(100%, 230px); aspect-ratio: 9 / 16; border-radius: 22px; overflow: hidden; background: #C98E95; box-shadow: 0 0 0 8px var(--ink); margin-top: 8px; }
+.hook-phone img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 52% 50%; }
+.hook-caption {
+  position: absolute; left: 10%; right: 10%; top: 58%; text-align: center;
+  font-size: 16px; font-weight: 900; line-height: 1.5; color: var(--ink); text-wrap: balance;
+}
+/* Feed-style caption: each line gets its own white box. */
+.hook-caption span { background: var(--white); padding: 3px 8px; border-radius: 6px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+@media (min-width: 900px) { .hook-phone { width: min(100%, 290px); } .hook-caption { font-size: 18px; } }
+.hook-caption.is-new { animation: hook-in .35s var(--ease-out); }
+@keyframes hook-in { from { opacity: 0; transform: translateY(8px) scale(.97); } }
+.hook-progress { position: absolute; left: 12px; right: 12px; top: 12px; height: 3px; border-radius: 2px; background: rgba(255,255,255,.45); overflow: hidden; }
+.hook-progress::after { content: ""; position: absolute; inset: 0; width: 12%; background: var(--white); }
