@@ -39,6 +39,9 @@
     if (e.target.closest('[data-motion-toggle]') && !reduced.matches) motion.setPaused(!motion.paused);
   });
 
+  /* Page transitions are declared in base.css; skip them when the visitor paused motion. */
+  addEventListener('pageswap', (e) => { if (motion.off) e.viewTransition?.skipTransition(); });
+
   /* Header height feeds the sticky offsets of pinned sections. */
   const header = $('#site-header');
   const measure = () => root.style.setProperty('--header-h', header.offsetHeight + 'px');
