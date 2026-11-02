@@ -234,3 +234,43 @@ a.contact-card:hover { border-color: var(--ink); transform: translateY(-2px); }
 .hook-progress::after { content: ""; position: absolute; inset: 0; width: 12%; background: var(--white); }
 @media (max-width: 599px) { .hook-timeline b, .hook-timeline i { white-space: normal; } .hook-timeline > span { padding: 8px; } }
 .nowrap { white-space: nowrap; }
+
+/* Process page: sample written plan. A paper document; margin notes explain each part. */
+.plan-sample { display: grid; gap: var(--s5); }
+.plan-intro { max-width: 640px; display: grid; gap: var(--s2); }
+.plan-doc {
+  position: relative; background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius);
+  box-shadow: 0 1px 0 var(--rule), 0 18px 40px -24px rgba(11, 11, 11, .25);
+  padding: var(--s3); display: grid; gap: var(--s3);
+}
+@media (min-width: 768px) { .plan-doc { padding: var(--s5); } }
+.plan-head { display: flex; align-items: center; gap: var(--s2); padding-bottom: var(--s3); border-bottom: 2px solid var(--ink); flex-wrap: wrap; }
+.plan-head img { width: 40px; height: 40px; flex: none; }
+.plan-head > div { flex: 1; min-width: 200px; }
+.plan-kicker { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--slate); }
+.plan-name { font-size: var(--card); }
+.plan-stamp { padding: 6px 12px; border: 2px solid var(--vermilion); border-radius: 6px; font-size: 13px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; transform: rotate(var(--angle)); }
+.plan-rows { display: grid; margin: 0; }
+.plan-row { display: grid; gap: 6px; padding-block: var(--s2); border-bottom: 1px solid var(--rule); }
+.plan-row:last-child { border-bottom: 0; }
+.plan-row dt { font-weight: 600; }
+.plan-row dd { margin: 0; }
+.plan-note { font-size: 14px; color: var(--slate); padding-left: 12px; border-left: 3px solid var(--vermilion); }
+@media (min-width: 900px) {
+  .plan-row { grid-template-columns: 160px minmax(0, 1fr) 240px; gap: var(--s4); align-items: start; }
+  .plan-note { margin-top: 2px; }
+}
+.plan-table { width: 100%; border-collapse: collapse; font-size: 16px; }
+.plan-table th { text-align: left; font-size: 13px; font-weight: 600; color: var(--slate); padding: 0 12px 6px 0; border-bottom: 1px solid var(--rule); }
+.plan-table td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); }
+.plan-table tr:last-child td { border-bottom: 0; }
+.plan-steps { display: flex; flex-wrap: wrap; gap: 6px 0; margin: 0 0 6px; padding: 0; list-style: none; counter-reset: ps; }
+.plan-steps li { counter-increment: ps; display: inline-flex; align-items: center; gap: 6px; }
+.plan-steps li::before { content: counter(ps); display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--ink); color: var(--white); font-size: 12px; font-weight: 900; }
+.plan-steps li + li::before { margin-left: 0; }
+.plan-steps li:not(:last-child)::after { content: "→"; margin: 0 10px; color: var(--slate); }
+.plan-steps b { font-weight: 600; }
+@media (max-width: 599px) {
+  .plan-steps { flex-direction: column; gap: 8px; }
+  .plan-steps li:not(:last-child)::after { content: none; }
+}
