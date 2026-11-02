@@ -214,6 +214,75 @@ def service_work(items, root, slug):
     return work_grid(mine, root)
 
 
+# ---------- Machine-readable data (JSON-LD, llms.txt, manifest) ----------
+
+FAQ = re.compile(r'<details class="faq-item"[^>]*>\s*<summary>(.*?)</summary>\s*<p>(.*?)</p>\s*</details>', re.S)
+
+
+def plain(fragment):
+    """HTML fragment -> plain text for structured data."""
+    return html.unescape(re.sub(r"<[^>]+>", "", fragment)).strip()
+
+
+def json_ld(site, meta, canonical, body, title):
+    """Structured data for one page, built from the same text the page shows, so it never drifts."""
+    org_id = site["siteUrl"] + "#studio"
+    graph = [{
+        "@type": "ProfessionalService", "@id": org_id, "name": site["name"], "url": site["siteUrl"],
+        "logo": site["siteUrl"] + "assets/logo/spyd-horizontal.png", "image": site["siteUrl"] + "assets/img/og-image.png",
+        "email": site["email"], "telephone": site["phoneDisplay"], "slogan": site["tagline"], "sameAs": [site["facebook"]],
+        "description": "Video ads and UGC content built around your brand, with websites, marketing and decks when you need them.",
+        "contactPoint": [{"@type": "ContactPoint", "contactType": "sales", "email": site["email"], "telephone": site["phoneDisplay"]}],
+        "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Services", "itemListElement": [
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": s["name"], "description": s["line"],
+             "url": site["siteUrl"] + "services/" + s["slug"] + "/"}} for s in site["services"]]},
+    }]
+    graph.append({"@type": "WebPage", "@id": canonical, "url": canonical, "name": title,
+                  "description": meta["description"], "isPartOf": {"@id": site["siteUrl"] + "#website"}})
+    if canonical == site["siteUrl"]:
+        graph.append({"@type": "WebSite", "@id": site["siteUrl"] + "#website", "url": site["siteUrl"], "name": site["name"], "publisher": {"@id": org_id}})
+    # Breadcrumbs for inner pages: Home > section > page.
+    rel = canonical[len(site["siteUrl"]):].strip("/")
+    service = next((s for s in site["services"] if rel == "services/" + s["slug"]), None)
+    if rel:
+        crumbs, url = [("Home", site["siteUrl"])], site["siteUrl"]
+        parts = rel.split("/")
+        for n, part in enumerate(parts):
+            url += part + "/"
+            name = (service["name"] if service else meta["title"]) if n == len(parts) - 1 else part.replace("-", " ").title()
+            crumbs.append((name, url))
+        graph.append({"@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": i, "name": n, "item": u} for i, (n, u) in enumerate(crumbs, 1)]})
+    if service:
+        graph.append({"@type": "Service", "name": service["name"], "description": meta["description"], "url": canonical,
+                      "serviceType": service["name"], "provider": {"@id": org_id}})
+    faqs = FAQ.findall(body)
+    if faqs:
+        graph.append({"@type": "FAQPage", "mainEntity": [
+            {"@type": "Question", "name": plain(q), "acceptedAnswer": {"@type": "Answer", "text": plain(a)}} for q, a in faqs]})
+    data = json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False, separators=(",", ":"))
+    return '<script type="application/ld+json">' + data.replace("</", "<\\/") + "</script>\n"
+
+
+def write_llms_txt(site, pages_info):
+    """llms.txt: a plain Markdown summary of the site for AI assistants (proposed standard, llmstxt.org)."""
+    lines = [f"# {site['name']}", "", f"> {site['tagline']} Video ads and UGC content built around your brand, "
+             "with websites, marketing and decks when you need them. Every project is scoped with the client "
+             "in a meeting and written into a plan before production; there are no fixed packages or public prices.", "",
+             f"- Email: {site['email']}", f"- WhatsApp: {site['phoneDisplay']} (https://wa.me/{site['whatsapp']})",
+             f"- Facebook: {site['facebook']}", "", "## Pages", ""]
+    lines += [f"- [{t}]({u}): {d}" for t, u, d in pages_info]
+    (ROOT / "llms.txt").write_text("\n".join(lines) + "\n")
+
+
+def write_manifest(site):
+    manifest = {"name": site["name"], "short_name": "SPY-D", "description": site["tagline"],
+                "start_url": site["basePath"], "scope": site["basePath"], "display": "browser",
+                "background_color": "#FFF7EC", "theme_color": "#FFF7EC",
+                "icons": [{"src": "assets/img/favicon.svg", "sizes": "any", "type": "image/svg+xml"}]}
+    (ROOT / "site.webmanifest").write_text(json.dumps(manifest, indent=2) + "\n")
+
+
 def version_assets(text):
     """Add ?v=<content hash> to CSS and JS URLs so browsers fetch the new files after each
     deploy instead of reusing cached old ones (GitHub Pages lets browsers cache for 10 minutes)."""
@@ -244,7 +313,7 @@ def build():
         f"window.SPYD = {json.dumps(config, indent=2)};\n")
     partials = {p.stem: p.read_text() for p in (SRC / "partials").glob("*.html")}
     pages = sorted((SRC / "pages").rglob("*.html"))
-    urls = []
+    urls, pages_info = [], []
     for page in pages:
         raw = page.read_text()
         match = META.match(raw)
@@ -279,6 +348,7 @@ def build():
         }
         # Partials may use tokens and other partials ({{partial_lockup}}); pages may use both.
         # Two passes resolve one level of nesting; {{content}} is filled in last.
+        tokens["jsonld"] = "" if is_404 or meta.get("noindex") else json_ld(site, meta, canonical, body, title if title.startswith(site["name"]) else f"{title} · {site['name']}")
         tokens["content"] = "{{content}}"
         tokens.update({f"partial_{k}": v for k, v in partials.items()})
         for _ in range(2):
@@ -289,12 +359,15 @@ def build():
         out.write_text(result)
         if not is_404 and not meta.get("noindex"):
             urls.append(canonical)
+            pages_info.append((title, canonical, meta["description"]))
         print("built", out.relative_to(ROOT))
 
     sitemap = "".join(f"  <url><loc>{u}</loc></url>\n" for u in urls)
     (ROOT / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{sitemap}</urlset>\n')
+    write_llms_txt(site, sorted(pages_info, key=lambda p: (p[1] != site["siteUrl"], p[1])))
+    write_manifest(site)
     (ROOT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {site['siteUrl']}sitemap.xml\n")
 
 
