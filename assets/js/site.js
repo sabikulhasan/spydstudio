@@ -42,6 +42,14 @@
   /* Page transitions are declared in base.css; skip them when the visitor paused motion. */
   addEventListener('pageswap', (e) => { if (motion.off) e.viewTransition?.skipTransition(); });
 
+  /* WhatsApp button: labelled once per browsing session, on phones, when motion is on. */
+  try {
+    if (!motion.off && !sessionStorage.getItem('spyd-wa') && matchMedia('(max-width: 899px)').matches && $('.wa-float')) {
+      sessionStorage.setItem('spyd-wa', '1');
+      root.classList.add('wa-intro');
+    }
+  } catch { /* storage blocked: keep the plain icon */ }
+
   /* Header height feeds the sticky offsets of pinned sections. */
   const header = $('#site-header');
   const measure = () => root.style.setProperty('--header-h', header.offsetHeight + 'px');

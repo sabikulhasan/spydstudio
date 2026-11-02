@@ -223,11 +223,18 @@ a.row:hover::before, a.row:focus-visible::before { transform: scaleX(1); }
 
 /* Floating WhatsApp button: phone screens only. */
 .wa-float {
+  text-decoration: none;
   position: fixed; right: 16px; bottom: 16px; z-index: 40;
   display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%;
   background: var(--ink); color: var(--white); box-shadow: 0 6px 20px rgba(11, 11, 11, .25);
 }
-.wa-float .icon { width: 28px; height: 28px; }
+.wa-float .icon { width: 28px; height: 28px; grid-area: 1 / 1; }
+/* First visit in a session: the button briefly opens into a labelled pill, then settles (site.js). */
+.wa-label { display: none; }
+html.wa-intro .wa-float { display: flex; width: auto; padding: 0 20px 0 14px; gap: 10px; border-radius: 28px; animation: wa-settle .4s var(--ease-out) 4.5s forwards; }
+html.wa-intro .wa-label { display: inline; text-decoration: none; font-weight: 600; font-size: 15px; white-space: nowrap; animation: wa-label-out .2s 4.5s forwards; }
+@keyframes wa-settle { to { padding: 0 14px; gap: 0; } }
+@keyframes wa-label-out { to { opacity: 0; font-size: 0; } }
 @media (min-width: 900px) { .wa-float { display: none; } }
 .page-contact .wa-float { display: none; } /* the contact page already offers WhatsApp; keep its form clear */
 @media (max-width: 899px) { .site-footer { padding-bottom: 104px; } } /* room for the floating button */

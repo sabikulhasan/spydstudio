@@ -46,6 +46,21 @@ def output_path(page: Path) -> Path:
     return ROOT / rel.with_suffix("") / "index.html"
 
 
+def whatsapp_message(site, meta, out):
+    """Pre-filled WhatsApp text that matches the page, so the first message already says what the
+    visitor wants. A page can set its own with "waMessage" in its meta line."""
+    if meta.get("waMessage"):
+        return meta["waMessage"]
+    rel = out.relative_to(ROOT).parent.as_posix()
+    for svc in site["services"]:
+        if rel == "services/" + svc["slug"]:
+            return f"Hi SPY-D Studio, I'd like to talk about a {svc['name']} project."
+    return {
+        "work": "Hi SPY-D Studio, could you share some examples relevant to my business?",
+        "process": "Hi SPY-D Studio, I have a question about how a project works.",
+    }.get(rel, site["whatsappMessage"])
+
+
 def nav_links(site, root, section, cls):
     items = []
     for item in site["nav"]:
@@ -332,6 +347,7 @@ def build():
         tokens = {
             **{k: v for k, v in site.items() if isinstance(v, str)},
             "root": root,
+            "whatsappUrl": f"https://wa.me/{site['whatsapp']}?text={quote(whatsapp_message(site, meta, out))}",
             "title": html.escape(title if title.startswith(site["name"]) else f"{title} · {site['name']}"),
             "description": html.escape(meta["description"]),
             "canonical": canonical,
