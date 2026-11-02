@@ -142,3 +142,58 @@ a.contact-card:hover { border-color: var(--ink); transform: translateY(-2px); }
   .page-hero-art.photo img { aspect-ratio: 5 / 4; max-height: 480px; }
 }
 .page-hero-art.svc-media { box-shadow: 0 0 0 1px var(--rule); }
+
+/* Video Ads: format preview. The stage is a size container so the frame can fit any ratio
+   inside it; text and button positions change per shape, as a real composed version would. */
+.fmt { display: grid; gap: var(--s4); grid-template-areas: "copy" "stage" "controls"; }
+@media (min-width: 900px) {
+  .fmt { grid-template-columns: 5fr 7fr; grid-template-areas: "copy stage" "controls stage"; column-gap: var(--s5); row-gap: var(--s3); align-items: start; }
+  .fmt-copy { align-self: end; }
+}
+.fmt-copy { grid-area: copy; display: grid; gap: var(--s2); }
+.fmt-controls { grid-area: controls; display: grid; gap: var(--s2); align-content: start; }
+.fmt-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.fmt-buttons button {
+  min-width: 64px; min-height: 44px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--rule);
+  background: var(--white); font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums;
+}
+.fmt-buttons button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--white); }
+.fmt-where { min-height: 3.2em; margin: 0; color: var(--slate); }
+.fmt-where b { color: var(--ink); font-weight: 600; }
+.fmt-toggle { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; font-weight: 600; cursor: pointer; }
+.fmt-toggle input { width: 20px; height: 20px; accent-color: var(--ink); }
+.fmt-stage { grid-area: stage; margin: 0; display: grid; gap: var(--s2); container-type: inline-size;
+  /* Fixed height (that of the tallest shape), so switching formats never moves the page. */
+  grid-template-rows: min(560px, 120cqw) auto; }
+.fmt-stage figcaption { font-size: var(--caption); color: var(--slate); text-align: center; }
+.fmt-stage > .fmt-frame { margin: auto; }
+.fmt-frame {
+  --r: 9/16; --h: min(560px, 120cqw);
+  position: relative; overflow: hidden; border-radius: var(--radius-media); background: #D8C7B5;
+  height: min(var(--h), 100cqw / (var(--r))); width: min(100cqw, var(--h) * (var(--r)));
+  transition: width .45s var(--ease-out), height .45s var(--ease-out);
+}
+.fmt-frame > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 74% 50%; transition: object-position .45s var(--ease-out); }
+.fmt-frame[data-shape="wide"] > img { object-position: 50% 50%; }
+/* inset (not padding) so top/bottom percentages follow the frame's height. */
+.fmt-layer { position: absolute; inset: 15% 8% 25%; display: flex; flex-direction: column; color: var(--ink); transition: inset .45s var(--ease-out); }
+.fmt-kicker { align-self: flex-start; padding: 2px 10px; border-radius: 4px; background: var(--vermilion); font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.fmt-head { margin-top: 10px; max-width: 12ch; font-size: clamp(20px, 5cqw, 30px); font-weight: 900; line-height: 1.08; }
+.fmt-cta { margin-top: auto; align-self: center; padding: 10px 18px; border-radius: 999px; background: var(--ink); color: var(--white); font-size: 14px; font-weight: 600; }
+.fmt-frame[data-shape="portrait"] .fmt-layer { inset: 7% 8%; }
+.fmt-frame[data-shape="portrait"] .fmt-cta { align-self: flex-start; }
+.fmt-frame[data-shape="square"] .fmt-layer { inset: 8%; }
+.fmt-frame[data-shape="square"] .fmt-cta { align-self: flex-start; }
+.fmt-frame[data-shape="wide"] .fmt-layer { inset: 8% 6%; justify-content: center; }
+.fmt-frame[data-shape="wide"] .fmt-head { max-width: 11ch; }
+.fmt-frame[data-shape="wide"] .fmt-cta { margin-top: 18px; align-self: flex-start; }
+/* Safe zones: where platform UI typically sits on a vertical video. Only meaningful for 9:16. */
+.fmt-safe { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .25s; }
+.fmt-frame.show-safe .fmt-safe { opacity: 1; }
+.fmt-safe span { position: absolute; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--white);
+  background: repeating-linear-gradient(-45deg, rgba(11,11,11,.55) 0 8px, rgba(11,11,11,.35) 8px 16px); }
+.fmt-safe-top { left: 0; right: 0; top: 0; height: 12%; }
+.fmt-safe-bottom { left: 0; right: 0; bottom: 0; height: 22%; }
+.fmt-safe-side { right: 0; top: 40%; bottom: 22%; width: 14%; }
+.fmt-frame:not([data-shape="tall"]) .fmt-safe-side { display: none; }
+.fmt-frame:not([data-shape="tall"]) .fmt-safe-top, .fmt-frame:not([data-shape="tall"]) .fmt-safe-bottom { height: 0; overflow: hidden; }
