@@ -212,10 +212,10 @@ a.contact-card:hover { border-color: var(--ink); transform: translateY(-2px); }
 .hook-why { min-height: 3.2em; margin: 0; color: var(--slate); }
 .hook-why b { color: var(--ink); font-weight: 600; }
 .hook-timeline { display: grid; grid-template-columns: 1.5fr 4fr 1fr; gap: 4px; font-size: 13px; }
-.hook-timeline span { display: grid; gap: 2px; padding: 10px 12px; border-radius: 6px; background: #EFE8DE; min-width: 0; }
+.hook-timeline > span { display: grid; gap: 2px; padding: 10px 12px; border-radius: 6px; background: #EFE8DE; min-width: 0; }
 .hook-timeline b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hook-timeline i { font-style: normal; color: var(--slate); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.hook-timeline .tl-hook { background: var(--vermilion); }
+.hook-timeline > .tl-hook { background: var(--vermilion); }
 .hook-timeline .tl-hook i { color: var(--ink); }
 .hook-stage { grid-area: stage; margin: 0; display: grid; gap: var(--s2); justify-items: center; }
 .hook-stage figcaption { font-size: var(--caption); color: var(--slate); }
@@ -232,4 +232,5 @@ a.contact-card:hover { border-color: var(--ink); transform: translateY(-2px); }
 @keyframes hook-in { from { opacity: 0; transform: translateY(8px) scale(.97); } }
 .hook-progress { position: absolute; left: 12px; right: 12px; top: 12px; height: 3px; border-radius: 2px; background: rgba(255,255,255,.45); overflow: hidden; }
 .hook-progress::after { content: ""; position: absolute; inset: 0; width: 12%; background: var(--white); }
-@media (max-width: 599px) { .hook-timeline b, .hook-timeline i { white-space: normal; overflow-wrap: anywhere; } .hook-timeline span { padding: 8px; } }
+@media (max-width: 599px) { .hook-timeline b, .hook-timeline i { white-space: normal; } .hook-timeline > span { padding: 8px; } }
+.nowrap { white-space: nowrap; }
