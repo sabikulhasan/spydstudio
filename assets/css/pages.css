@@ -91,6 +91,25 @@
 .field [aria-invalid="true"] { border-color: #B42318; border-width: 2px; }
 .field-error { color: #B42318; font-size: 14px; font-weight: 600; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+/* Brief chips: real checkboxes styled as tappable pills; the box itself is visually hidden. */
+.chip-intro { font-size: 16px; font-weight: 600; margin-bottom: calc(-1 * var(--s1)); }
+.chip-set { border: 0; padding: 0; margin: 0; min-width: 0; display: grid; gap: 10px; }
+.chip-set[hidden] { display: none; }
+.chip-set legend { font-weight: 400; font-size: 15px; color: var(--slate); padding: 0; margin-bottom: 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { position: relative; }
+.chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.chip span {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 14px;
+  border: 1px solid var(--rule); border-radius: 999px; background: var(--white);
+  font-size: 15px; font-weight: 600; cursor: pointer; user-select: none;
+  transition: background-color .15s, border-color .15s, color .15s;
+}
+.chip span::before { content: "+"; font-weight: 900; color: var(--slate); width: 10px; text-align: center; }
+.chip:hover span { border-color: var(--ink); }
+.chip input:checked + span { background: var(--ink); border-color: var(--ink); color: var(--white); }
+.chip input:checked + span::before { content: "✓"; color: var(--vermilion); }
+.chip input:focus-visible + span { outline: 3px solid var(--vermilion); outline-offset: 2px; }
 .form-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); }
 .form-note { font-size: 16px; font-weight: 600; }
 .copy-fallback { display: grid; gap: 6px; }

@@ -16,6 +16,22 @@
   const prefill = params.get('message') || params.get('brief');
   if (prefill && !form.message.value) form.message.value = prefill.slice(0, 2000);
 
+  /* Brief chips: "Where will it run?" only applies to services that publish to feeds. */
+  const platforms = $('cf-platforms');
+  const syncPlatforms = () => {
+    const list = platforms.dataset.services.split(' ');
+    platforms.hidden = Boolean(form.service.value) && !list.includes(form.service.value);
+  };
+  form.service.addEventListener('change', syncPlatforms);
+  // "Starting from scratch" and "Not sure yet" can't be combined with other answers in their group.
+  form.querySelectorAll('.chip input').forEach((box) => box.addEventListener('change', () => {
+    if (!box.checked) return;
+    box.closest('.chips').querySelectorAll('input').forEach((other) => {
+      if (other !== box && ('exclusive' in box.dataset || 'exclusive' in other.dataset)) other.checked = false;
+    });
+  }));
+  syncPlatforms();
+
   if (cfg.bookingUrl) {
     const booking = $('booking-card');
     booking.href = cfg.bookingUrl;
@@ -44,7 +60,7 @@
     { id: 'cf-name-error', fields: () => [form.name], bad: () => !form.name.value.trim() },
     { id: 'cf-email-error', fields: () => [form.email], bad: () => Boolean(form.email.value.trim()) && !form.email.checkValidity() },
     { id: 'cf-reach-error', fields: () => [form.email, form.phone], bad: () => !form.email.value.trim() && !form.phone.value.trim() },
-    { id: 'cf-message-error', fields: () => [form.message], bad: () => !form.message.value.trim() },
+    { id: 'cf-message-error', fields: () => [form.message], bad: () => !form.message.value.trim() && !form.querySelector('.chip input:checked') },
   ];
 
   function apply() {
@@ -84,7 +100,11 @@
       value(f.email) && `Email: ${value(f.email)}`,
       value(f.phone) && `Phone: ${value(f.phone)}`,
     ].filter(Boolean);
-    return ['Hi SPY-D Studio,', '', value(f.message), '', ...details].join('\n');
+    const picked = (name) => [...form.querySelectorAll(`input[name="${name}"]:checked`)].filter((i) => !i.closest('fieldset').hidden).map((i) => i.value);
+    const brief = [['Goal', picked('goal')], ['Runs on', picked('platform')], ['We already have', picked('have')]]
+      .filter(([, list]) => list.length).map(([label, list]) => `${label}: ${list.join(', ')}`);
+    if (brief.length) details.unshift(...brief);
+    return ['Hi SPY-D Studio,', '', ...(value(f.message) ? [value(f.message), ''] : []), ...details].join('\n');
   }
 
   const fallback = $('copy-fallback');
