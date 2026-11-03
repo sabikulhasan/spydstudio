@@ -18,12 +18,13 @@
 <link rel="manifest" href="{{root}}site.webmanifest">
 <link rel="preload" href="{{root}}assets/fonts/nunito-sans-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{{root}}assets/fonts/nunito-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{{root}}assets/css/tokens.css">
+{{preload}}<link rel="stylesheet" href="{{root}}assets/css/tokens.css">
 <link rel="stylesheet" href="{{root}}assets/css/base.css">
 <link rel="stylesheet" href="{{root}}assets/css/components.css">
 {{extraCss}}<script src="{{root}}assets/js/config.js" defer></script>
 <script src="{{root}}assets/js/site.js" defer></script>
-{{extraJs}}{{jsonld}}
+{{extraJs}}{{jsonld}}<script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"{{basePath}}*"},{"not":{"selector_matches":"[target], [download], [rel~=nofollow]"}}]},"eagerness":"moderate"}]}</script>
+
 </head>
 <body class="{{pageClass}}">
 <a class="skip-link" href="#main">Skip to content</a>

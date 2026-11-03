@@ -376,6 +376,9 @@ def build():
             "pageClass": meta.get("bodyClass", ""),
             "navDesktop": nav_links(site, root, meta.get("section"), "nav-link"),
             "navMobile": nav_links(site, root, meta.get("section"), "menu-link"),
+            # Images the page's CSS needs first (e.g. the hero background, which is the LCP element):
+            # preloading lets them start with the HTML instead of waiting for the stylesheet.
+            "preload": "".join(f'<link rel="preload" href="{root}{u}" as="image" fetchpriority="high">\n' for u in meta.get("preload", [])),
             "extraCss": "".join(f'<link rel="stylesheet" href="{root}assets/css/{c}.css">\n' for c in meta.get("css", [])),
             "extraJs": "".join(f'<script src="{root}assets/js/{j}.js" defer></script>\n' for j in meta.get("js", [])),
             "noindex": '<meta name="robots" content="noindex">\n' if meta.get("noindex") else "",

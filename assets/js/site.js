@@ -42,13 +42,15 @@
   /* Page transitions are declared in base.css; skip them when the visitor paused motion. */
   addEventListener('pageswap', (e) => { if (motion.off) e.viewTransition?.skipTransition(); });
 
-  /* WhatsApp button: labelled once per browsing session, on phones, when motion is on. */
-  try {
+  /* WhatsApp button: labelled once per browsing session, on phones, when motion is on.
+     A prerendered page (speculation rules) waits until it is actually shown. */
+  const introWa = () => { try {
     if (!motion.off && !sessionStorage.getItem('spyd-wa') && matchMedia('(max-width: 899px)').matches && $('.wa-float')) {
       sessionStorage.setItem('spyd-wa', '1');
       root.classList.add('wa-intro');
     }
-  } catch { /* storage blocked: keep the plain icon */ }
+  } catch { /* storage blocked: keep the plain icon */ } };
+  if (document.prerendering) document.addEventListener('prerenderingchange', introWa, { once: true }); else introWa();
 
   /* Header height feeds the sticky offsets of pinned sections. */
   const header = $('#site-header');
