@@ -45,7 +45,7 @@
   /* WhatsApp button: labelled once per browsing session, on phones, when motion is on.
      A prerendered page (speculation rules) waits until it is actually shown. */
   const introWa = () => { try {
-    if (!motion.off && !sessionStorage.getItem('spyd-wa') && matchMedia('(max-width: 899px)').matches && $('.wa-float')) {
+    if (!motion.off && !sessionStorage.getItem('spyd-wa') && matchMedia('(max-width: 899px)').matches && $('.wa-float')?.getClientRects().length) {
       sessionStorage.setItem('spyd-wa', '1');
       root.classList.add('wa-intro');
     }

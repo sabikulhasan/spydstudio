@@ -236,7 +236,7 @@ html.wa-intro .wa-label { display: inline; text-decoration: none; font-weight: 6
 @keyframes wa-settle { to { padding: 0 14px; gap: 0; } }
 @keyframes wa-label-out { to { opacity: 0; font-size: 0; } }
 @media (min-width: 900px) { .wa-float { display: none; } }
-.page-contact .wa-float, .page-thanks .wa-float { display: none; } /* the contact page already offers WhatsApp; keep its form clear */
+.page-contact .wa-dock, .page-thanks .wa-dock { display: none; } /* these pages already offer WhatsApp; hide the whole dock so the one-time intro (html.wa-intro) can't bring it back */
 @media (max-width: 899px) { .site-footer { padding-bottom: 104px; } } /* room for the floating button */
 
 /* Cards used on services and work pages. */
