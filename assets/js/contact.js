@@ -32,6 +32,53 @@
   }));
   syncPlatforms();
 
+  /* Draft: kept only in this browser (localStorage), so a visitor who leaves to check something
+     doesn't lose what they typed. Saving is visible, and "Clear form" removes it. Links that
+     prefill the form (?service=, ?brief=) win over an old draft. */
+  const DRAFT = 'spyd-contact-draft';
+  const draftStatus = $('draft-status');
+  const fields = ['name', 'email', 'phone', 'company', 'service', 'timeline', 'message'];
+  const store = {
+    get() { try { return JSON.parse(localStorage.getItem(DRAFT) || 'null'); } catch { return null; } },
+    set(v) { try { localStorage.setItem(DRAFT, JSON.stringify(v)); return true; } catch { return false; } },
+    clear() { try { localStorage.removeItem(DRAFT); } catch { /* blocked */ } },
+  };
+  const snapshot = () => ({
+    ...Object.fromEntries(fields.map((f) => [f, form[f].value])),
+    chips: [...form.querySelectorAll('.chip input:checked')].map((i) => `${i.name}:${i.value}`),
+  });
+  const isEmpty = (d) => !d || (!fields.some((f) => f !== 'service' && f !== 'timeline' && d[f]?.trim()) && !d.chips?.length);
+  const showSaved = (text) => { draftStatus.hidden = false; draftStatus.querySelector('[data-draft-text]').textContent = text; };
+  const saved = store.get();
+  if (!isEmpty(saved) && !service && !prefill) {
+    fields.forEach((f) => { if (saved[f] != null) form[f].value = saved[f]; });
+    (saved.chips || []).forEach((key) => {
+      const [name, ...rest] = key.split(':');
+      const box = form.querySelector(`.chip input[name="${CSS.escape(name)}"][value="${CSS.escape(rest.join(':'))}"]`);
+      if (box) box.checked = true;
+    });
+    syncPlatforms();
+    showSaved('We kept your draft from last time, on this device only.');
+  }
+  let saveTimer = 0;
+  form.addEventListener('input', () => {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      const d = snapshot();
+      if (isEmpty(d)) { store.clear(); draftStatus.hidden = true; return; }
+      if (store.set(d)) showSaved('Draft saved on this device.');
+    }, 400);
+  });
+  $('draft-clear').addEventListener('click', () => {
+    store.clear();
+    form.reset();
+    draftStatus.hidden = true;
+    form.querySelectorAll('[aria-invalid]').forEach((f) => f.removeAttribute('aria-invalid'));
+    form.querySelectorAll('.field-error').forEach((e) => { e.hidden = true; });
+    status.textContent = 'Form cleared.';
+    form.name.focus();
+  });
+
   if (cfg.bookingUrl) {
     const booking = $('booking-card');
     booking.href = cfg.bookingUrl;

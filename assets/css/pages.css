@@ -452,3 +452,16 @@ a.contact-card:hover { border-color: var(--ink); transform: translateY(-2px); }
 .rp-cols p { color: var(--slate); font-size: 16px; }
 .rp-context { font-size: 15px; color: var(--slate); padding: var(--s2); border-radius: 8px; background: #F6F1EA; }
 .rp-context b { color: var(--ink); font-weight: 600; }
+
+/* Contact: visible draft status and "What happens next". */
+.draft-status { font-size: 14px; color: var(--slate); margin-top: calc(-1 * var(--s1)); }
+.draft-status[hidden] { display: none; }
+.draft-status::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: #1E6B35; vertical-align: 1px; }
+.draft-status .link-btn { min-height: 0; padding: 0; margin-left: 6px; font-size: 14px; }
+.next-steps { margin-top: var(--s2); padding: var(--s3); border-radius: var(--radius); background: var(--ink); color: var(--white); }
+.next-title { font-size: 18px; font-weight: 600; margin-bottom: var(--s2); }
+.next-steps ol { margin: 0; padding: 0; list-style: none; counter-reset: ns; display: grid; gap: 12px; }
+.next-steps li { counter-increment: ns; display: grid; grid-template-columns: 26px 1fr; gap: 10px; font-size: 15px; color: var(--on-ink-2); }
+.next-steps li::before { content: counter(ns); display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--vermilion); color: var(--ink); font-size: 13px; font-weight: 900; }
+.next-steps b { color: var(--white); font-weight: 600; }
+.next-steps a { color: var(--white); }

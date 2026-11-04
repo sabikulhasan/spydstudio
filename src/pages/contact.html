@@ -70,7 +70,8 @@
       <p class="field-error" id="cf-message-error" hidden>Please tell us a little about the project, or tap a few answers above.</p>
     </div>
     <div class="hp" aria-hidden="true"><label for="cf-website">Leave this empty</label><input id="cf-website" name="website" tabindex="-1" autocomplete="off"></div>
-    <p class="form-note" id="form-note">We prepare your message. Review and send it in WhatsApp or your email app. Nothing is stored on this website.</p>
+    <p class="form-note" id="form-note">We prepare your message. Review and send it in WhatsApp or your email app. Nothing is sent to or stored on this website.</p>
+    <p class="draft-status" id="draft-status" hidden><span data-draft-text>Draft saved on this device.</span> <button class="link-btn" type="button" id="draft-clear">Clear form</button></p>
     <div class="form-actions" id="form-actions">
       <button class="btn btn-primary" type="submit" data-send="whatsapp">Open WhatsApp draft <span class="arrow" aria-hidden="true">→</span></button>
       <button class="btn btn-ghost" type="submit" data-send="email">Open email draft</button>
@@ -99,5 +100,14 @@
     <a class="contact-card" id="booking-card" href="#" target="_blank" rel="noopener" hidden>
       <span class="label">Book a call</span><span class="contact-value">Pick a time</span><span class="muted">A short call to talk through the project.</span>
     </a>
+    <div class="next-steps">
+      <h2 class="next-title">What happens next</h2>
+      <ol>
+        <li><span><b>You send the message</b> by WhatsApp or email.</span></li>
+        <li><span><b>We reply</b> to ask anything we need and suggest a time to talk.</span></li>
+        <li><span><b>We talk it through</b> by WhatsApp, email or an online call, whichever suits you.</span></li>
+        <li><span><b>You get a written plan</b> to approve before any work starts. <a href="{{root}}process/#sample-plan">See a sample</a>.</span></li>
+      </ol>
+    </div>
   </aside>
 </section>
