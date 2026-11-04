@@ -88,3 +88,50 @@ html[data-motion="off"] .reveal.pending { opacity: 1; transform: none; }
 ::view-transition-group(wa-float), ::view-transition-old(wa-float), ::view-transition-new(wa-float) { animation: none; }
 @keyframes vt-out { to { opacity: 0; } }
 @keyframes vt-in { from { opacity: 0; transform: translateY(10px); } }
+
+.print-only { display: none; }
+
+/* Print and "Save as PDF". Content only: no navigation, floating buttons or motion; dark panels
+   print as outlined white boxes to save ink; link addresses are shown; documents don't split. */
+@media print {
+  @page { size: A4; margin: 16mm 14mm; }
+  html { font-size: 11pt; }
+  body { background: #fff !important; color: #000; }
+  .site-header, .mobile-menu, .wa-dock, .skip-link, .nav-links, .menu-open, .footer-grid > div:not(.footer-brand),
+  .social, #back-top, .hero-rail, .hero-note, .motion-control, .ambient-btn, .ambient-video, .contour-glow,
+  .btn-row, .hero-actions, .cta-band, .form-actions, .chip-intro, .fmt-controls, .hooks-controls, .mm-buttons,
+  .dk-controls, .chooser, .print-btn, video, iframe { display: none !important; }
+  main { display: block; }
+  .reveal, .reveal.pending { opacity: 1 !important; transform: none !important; }
+  .section, .section-tight { padding-block: 10mm !important; }
+  .on-ink, .next-steps, .chooser-result, .dk-cover, .site-footer {
+    background: #fff !important; color: #000 !important; border: 1px solid #999;
+  }
+  .site-footer { border: 0; border-top: 1px solid #999; padding-block: 6mm; break-inside: avoid; }
+  .footer-line { display: none; }
+  .print-only { display: block; font-weight: 600; color: #000; margin-bottom: 2mm; }
+  .site-footer .lockup { filter: invert(1); }
+  .muted, .lead, .plan-note, .rp-sub, .dk-why, .next-steps li { color: #333 !important; }
+  .next-steps b, .dk-cover h3 { color: #000 !important; }
+  a { color: #000; }
+  /* Show where external links go (WCAG 2.4.4 on paper). */
+  main a[href^="http"]::after, .site-footer a[href^="http"]::after, .site-footer a[href^="mailto:"]::after {
+    content: " (" attr(href) ")"; font-size: 9pt; font-weight: 400; word-break: break-all;
+  }
+  .plan-doc, .rp-doc, .dk-face, .mm-page, .mm-ad { box-shadow: none !important; }
+  .plan-row, .rp-tile, .rp-cols > div, .dk-slide, .process-step, .faq-item, .next-steps li, figure, img { break-inside: avoid; }
+  h1, h2, h3, h4 { break-after: avoid; }
+  /* No decorative backgrounds or dark panels on paper; the hero's scroll height collapses. */
+  *, *::before, *::after { background-image: none !important; box-shadow: none !important; text-shadow: none !important; animation: none !important; transition: none !important; }
+  body.home .hero-stage, body.home .directions, body.home .process-home, body.home .faq, body.home #services, .about-moment { background: #fff !important; }
+  .on-ink, .on-ink * { color: #000 !important; }
+  .hero, .hero-track, .hero-stage { height: auto !important; min-height: 0 !important; position: static !important; }
+  .hero-copy { padding-block: 0 8mm !important; }
+  .svc-panels { display: grid !important; gap: 8mm; } .svc-panel { display: block !important; opacity: 1 !important; position: static !important; transform: none !important; break-inside: avoid; }
+  .svc-media, .svc-buttons, .process-art, .direction-grid { display: none !important; }
+  /* Documents start on a fresh page so their header never strands at the bottom of one. */
+  .plan-doc, .rp-doc { break-before: page; }
+  .footer-bottom { border: 0; padding-top: 2mm; }
+  /* The sample deck prints as a stack of slides instead of a scrolling strip. */
+  .dk-track { display: grid !important; grid-auto-flow: row !important; grid-template-columns: 1fr 1fr !important; overflow: visible !important; }
+}

@@ -1,4 +1,4 @@
-<!--meta {"title": "Services", "description": "Video ads, UGC content, websites, marketing, and documents and decks from SPY-D Studio. Every project is scoped with you in a meeting first.", "css": ["pages"], "section": "services"} -->
+<!--meta {"title": "Services", "description": "Video ads, UGC content, websites, marketing, and documents and decks from SPY-D Studio. Every project is scoped with you in a meeting first.", "css": ["pages"], "section": "services", "js": ["chooser"]} -->
 <section class="page-hero wrap">
   <span class="accent-bar" aria-hidden="true"></span>
   <h1>What we make.</h1>
@@ -12,6 +12,25 @@
     <a class="row" href="{{root}}services/websites/"><span class="row-title">Websites</span><span class="row-text">Landing pages and small business sites</span><span class="row-arrow" aria-hidden="true">→</span></a>
     <a class="row" href="{{root}}services/marketing/"><span class="row-title">Marketing</span><span class="row-text">Campaign planning, ad management, performance reporting</span><span class="row-arrow" aria-hidden="true">→</span></a>
     <a class="row" href="{{root}}services/documents-decks/"><span class="row-title">Documents &amp; Decks</span><span class="row-text">Company profiles, proposals, presentations</span><span class="row-arrow" aria-hidden="true">→</span></a>
+  </div>
+</section>
+
+<section class="section-tight wrap chooser" id="chooser" aria-labelledby="chooser-title" data-chooser>
+  <div class="chooser-head">
+    <h2 id="chooser-title">Not sure which you need?</h2>
+    <p class="muted">Tap what you want to happen. Pick as many as apply.</p>
+  </div>
+  <div class="chooser-body">
+    <div class="picks" role="group" aria-label="What do you want to happen?">
+      <button type="button" class="pick" data-service="video-ads" data-brief="getting people to notice the product" data-why="A short, scripted ad built around one clear message, cut for each feed." aria-pressed="false">People stop scrolling and notice the product</button>
+      <button type="button" class="pick" data-service="ugc-content" data-brief="content that feels like a real customer talking" data-why="Creator-style clips with several openings, so you can test what works." aria-pressed="false">Content that feels like a real customer talking</button>
+      <button type="button" class="pick" data-service="websites" data-brief="a page to send people to after they see an ad" data-why="A landing page that carries the same message as the ad, so the click pays off." aria-pressed="false">A page to send people to after they see an ad</button>
+      <button type="button" class="pick" data-service="marketing" data-brief="someone to plan and run the ads, and report back" data-why="Campaign planning and ad management, agreed as a separate scope." aria-pressed="false">Someone to plan and run the ads, and report back</button>
+      <button type="button" class="pick" data-service="documents-decks" data-brief="a clear document to pitch or explain the business" data-why="A company profile, proposal or deck that says what you do in plain words." aria-pressed="false">A clear document to pitch or explain the business</button>
+    </div>
+    <div class="chooser-result" aria-live="polite" data-chooser-result>
+      <p class="chooser-empty">Your match will show here.</p>
+    </div>
   </div>
 </section>
 
