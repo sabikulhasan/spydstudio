@@ -1,0 +1,17 @@
+{
+  "name": "SPY-D Studio",
+  "short_name": "SPY-D",
+  "description": "Observe. Understand. Create.",
+  "start_url": "/spydstudio/",
+  "scope": "/spydstudio/",
+  "display": "browser",
+  "background_color": "#FFF7EC",
+  "theme_color": "#FFF7EC",
+  "icons": [
+    {
+      "src": "assets/img/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

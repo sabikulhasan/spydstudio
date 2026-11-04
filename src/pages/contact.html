@@ -51,10 +51,23 @@
         </select>
       </div>
     </div>
+    <p class="chip-intro">Quick brief <span class="optional">(optional)</span>: tap anything that applies and it is added to your message.</p>
+    <fieldset class="chip-set" id="cf-goals">
+      <legend>What should the work do?</legend>
+      <div class="chips"><label class="chip"><input type="checkbox" name="goal" value="Launch a product"><span>Launch a product</span></label><label class="chip"><input type="checkbox" name="goal" value="Sell more online"><span>Sell more online</span></label><label class="chip"><input type="checkbox" name="goal" value="Get more enquiries"><span>Get more enquiries</span></label><label class="chip"><input type="checkbox" name="goal" value="Build trust"><span>Build trust</span></label><label class="chip"><input type="checkbox" name="goal" value="Explain what we do"><span>Explain what we do</span></label></div>
+    </fieldset>
+    <fieldset class="chip-set" id="cf-platforms" data-services="video-ads ugc-content marketing">
+      <legend>Where will it run?</legend>
+      <div class="chips"><label class="chip"><input type="checkbox" name="platform" value="Facebook &amp; Instagram"><span>Facebook &amp; Instagram</span></label><label class="chip"><input type="checkbox" name="platform" value="TikTok"><span>TikTok</span></label><label class="chip"><input type="checkbox" name="platform" value="YouTube"><span>YouTube</span></label><label class="chip"><input type="checkbox" name="platform" value="Our website"><span>Our website</span></label><label class="chip"><input type="checkbox" name="platform" value="Not sure yet" data-exclusive><span>Not sure yet</span></label></div>
+    </fieldset>
+    <fieldset class="chip-set" id="cf-assets">
+      <legend>What do you already have?</legend>
+      <div class="chips"><label class="chip"><input type="checkbox" name="have" value="Product samples"><span>Product samples</span></label><label class="chip"><input type="checkbox" name="have" value="Footage or photos"><span>Footage or photos</span></label><label class="chip"><input type="checkbox" name="have" value="Logo &amp; brand files"><span>Logo &amp; brand files</span></label><label class="chip"><input type="checkbox" name="have" value="A website"><span>A website</span></label><label class="chip"><input type="checkbox" name="have" value="Starting from scratch" data-exclusive><span>Starting from scratch</span></label></div>
+    </fieldset>
     <div class="field">
       <label for="cf-message">About the project</label>
-      <textarea id="cf-message" name="message" rows="6" required aria-required="true" maxlength="2000" placeholder="What does the business do, and what should the work achieve?"></textarea>
-      <p class="field-error" id="cf-message-error" hidden>Please tell us a little about the project.</p>
+      <textarea id="cf-message" name="message" rows="6" required aria-required="true" maxlength="2000" placeholder="What does the business do? Anything else we should know?"></textarea>
+      <p class="field-error" id="cf-message-error" hidden>Please tell us a little about the project, or tap a few answers above.</p>
     </div>
     <div class="hp" aria-hidden="true"><label for="cf-website">Leave this empty</label><input id="cf-website" name="website" tabindex="-1" autocomplete="off"></div>
     <p class="form-note" id="form-note">We prepare your message. Review and send it in WhatsApp or your email app. Nothing is stored on this website.</p>

@@ -46,6 +46,21 @@ def output_path(page: Path) -> Path:
     return ROOT / rel.with_suffix("") / "index.html"
 
 
+def whatsapp_message(site, meta, out):
+    """Pre-filled WhatsApp text that matches the page, so the first message already says what the
+    visitor wants. A page can set its own with "waMessage" in its meta line."""
+    if meta.get("waMessage"):
+        return meta["waMessage"]
+    rel = out.relative_to(ROOT).parent.as_posix()
+    for svc in site["services"]:
+        if rel == "services/" + svc["slug"]:
+            return f"Hi SPY-D Studio, I'd like to talk about a {svc['name']} project."
+    return {
+        "work": "Hi SPY-D Studio, could you share some examples relevant to my business?",
+        "process": "Hi SPY-D Studio, I have a question about how a project works.",
+    }.get(rel, site["whatsappMessage"])
+
+
 def nav_links(site, root, section, cls):
     items = []
     for item in site["nav"]:
@@ -191,10 +206,31 @@ def all_work(items, root, site):
     if not items:
         return f"""<div class="work-empty">
     <h2 class="h-sub">See examples relevant to your project</h2>
-    <p>Our public portfolio is being prepared. Ask us for examples suited to your business.</p>
+    <p>Tell us about the business and we’ll send examples close to what you need.</p>
     <div class="btn-row">
       <a class="btn btn-primary" href="{root}contact/">Ask for examples <span class="arrow" aria-hidden="true">→</span></a>
       <a class="btn btn-ghost" href="{esc(site['facebook'])}" target="_blank" rel="noopener">See us on Facebook</a>
+    </div>
+  </div>
+  <div class="method">
+    <h2 class="h-sub">Meanwhile, see how we think</h2>
+    <p class="muted">Three short, interactive looks at how a project is put together. They use stock footage and example content, not client work.</p>
+    <div class="method-grid">
+      <a class="method-card" href="{root}services/video-ads/#formats">
+        <span class="method-art is-ratio" aria-hidden="true"><img src="{root}assets/media/editorial/M01-poster-640.webp" alt="" width="640" height="360" loading="lazy" decoding="async"></span>
+        <span class="method-kicker">Video Ads</span><span class="method-title">One idea, made for every feed</span>
+        <span class="method-text">Switch between 9:16, 4:5, 1:1 and 16:9 and see how the layout changes.</span>
+      </a>
+      <a class="method-card" href="{root}services/ugc-content/#hooks">
+        <span class="method-art is-hook" aria-hidden="true"><img src="{root}assets/media/editorial/M02-poster-640.webp" alt="" width="640" height="360" loading="lazy" decoding="async"><span class="method-cap">Which one would you actually pick?</span></span>
+        <span class="method-kicker">UGC Content</span><span class="method-title">Same video, four ways to open it</span>
+        <span class="method-text">Try four hooks on one clip and see why we test openings separately.</span>
+      </a>
+      <a class="method-card" href="{root}process/#sample-plan">
+        <span class="method-art is-plan" aria-hidden="true"><span class="mp-line w60"></span><span class="mp-line w90"></span><span class="mp-line w75"></span><span class="mp-line w40"></span><span class="mp-stamp">For approval</span></span>
+        <span class="method-kicker">Process</span><span class="method-title">What the written plan looks like</span>
+        <span class="method-text">The document you approve before production starts, section by section.</span>
+      </a>
     </div>
   </div>"""
     used = [s for s in SERVICE_NAMES if any(i["service"] == s for i in items)]
@@ -212,6 +248,75 @@ def service_work(items, root, slug):
         return (f'<p class="muted">We share examples relevant to your project on request.</p>\n'
                 f'<a class="text-link" href="{root}contact/?service={slug}">Ask for examples <span class="arrow" aria-hidden="true">→</span></a>')
     return work_grid(mine, root)
+
+
+# ---------- Machine-readable data (JSON-LD, llms.txt, manifest) ----------
+
+FAQ = re.compile(r'<details class="faq-item"[^>]*>\s*<summary>(.*?)</summary>\s*<p>(.*?)</p>\s*</details>', re.S)
+
+
+def plain(fragment):
+    """HTML fragment -> plain text for structured data."""
+    return html.unescape(re.sub(r"<[^>]+>", "", fragment)).strip()
+
+
+def json_ld(site, meta, canonical, body, title):
+    """Structured data for one page, built from the same text the page shows, so it never drifts."""
+    org_id = site["siteUrl"] + "#studio"
+    graph = [{
+        "@type": "ProfessionalService", "@id": org_id, "name": site["name"], "url": site["siteUrl"],
+        "logo": site["siteUrl"] + "assets/logo/spyd-horizontal.png", "image": site["siteUrl"] + "assets/img/og-image.png",
+        "email": site["email"], "telephone": site["phoneDisplay"], "slogan": site["tagline"], "sameAs": [site["facebook"]],
+        "description": "Video ads and UGC content built around your brand, with websites, marketing and decks when you need them.",
+        "contactPoint": [{"@type": "ContactPoint", "contactType": "sales", "email": site["email"], "telephone": site["phoneDisplay"]}],
+        "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Services", "itemListElement": [
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": s["name"], "description": s["line"],
+             "url": site["siteUrl"] + "services/" + s["slug"] + "/"}} for s in site["services"]]},
+    }]
+    graph.append({"@type": "WebPage", "@id": canonical, "url": canonical, "name": title,
+                  "description": meta["description"], "isPartOf": {"@id": site["siteUrl"] + "#website"}})
+    if canonical == site["siteUrl"]:
+        graph.append({"@type": "WebSite", "@id": site["siteUrl"] + "#website", "url": site["siteUrl"], "name": site["name"], "publisher": {"@id": org_id}})
+    # Breadcrumbs for inner pages: Home > section > page.
+    rel = canonical[len(site["siteUrl"]):].strip("/")
+    service = next((s for s in site["services"] if rel == "services/" + s["slug"]), None)
+    if rel:
+        crumbs, url = [("Home", site["siteUrl"])], site["siteUrl"]
+        parts = rel.split("/")
+        for n, part in enumerate(parts):
+            url += part + "/"
+            name = (service["name"] if service else meta["title"]) if n == len(parts) - 1 else part.replace("-", " ").title()
+            crumbs.append((name, url))
+        graph.append({"@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": i, "name": n, "item": u} for i, (n, u) in enumerate(crumbs, 1)]})
+    if service:
+        graph.append({"@type": "Service", "name": service["name"], "description": meta["description"], "url": canonical,
+                      "serviceType": service["name"], "provider": {"@id": org_id}})
+    faqs = FAQ.findall(body)
+    if faqs:
+        graph.append({"@type": "FAQPage", "mainEntity": [
+            {"@type": "Question", "name": plain(q), "acceptedAnswer": {"@type": "Answer", "text": plain(a)}} for q, a in faqs]})
+    data = json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False, separators=(",", ":"))
+    return '<script type="application/ld+json">' + data.replace("</", "<\\/") + "</script>\n"
+
+
+def write_llms_txt(site, pages_info):
+    """llms.txt: a plain Markdown summary of the site for AI assistants (proposed standard, llmstxt.org)."""
+    lines = [f"# {site['name']}", "", f"> {site['tagline']} Video ads and UGC content built around your brand, "
+             "with websites, marketing and decks when you need them. Every project is scoped with the client "
+             "in a meeting and written into a plan before production; there are no fixed packages or public prices.", "",
+             f"- Email: {site['email']}", f"- WhatsApp: {site['phoneDisplay']} (https://wa.me/{site['whatsapp']})",
+             f"- Facebook: {site['facebook']}", "", "## Pages", ""]
+    lines += [f"- [{t}]({u}): {d}" for t, u, d in pages_info]
+    (ROOT / "llms.txt").write_text("\n".join(lines) + "\n")
+
+
+def write_manifest(site):
+    manifest = {"name": site["name"], "short_name": "SPY-D", "description": site["tagline"],
+                "start_url": site["basePath"], "scope": site["basePath"], "display": "browser",
+                "background_color": "#FFF7EC", "theme_color": "#FFF7EC",
+                "icons": [{"src": "assets/img/favicon.svg", "sizes": "any", "type": "image/svg+xml"}]}
+    (ROOT / "site.webmanifest").write_text(json.dumps(manifest, indent=2) + "\n")
 
 
 def version_assets(text):
@@ -244,7 +349,7 @@ def build():
         f"window.SPYD = {json.dumps(config, indent=2)};\n")
     partials = {p.stem: p.read_text() for p in (SRC / "partials").glob("*.html")}
     pages = sorted((SRC / "pages").rglob("*.html"))
-    urls = []
+    urls, pages_info = [], []
     for page in pages:
         raw = page.read_text()
         match = META.match(raw)
@@ -263,6 +368,7 @@ def build():
         tokens = {
             **{k: v for k, v in site.items() if isinstance(v, str)},
             "root": root,
+            "whatsappUrl": f"https://wa.me/{site['whatsapp']}?text={quote(whatsapp_message(site, meta, out))}",
             "title": html.escape(title if title.startswith(site["name"]) else f"{title} · {site['name']}"),
             "description": html.escape(meta["description"]),
             "canonical": canonical,
@@ -270,15 +376,23 @@ def build():
             "pageClass": meta.get("bodyClass", ""),
             "navDesktop": nav_links(site, root, meta.get("section"), "nav-link"),
             "navMobile": nav_links(site, root, meta.get("section"), "menu-link"),
+            # Images the page's CSS needs first (e.g. the hero background, which is the LCP element):
+            # preloading lets them start with the HTML instead of waiting for the stylesheet.
+            "preload": "".join(f'<link rel="preload" href="{root}{u}" as="image" fetchpriority="high">\n' for u in meta.get("preload", [])),
             "extraCss": "".join(f'<link rel="stylesheet" href="{root}assets/css/{c}.css">\n' for c in meta.get("css", [])),
             "extraJs": "".join(f'<script src="{root}assets/js/{j}.js" defer></script>\n' for j in meta.get("js", [])),
             "noindex": '<meta name="robots" content="noindex">\n' if meta.get("noindex") else "",
             "featuredWork": featured_work(work, root),
             "allWork": all_work(work, root, site),
+            "workLead": ("Video ads, UGC content and more. Each piece is labelled as client work or a self-initiated "
+                         "concept, with the brief and what we did.") if work else
+                        ("Our public portfolio is on its way. Until then, we share examples suited to your project, "
+                         "and you can try how we approach the work below."),
             **{f"serviceWork_{s.replace('-', '_')}": service_work(work, root, s) for s in SERVICE_NAMES},
         }
         # Partials may use tokens and other partials ({{partial_lockup}}); pages may use both.
         # Two passes resolve one level of nesting; {{content}} is filled in last.
+        tokens["jsonld"] = "" if is_404 or meta.get("noindex") else json_ld(site, meta, canonical, body, title if title.startswith(site["name"]) else f"{title} · {site['name']}")
         tokens["content"] = "{{content}}"
         tokens.update({f"partial_{k}": v for k, v in partials.items()})
         for _ in range(2):
@@ -289,12 +403,15 @@ def build():
         out.write_text(result)
         if not is_404 and not meta.get("noindex"):
             urls.append(canonical)
+            pages_info.append((title, canonical, meta["description"]))
         print("built", out.relative_to(ROOT))
 
     sitemap = "".join(f"  <url><loc>{u}</loc></url>\n" for u in urls)
     (ROOT / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{sitemap}</urlset>\n')
+    write_llms_txt(site, sorted(pages_info, key=lambda p: (p[1] != site["siteUrl"], p[1])))
+    write_manifest(site)
     (ROOT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {site['siteUrl']}sitemap.xml\n")
 
 

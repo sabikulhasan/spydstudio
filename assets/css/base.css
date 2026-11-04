@@ -73,3 +73,18 @@ p { max-width: 60ch; text-wrap: pretty; }
 }
 html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
 html[data-motion="off"] .reveal.pending { opacity: 1; transform: none; }
+
+/* Page transitions (cross-document View Transitions). Browsers without support simply load the
+   next page as before. The header stays put; the page body fades and rises slightly.
+   Off under reduced motion; a visitor's "Pause motion" choice is honoured in site.js (pageswap). */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}
+.site-header { view-transition-name: site-header; }
+.wa-float { view-transition-name: wa-float; }
+::view-transition-old(root) { animation: vt-out .18s var(--ease-out) both; }
+::view-transition-new(root) { animation: vt-in .32s var(--ease-out) both; }
+::view-transition-group(site-header) { animation-duration: .2s; }
+::view-transition-group(wa-float), ::view-transition-old(wa-float), ::view-transition-new(wa-float) { animation: none; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(10px); } }

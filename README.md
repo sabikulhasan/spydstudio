@@ -12,7 +12,7 @@ Edit files in `src/`, then rebuild:
 python3 tools/build.py
 ```
 
-The build writes the pages (`index.html`, `services/…/index.html`, `work/index.html` and so on), `sitemap.xml`, `robots.txt` and `assets/js/config.js`. Commit the output too; GitHub Pages serves it as-is.
+The build writes the pages (`index.html`, `services/…/index.html`, `work/index.html` and so on), `sitemap.xml`, `robots.txt`, `llms.txt`, `site.webmanifest` and `assets/js/config.js`. Each page also gets JSON-LD structured data (business, breadcrumbs, services and FAQs), generated from the page text so it never drifts. Commit the output too; GitHub Pages serves it as-is.
 
 | To change | Edit |
 |---|---|
@@ -61,6 +61,17 @@ python3 -m http.server 8000
 ```
 
 Then open http://localhost:8000/. The 404 page uses absolute `/spydstudio/` paths so it works on GitHub Pages; it looks unstyled on a local server.
+
+## Accessibility check
+
+`tools/a11y-check.js` runs axe-core (WCAG 2.2 A/AA plus best practices) on every page at phone and desktop widths, including the interactive widgets after use. With the preview server running:
+
+```sh
+npm i --no-save playwright axe-core
+node tools/a11y-check.js http://localhost:8000/spydstudio/
+```
+
+Automated checks catch only part of WCAG; also try new features with the keyboard alone.
 
 ## Publish
 

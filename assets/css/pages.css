@@ -91,6 +91,25 @@
 .field [aria-invalid="true"] { border-color: #B42318; border-width: 2px; }
 .field-error { color: #B42318; font-size: 14px; font-weight: 600; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+/* Brief chips: real checkboxes styled as tappable pills; the box itself is visually hidden. */
+.chip-intro { font-size: 16px; font-weight: 600; margin-bottom: calc(-1 * var(--s1)); }
+.chip-set { border: 0; padding: 0; margin: 0; min-width: 0; display: grid; gap: 10px; }
+.chip-set[hidden] { display: none; }
+.chip-set legend { font-weight: 400; font-size: 15px; color: var(--slate); padding: 0; margin-bottom: 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { position: relative; }
+.chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.chip span {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 14px;
+  border: 1px solid var(--rule); border-radius: 999px; background: var(--white);
+  font-size: 15px; font-weight: 600; cursor: pointer; user-select: none;
+  transition: background-color .15s, border-color .15s, color .15s;
+}
+.chip span::before { content: "+"; font-weight: 900; color: var(--slate); width: 10px; text-align: center; }
+.chip:hover span { border-color: var(--ink); }
+.chip input:checked + span { background: var(--ink); border-color: var(--ink); color: var(--white); }
+.chip input:checked + span::before { content: "✓"; color: var(--vermilion); }
+.chip input:focus-visible + span { outline: 3px solid var(--vermilion); outline-offset: 2px; }
 .form-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); }
 .form-note { font-size: 16px; font-weight: 600; }
 .copy-fallback { display: grid; gap: 6px; }
@@ -123,3 +142,155 @@ a.contact-card:hover { border-color: var(--ink); transform: translateY(-2px); }
   .page-hero-art.photo img { aspect-ratio: 5 / 4; max-height: 480px; }
 }
 .page-hero-art.svc-media { box-shadow: 0 0 0 1px var(--rule); }
+
+/* Video Ads: format preview. The stage is a size container so the frame can fit any ratio
+   inside it; text and button positions change per shape, as a real composed version would. */
+.fmt { display: grid; gap: var(--s4); grid-template-areas: "copy" "stage" "controls"; }
+@media (min-width: 900px) {
+  .fmt { grid-template-columns: 5fr 7fr; grid-template-areas: "copy stage" "controls stage"; column-gap: var(--s5); row-gap: var(--s3); align-items: start; }
+  .fmt-copy { align-self: end; }
+}
+.fmt-copy { grid-area: copy; display: grid; gap: var(--s2); }
+.fmt-controls { grid-area: controls; display: grid; gap: var(--s2); align-content: start; }
+.fmt-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.fmt-buttons button {
+  min-width: 64px; min-height: 44px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--rule);
+  background: var(--white); font-weight: 600; font-size: 15px; font-variant-numeric: tabular-nums;
+}
+.fmt-buttons button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--white); }
+.fmt-where { min-height: 3.2em; margin: 0; color: var(--slate); }
+.fmt-where b { color: var(--ink); font-weight: 600; }
+.fmt-toggle { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; font-weight: 600; cursor: pointer; }
+.fmt-toggle input { width: 20px; height: 20px; accent-color: var(--ink); }
+.fmt-stage { grid-area: stage; margin: 0; display: grid; gap: var(--s2); container-type: inline-size;
+  /* Fixed height (that of the tallest shape), so switching formats never moves the page. */
+  grid-template-rows: min(560px, 120cqw) auto; }
+.fmt-stage figcaption { font-size: var(--caption); color: var(--slate); text-align: center; }
+.fmt-stage > .fmt-frame { margin: auto; }
+.fmt-frame {
+  --r: 9/16; --h: min(560px, 120cqw);
+  position: relative; overflow: hidden; border-radius: var(--radius-media); background: #D8C7B5;
+  height: min(var(--h), 100cqw / (var(--r))); width: min(100cqw, var(--h) * (var(--r)));
+  transition: width .45s var(--ease-out), height .45s var(--ease-out);
+}
+.fmt-frame > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 74% 50%; transition: object-position .45s var(--ease-out); }
+.fmt-frame[data-shape="wide"] > img { object-position: 50% 50%; }
+/* inset (not padding) so top/bottom percentages follow the frame's height. */
+.fmt-layer { position: absolute; inset: 15% 8% 25%; display: flex; flex-direction: column; color: var(--ink); transition: inset .45s var(--ease-out); }
+.fmt-kicker { align-self: flex-start; padding: 2px 10px; border-radius: 4px; background: var(--vermilion); font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.fmt-head { margin-top: 10px; max-width: 12ch; font-size: clamp(20px, 5cqw, 30px); font-weight: 900; line-height: 1.08; }
+.fmt-cta { margin-top: auto; align-self: center; padding: 10px 18px; border-radius: 999px; background: var(--ink); color: var(--white); font-size: 14px; font-weight: 600; }
+.fmt-frame[data-shape="portrait"] .fmt-layer { inset: 7% 8%; }
+.fmt-frame[data-shape="portrait"] .fmt-cta { align-self: flex-start; }
+.fmt-frame[data-shape="square"] .fmt-layer { inset: 8%; }
+.fmt-frame[data-shape="square"] .fmt-cta { align-self: flex-start; }
+.fmt-frame[data-shape="wide"] .fmt-layer { inset: 8% 6%; justify-content: center; }
+.fmt-frame[data-shape="wide"] .fmt-head { max-width: 11ch; }
+.fmt-frame[data-shape="wide"] .fmt-cta { margin-top: 18px; align-self: flex-start; }
+/* Safe zones: where platform UI typically sits on a vertical video. Only meaningful for 9:16. */
+.fmt-safe { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .25s; }
+.fmt-frame.show-safe .fmt-safe { opacity: 1; }
+.fmt-safe span { position: absolute; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--white);
+  background: repeating-linear-gradient(-45deg, rgba(11,11,11,.55) 0 8px, rgba(11,11,11,.35) 8px 16px); }
+.fmt-safe-top { left: 0; right: 0; top: 0; height: 12%; }
+.fmt-safe-bottom { left: 0; right: 0; bottom: 0; height: 22%; }
+.fmt-safe-side { right: 0; top: 40%; bottom: 22%; width: 14%; }
+.fmt-frame:not([data-shape="tall"]) .fmt-safe-side { display: none; }
+.fmt-frame:not([data-shape="tall"]) .fmt-safe-top, .fmt-frame:not([data-shape="tall"]) .fmt-safe-bottom { height: 0; overflow: hidden; }
+
+/* UGC page: hook switcher. */
+.hooks { display: grid; gap: var(--s4); grid-template-areas: "copy" "stage" "controls"; }
+@media (min-width: 900px) {
+  .hooks { grid-template-columns: 7fr 5fr; grid-template-areas: "copy stage" "controls stage"; column-gap: var(--s5); row-gap: var(--s3); }
+  .hooks-copy { align-self: end; }
+}
+.hooks-copy { grid-area: copy; display: grid; gap: var(--s2); }
+.hooks-controls { grid-area: controls; display: grid; gap: var(--s3); align-content: start; }
+.hook-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.hook-buttons button { min-height: 44px; padding: 8px 18px; border-radius: 999px; border: 1px solid var(--rule); background: var(--white); font-weight: 600; font-size: 15px; }
+.hook-buttons button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--white); }
+.hook-why { min-height: 3.2em; margin: 0; color: var(--slate); }
+.hook-why b { color: var(--ink); font-weight: 600; }
+.hook-timeline { display: grid; grid-template-columns: 1.5fr 4fr 1fr; gap: 4px; font-size: 13px; }
+.hook-timeline > span { display: grid; gap: 2px; padding: 10px 12px; border-radius: 6px; background: #EFE8DE; min-width: 0; }
+.hook-timeline b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hook-timeline i { font-style: normal; color: #4F545C; /* slate fails AA on this beige */ white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hook-timeline > .tl-hook { background: var(--vermilion); }
+.hook-timeline .tl-hook i { color: var(--ink); }
+.hook-stage { grid-area: stage; margin: 0; display: grid; gap: var(--s2); justify-items: center; }
+.hook-stage figcaption { font-size: var(--caption); color: var(--slate); }
+.hook-phone { position: relative; width: min(100%, 230px); aspect-ratio: 9 / 16; border-radius: 22px; overflow: hidden; background: #C98E95; box-shadow: 0 0 0 8px var(--ink); margin-top: 8px; }
+.hook-phone img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 52% 50%; }
+.hook-caption {
+  position: absolute; left: 10%; right: 10%; top: 58%; text-align: center;
+  font-size: 16px; font-weight: 900; line-height: 1.5; color: var(--ink); text-wrap: balance;
+}
+/* Feed-style caption: each line gets its own white box. */
+.hook-caption span { background: var(--white); padding: 3px 8px; border-radius: 6px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+@media (min-width: 900px) { .hook-phone { width: min(100%, 290px); } .hook-caption { font-size: 18px; } }
+.hook-caption.is-new { animation: hook-in .35s var(--ease-out); }
+@keyframes hook-in { from { opacity: 0; transform: translateY(8px) scale(.97); } }
+.hook-progress { position: absolute; left: 12px; right: 12px; top: 12px; height: 3px; border-radius: 2px; background: rgba(255,255,255,.45); overflow: hidden; }
+.hook-progress::after { content: ""; position: absolute; inset: 0; width: 12%; background: var(--white); }
+@media (max-width: 599px) { .hook-timeline b, .hook-timeline i { white-space: normal; } .hook-timeline > span { padding: 8px; } }
+.nowrap { white-space: nowrap; }
+
+/* Process page: sample written plan. A paper document; margin notes explain each part. */
+.plan-sample { display: grid; gap: var(--s5); }
+.plan-intro { max-width: 640px; display: grid; gap: var(--s2); }
+.plan-doc {
+  position: relative; background: var(--white); border: 1px solid var(--rule); border-radius: var(--radius);
+  box-shadow: 0 1px 0 var(--rule), 0 18px 40px -24px rgba(11, 11, 11, .25);
+  padding: var(--s3); display: grid; gap: var(--s3);
+}
+@media (min-width: 768px) { .plan-doc { padding: var(--s5); } }
+.plan-head { display: flex; align-items: center; gap: var(--s2); padding-bottom: var(--s3); border-bottom: 2px solid var(--ink); flex-wrap: wrap; }
+.plan-head img { width: 40px; height: 40px; flex: none; }
+.plan-head > div { flex: 1; min-width: 200px; }
+.plan-kicker { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--slate); }
+.plan-name { font-size: var(--card); }
+.plan-stamp { padding: 6px 12px; border: 2px solid var(--vermilion); border-radius: 6px; font-size: 13px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; transform: rotate(var(--angle)); }
+.plan-rows { display: grid; margin: 0; }
+.plan-row { display: grid; gap: 6px; padding-block: var(--s2); border-bottom: 1px solid var(--rule); }
+.plan-row:last-child { border-bottom: 0; }
+.plan-row dt { font-weight: 600; }
+.plan-row dd { margin: 0; }
+.plan-row .plan-note { margin: 0; }
+.plan-note { font-size: 14px; color: var(--slate); padding-left: 12px; border-left: 3px solid var(--vermilion); }
+@media (min-width: 900px) {
+  .plan-row { grid-template-columns: 160px minmax(0, 1fr) 240px; gap: var(--s4); align-items: start; }
+  .plan-note { margin-top: 2px; }
+}
+.plan-table { width: 100%; border-collapse: collapse; font-size: 16px; }
+.plan-table th { text-align: left; font-size: 13px; font-weight: 600; color: var(--slate); padding: 0 12px 6px 0; border-bottom: 1px solid var(--rule); }
+.plan-table td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); }
+.plan-table tr:last-child td { border-bottom: 0; }
+.plan-steps { display: flex; flex-wrap: wrap; gap: 6px 0; margin: 0 0 6px; padding: 0; list-style: none; counter-reset: ps; }
+.plan-steps li { counter-increment: ps; display: inline-flex; align-items: center; gap: 6px; }
+.plan-steps li::before { content: counter(ps); display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--ink); color: var(--white); font-size: 12px; font-weight: 900; }
+.plan-steps li + li::before { margin-left: 0; }
+.plan-steps li:not(:last-child)::after { content: "→"; margin: 0 10px; color: var(--slate); }
+.plan-steps b { font-weight: 600; }
+@media (max-width: 599px) {
+  .plan-steps { flex-direction: column; gap: 8px; }
+  .plan-steps li:not(:last-child)::after { content: none; }
+}
+
+/* Work page, before the portfolio is published: links to the interactive method demos. */
+.method { margin-top: var(--s6); display: grid; gap: var(--s2); }
+.method-grid { display: grid; gap: var(--grid-gap); margin-top: var(--s2); }
+@media (min-width: 768px) { .method-grid { grid-template-columns: repeat(3, 1fr); } }
+.method-card { display: grid; gap: 6px; align-content: start; text-decoration: none; }
+.method-art { position: relative; display: block; aspect-ratio: 16 / 10; border-radius: var(--radius-media); overflow: hidden; background: #EFE8DE; margin-bottom: 10px; }
+.method-art img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s var(--ease-out); }
+.method-card:hover .method-art img { transform: scale(1.04); }
+.method-art.is-ratio::after { content: ""; position: absolute; top: 12%; bottom: 12%; left: 50%; aspect-ratio: 9 / 16; transform: translateX(-10%); border: 2px dashed var(--white); border-radius: 8px; }
+.method-cap { position: absolute; left: 50%; bottom: 14%; transform: translateX(-50%); width: max-content; max-width: 80%; padding: 3px 8px; border-radius: 6px; background: var(--white); font-size: 13px; font-weight: 900; text-align: center; }
+.method-art.is-plan { display: grid; align-content: center; gap: 10px; padding: 0 14%; background: var(--white); border: 1px solid var(--rule); }
+.mp-line { height: 8px; border-radius: 4px; background: #EFE8DE; }
+.mp-line.w60 { width: 60%; height: 12px; background: var(--ink); } .mp-line.w90 { width: 90%; } .mp-line.w75 { width: 75%; } .mp-line.w40 { width: 40%; }
+.mp-stamp { position: absolute; right: 10%; top: 14%; padding: 4px 8px; border: 2px solid var(--vermilion); border-radius: 5px; font-size: 11px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; transform: rotate(var(--angle)); }
+.method-kicker { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--slate); }
+.method-title { font-size: var(--card); font-weight: 600; line-height: 1.2; }
+.method-card:hover .method-title { text-decoration: underline; text-underline-offset: 4px; }
+.method-text { color: var(--slate); }
