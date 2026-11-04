@@ -17,6 +17,9 @@ const states = {
   'services/video-ads/': async (pg) => { await pg.click('[data-ratio="16/9"]'); await pg.check('[data-fmt-safe]'); },
   'services/ugc-content/': async (pg) => { await pg.click('[data-hook="result"]'); },
   'contact/': async (pg) => { await pg.click('.chip:has-text("TikTok")'); await pg.click('button[data-send="copy"]'); },
+  'services/': async (pg) => { await pg.click('.pick[data-service="websites"]'); await pg.click('.pick[data-service="marketing"]'); },
+  'services/websites/': async (pg) => { await pg.click('[data-mm-mode="generic"]'); },
+  'services/documents-decks/': async (pg) => { await pg.click('[data-dk="next"]'); },
 };
 
 (async () => {
