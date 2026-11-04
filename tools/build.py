@@ -220,27 +220,7 @@ def all_work(items, root, site):
       <a class="btn btn-ghost" href="{esc(site['facebook'])}" target="_blank" rel="noopener">See us on Facebook</a>
     </div>
   </div>
-  <div class="method">
-    <h2 class="h-sub">Meanwhile, see how we think</h2>
-    <p class="muted">Three short, interactive looks at how a project is put together. They use stock footage and example content, not client work.</p>
-    <div class="method-grid">
-      <a class="method-card" href="{root}services/video-ads/#formats">
-        <span class="method-art is-ratio" aria-hidden="true"><img src="{root}assets/media/editorial/M01-poster-640.webp" alt="" width="640" height="360" loading="lazy" decoding="async"></span>
-        <span class="method-kicker">Video Ads</span><span class="method-title">One idea, made for every feed</span>
-        <span class="method-text">Switch between 9:16, 4:5, 1:1 and 16:9 and see how the layout changes.</span>
-      </a>
-      <a class="method-card" href="{root}services/ugc-content/#hooks">
-        <span class="method-art is-hook" aria-hidden="true"><img src="{root}assets/media/editorial/M02-poster-640.webp" alt="" width="640" height="360" loading="lazy" decoding="async"><span class="method-cap">Which one would you actually pick?</span></span>
-        <span class="method-kicker">UGC Content</span><span class="method-title">Same video, four ways to open it</span>
-        <span class="method-text">Try four hooks on one clip and see why we test openings separately.</span>
-      </a>
-      <a class="method-card" href="{root}process/#sample-plan">
-        <span class="method-art is-plan" aria-hidden="true"><span class="mp-line w60"></span><span class="mp-line w90"></span><span class="mp-line w75"></span><span class="mp-line w40"></span><span class="mp-stamp">For approval</span></span>
-        <span class="method-kicker">Process</span><span class="method-title">What the written plan looks like</span>
-        <span class="method-text">The document you approve before production starts, section by section.</span>
-      </a>
-    </div>
-  </div>"""
+"""
     used = [s for s in SERVICE_NAMES if any(i["service"] == s for i in items)]
     buttons = ['<button type="button" data-filter="all" aria-pressed="true">All</button>'] + [
         f'<button type="button" data-filter="{s}" aria-pressed="false">{esc(SERVICE_NAMES[s])}</button>' for s in used]
@@ -414,6 +394,8 @@ def build():
         # Partials may use tokens and other partials ({{partial_lockup}}); pages may use both.
         # Two passes resolve one level of nesting; {{content}} is filled in last.
         tokens["jsonld"] = "" if is_404 or meta.get("noindex") else json_ld(site, meta, canonical, body, title if title.startswith(site["name"]) else f"{title} · {site['name']}")
+        # Work page, before any project is published: the "See how we think" strip.
+        tokens["workTools"] = "" if work else render(partials["tools"], {**tokens, "content": ""})
         tokens["content"] = "{{content}}"
         tokens.update({f"partial_{k}": v for k, v in partials.items()})
         for _ in range(2):

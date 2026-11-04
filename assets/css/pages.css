@@ -276,24 +276,6 @@ a.contact-card:hover { border-color: var(--ink); transform: translateY(-2px); }
   .plan-steps li:not(:last-child)::after { content: none; }
 }
 
-/* Work page, before the portfolio is published: links to the interactive method demos. */
-.method { margin-top: var(--s6); display: grid; gap: var(--s2); }
-.method-grid { display: grid; gap: var(--grid-gap); margin-top: var(--s2); }
-@media (min-width: 768px) { .method-grid { grid-template-columns: repeat(3, 1fr); } }
-.method-card { display: grid; gap: 6px; align-content: start; text-decoration: none; }
-.method-art { position: relative; display: block; aspect-ratio: 16 / 10; border-radius: var(--radius-media); overflow: hidden; background: #EFE8DE; margin-bottom: 10px; }
-.method-art img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s var(--ease-out); }
-.method-card:hover .method-art img { transform: scale(1.04); }
-.method-art.is-ratio::after { content: ""; position: absolute; top: 12%; bottom: 12%; left: 50%; aspect-ratio: 9 / 16; transform: translateX(-10%); border: 2px dashed var(--white); border-radius: 8px; }
-.method-cap { position: absolute; left: 50%; bottom: 14%; transform: translateX(-50%); width: max-content; max-width: 80%; padding: 3px 8px; border-radius: 6px; background: var(--white); font-size: 13px; font-weight: 900; text-align: center; }
-.method-art.is-plan { display: grid; align-content: center; gap: 10px; padding: 0 14%; background: var(--white); border: 1px solid var(--rule); }
-.mp-line { height: 8px; border-radius: 4px; background: #EFE8DE; }
-.mp-line.w60 { width: 60%; height: 12px; background: var(--ink); } .mp-line.w90 { width: 90%; } .mp-line.w75 { width: 75%; } .mp-line.w40 { width: 40%; }
-.mp-stamp { position: absolute; right: 10%; top: 14%; padding: 4px 8px; border: 2px solid var(--vermilion); border-radius: 5px; font-size: 11px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; transform: rotate(var(--angle)); }
-.method-kicker { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--slate); }
-.method-title { font-size: var(--card); font-weight: 600; line-height: 1.2; }
-.method-card:hover .method-title { text-decoration: underline; text-underline-offset: 4px; }
-.method-text { color: var(--slate); }
 
 /* Services page: outcome picker. */
 .chooser { display: grid; gap: var(--s4); }

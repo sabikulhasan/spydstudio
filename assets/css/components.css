@@ -269,3 +269,28 @@ a.card:hover { transform: translateY(-4px); border-color: var(--ink); }
   background: linear-gradient(90deg, currentColor 0 3px, transparent 3px 5px, currentColor 5px 8px); }
 .ambient-btn[data-state="paused"]::before { width: 0; height: 0; margin-top: -5px; background: none; border-left: 9px solid currentColor; border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
 .ambient-btn:focus-visible { outline: 3px solid var(--vermilion); outline-offset: 2px; }
+
+/* "See how we think": links to the interactive pieces (home and, while empty, the Work page). */
+.tools-head { display: grid; gap: var(--s2); max-width: 640px; margin-bottom: var(--s4); }
+.tools-grid { display: grid; gap: var(--grid-gap); margin: 0; padding: 0; list-style: none; }
+@media (min-width: 640px) { .tools-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .tools-grid { grid-template-columns: repeat(3, 1fr); } }
+.tool {
+  position: relative; display: grid; gap: 6px; align-content: start; height: 100%; padding: var(--s3) var(--s3) var(--s3) calc(var(--s3) + 6px);
+  border: 1px solid var(--rule); border-radius: var(--radius); background: var(--white); text-decoration: none;
+  transition: border-color .2s, transform .2s var(--ease-out);
+}
+.tool::before { content: ""; position: absolute; left: 0; top: var(--s3); bottom: var(--s3); width: 4px; border-radius: 0 3px 3px 0; background: var(--vermilion); }
+.tool:hover { border-color: var(--ink); transform: translateY(-2px); }
+.tool-kicker { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--slate); }
+.tool-title { font-size: 20px; font-weight: 600; line-height: 1.25; }
+.tool-title::after { content: "\00a0→"; color: var(--vermilion); }
+.tool-text { font-size: 15px; color: var(--slate); }
+.tools-more { margin-top: var(--s3); font-weight: 600; }
+@media (max-width: 639px) {
+  .tools-grid { gap: 8px; }
+  .tool { gap: 2px; padding: 14px 16px 14px 22px; }
+  .tool::before { top: 14px; bottom: 14px; }
+  .tool-title { font-size: 18px; }
+  .tool-text { display: none; }
+}
