@@ -62,6 +62,15 @@ python3 -m http.server 8000
 
 Then open http://localhost:8000/. The 404 page uses absolute `/spydstudio/` paths so it works on GitHub Pages; it looks unstyled on a local server.
 
+## Share images
+
+Each page has its own 1200×630 card in `assets/img/og/` (headline taken from the page's `<h1>`), used as its `og:image` when the page is shared on WhatsApp, Facebook and others. Pages without a card use `assets/img/og-image.png`. When a headline changes, regenerate them:
+
+```sh
+npm i --no-save playwright
+python3 tools/build.py && node tools/og.js && python3 tools/build.py
+```
+
 ## Accessibility check
 
 `tools/a11y-check.js` runs axe-core (WCAG 2.2 A/AA plus best practices) on every page at phone and desktop widths, including the interactive widgets after use. With the preview server running:

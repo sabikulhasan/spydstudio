@@ -61,6 +61,14 @@ def whatsapp_message(site, meta, out):
     }.get(rel, site["whatsappMessage"])
 
 
+def og_image(site, out):
+    """Absolute URL of the page's share card (made by tools/og.js), or the default image."""
+    folder = out.relative_to(ROOT).parent.as_posix()
+    name = "home" if folder == "." else folder.replace("/", "-")
+    card = ROOT / "assets" / "img" / "og" / f"{name}.jpg"
+    return site["siteUrl"] + (f"assets/img/og/{name}.jpg" if card.is_file() else "assets/img/og-image.png")
+
+
 def nav_links(site, root, section, cls):
     items = []
     for item in site["nav"]:
@@ -379,6 +387,7 @@ def build():
         tokens = {
             **{k: v for k, v in site.items() if isinstance(v, str)},
             "root": root,
+            "ogImage": og_image(site, out),
             "pageIndex": json.dumps(page_index, ensure_ascii=False).replace("</", "<\\/"),
             "whatsappUrl": f"https://wa.me/{site['whatsapp']}?text={quote(whatsapp_message(site, meta, out))}",
             "title": html.escape(title if title.startswith(site["name"]) else f"{title} · {site['name']}"),
