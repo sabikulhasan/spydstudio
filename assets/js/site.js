@@ -122,6 +122,47 @@
     }));
   });
 
+  /* Ambient clips: <img data-ambient="clip.mp4"> gets a silent looping video over it. It loads
+     and plays only while on screen; it never starts by itself under reduced or paused motion or
+     the browser's data saver, and a button always lets the visitor pause or play it. The image
+     stays underneath as the description and the no-JS / failure fallback. */
+  const saveData = Boolean(navigator.connection && navigator.connection.saveData);
+  $$('img[data-ambient]').forEach((img) => {
+    const box = img.parentElement;
+    const video = document.createElement('video');
+    Object.assign(video, { muted: true, loop: true, playsInline: true, preload: 'none', poster: img.currentSrc || img.src });
+    video.setAttribute('aria-hidden', 'true');
+    video.className = 'ambient-video';
+    video.style.objectPosition = getComputedStyle(img).objectPosition;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'ambient-btn';
+    img.after(video, btn);
+    let visible = false, userPlay = false, userPause = false;
+    const auto = () => !motion.off && !saveData;
+    const label = () => {
+      const playing = !video.paused;
+      btn.textContent = playing ? 'Pause clip' : 'Play clip';
+      btn.dataset.state = playing ? 'playing' : 'paused';
+    };
+    const play = () => {
+      if (!video.src) video.src = img.dataset.ambient;
+      video.play().then(() => box.classList.add('has-ambient')).catch(() => {}).finally(label);
+    };
+    const update = () => {
+      if (visible && (userPlay || (auto() && !userPause))) play(); else { video.pause(); label(); }
+    };
+    btn.addEventListener('click', () => {
+      if (video.paused) { userPlay = true; userPause = false; } else { userPause = true; userPlay = false; }
+      update();
+    });
+    // If the clip can't load, drop the video and its button; the still image stays.
+    video.addEventListener('error', () => { video.hidden = true; btn.hidden = true; });
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; update(); }, { threshold: 0.35 }).observe(box);
+    motion.onChange(update);
+    label();
+  });
+
   /* Contact details from src/site.json, for links built in JS. */
   window.SPYDLinks = {
     whatsapp(text) {
