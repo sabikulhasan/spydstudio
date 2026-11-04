@@ -350,6 +350,17 @@ def build():
     partials = {p.stem: p.read_text() for p in (SRC / "partials").glob("*.html")}
     pages = sorted((SRC / "pages").rglob("*.html"))
     urls, pages_info = [], []
+    # Every indexable page (title, path), for the 404 page's "Did you mean…?" suggestions.
+    page_index = []
+    for page in pages:
+        m = META.match(page.read_text())
+        meta0 = json.loads(m.group(1)) if m else {}
+        out0 = output_path(page)
+        if out0.name == "404.html" or meta0.get("noindex"):
+            continue
+        folder0 = out0.relative_to(ROOT).parent.as_posix()
+        page_index.append({"t": meta0.get("title", ""), "p": "" if folder0 == "." else folder0 + "/"})
+    page_index.sort(key=lambda x: x["p"])
     for page in pages:
         raw = page.read_text()
         match = META.match(raw)
@@ -368,6 +379,7 @@ def build():
         tokens = {
             **{k: v for k, v in site.items() if isinstance(v, str)},
             "root": root,
+            "pageIndex": json.dumps(page_index, ensure_ascii=False).replace("</", "<\\/"),
             "whatsappUrl": f"https://wa.me/{site['whatsapp']}?text={quote(whatsapp_message(site, meta, out))}",
             "title": html.escape(title if title.startswith(site["name"]) else f"{title} · {site['name']}"),
             "description": html.escape(meta["description"]),

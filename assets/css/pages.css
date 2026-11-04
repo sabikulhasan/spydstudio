@@ -465,3 +465,6 @@ a.contact-card:hover { border-color: var(--ink); transform: translateY(-2px); }
 .next-steps li::before { content: counter(ns); display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--vermilion); color: var(--ink); font-size: 13px; font-weight: 900; }
 .next-steps b { color: var(--white); font-weight: 600; }
 .next-steps a { color: var(--white); }
+.nf-guess { margin: var(--s2) 0 var(--s3); font-size: 20px; font-weight: 600; }
+.nf-guess[hidden] { display: none; }
+.thanks-next { display: grid; gap: var(--s3); max-width: 560px; padding-top: 0; }

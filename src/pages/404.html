@@ -1,12 +1,14 @@
-<!--meta {"title": "Page not found", "description": "This page doesn't exist.", "css": ["pages"], "noindex": true} -->
+<!--meta {"title": "Page not found", "description": "This page doesn't exist.", "css": ["pages"], "noindex": true, "js": ["notfound"]} -->
 <section class="page-hero wrap not-found">
   <img class="not-found-emblem" src="{{root}}assets/logo/spyd-emblem.svg" alt="" width="120" height="86">
   <span class="accent-bar" aria-hidden="true"></span>
   <h1>We looked closely. Nothing here.</h1>
-  <p class="lead">The page may have moved. Try one of these instead.</p>
+  <p class="lead">The page may have moved, or the address has a typo. Try one of these instead.</p>
+  <p class="nf-guess" data-nf-guess data-base="{{root}}" hidden>Did you mean <a href="#" data-nf-link></a>?</p>
   <div class="btn-row">
     <a class="btn btn-primary" href="{{root}}">Home</a>
     <a class="btn btn-ghost" href="{{root}}services/">Services</a>
     <a class="btn btn-ghost" href="{{root}}contact/">Contact</a>
   </div>
 </section>
+<script type="application/json" id="page-index">{{pageIndex}}</script>
