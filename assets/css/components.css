@@ -226,7 +226,7 @@ a.row:hover::before, a.row:focus-visible::before { transform: scaleX(1); }
   text-decoration: none;
   position: fixed; right: 16px; bottom: 16px; z-index: 40;
   display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%;
-  background: var(--ink); color: var(--white); box-shadow: 0 6px 20px rgba(11, 11, 11, .25);
+  background: var(--ink); color: var(--white); box-shadow: 0 0 0 2px var(--ivory), 0 6px 20px rgba(11, 11, 11, .25);
 }
 .wa-float .icon { width: 28px; height: 28px; grid-area: 1 / 1; }
 /* First visit in a session: the button briefly opens into a labelled pill, then settles (site.js). */

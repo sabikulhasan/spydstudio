@@ -20,10 +20,11 @@
 <link rel="preload" href="../assets/fonts/nunito-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/css/tokens.css?v=f9769c1238">
 <link rel="stylesheet" href="../assets/css/base.css?v=969638dd0c">
-<link rel="stylesheet" href="../assets/css/components.css?v=a742edbc3a">
-<link rel="stylesheet" href="../assets/css/pages.css?v=fe48c52cad">
+<link rel="stylesheet" href="../assets/css/components.css?v=a1b2285431">
+<link rel="stylesheet" href="../assets/css/pages.css?v=213bd0d8ff">
 <script src="../assets/js/config.js?v=1f73e5e87b" defer></script>
 <script src="../assets/js/site.js?v=d0aad27be6" defer></script>
+<script src="../assets/js/chooser.js?v=f64e7ba283" defer></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://sabikulhasan.github.io/spydstudio/#studio","name":"SPY-D Studio","url":"https://sabikulhasan.github.io/spydstudio/","logo":"https://sabikulhasan.github.io/spydstudio/assets/logo/spyd-horizontal.png","image":"https://sabikulhasan.github.io/spydstudio/assets/img/og-image.png","email":"work.spystudio@gmail.com","telephone":"+880 1611 049489","slogan":"Observe. Understand. Create.","sameAs":["https://www.facebook.com/spydstudio/"],"description":"Video ads and UGC content built around your brand, with websites, marketing and decks when you need them.","contactPoint":[{"@type":"ContactPoint","contactType":"sales","email":"work.spystudio@gmail.com","telephone":"+880 1611 049489"}],"hasOfferCatalog":{"@type":"OfferCatalog","name":"Services","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Video Ads","description":"Scripted promotional video, product demos, ad edits","url":"https://sabikulhasan.github.io/spydstudio/services/video-ads/"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"UGC Content","description":"Creator-style content built for paid and organic feeds","url":"https://sabikulhasan.github.io/spydstudio/services/ugc-content/"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Websites","description":"Landing pages and small business sites","url":"https://sabikulhasan.github.io/spydstudio/services/websites/"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Marketing","description":"Campaign planning, ad management, performance reporting","url":"https://sabikulhasan.github.io/spydstudio/services/marketing/"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Documents & Decks","description":"Company profiles, proposals, presentations","url":"https://sabikulhasan.github.io/spydstudio/services/documents-decks/"}}]}},{"@type":"WebPage","@id":"https://sabikulhasan.github.io/spydstudio/services/","url":"https://sabikulhasan.github.io/spydstudio/services/","name":"Services · SPY-D Studio","description":"Video ads, UGC content, websites, marketing, and documents and decks from SPY-D Studio. Every project is scoped with you in a meeting first.","isPartOf":{"@id":"https://sabikulhasan.github.io/spydstudio/#website"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://sabikulhasan.github.io/spydstudio/"},{"@type":"ListItem","position":2,"name":"Services","item":"https://sabikulhasan.github.io/spydstudio/services/"}]}]}</script>
 <script type="speculationrules">{"prerender":[{"where":{"and":[{"href_matches":"/spydstudio/*"},{"not":{"selector_matches":"[target], [download], [rel~=nofollow]"}}]},"eagerness":"moderate"}]}</script>
 
@@ -82,6 +83,25 @@
     <a class="row" href="../services/websites/"><span class="row-title">Websites</span><span class="row-text">Landing pages and small business sites</span><span class="row-arrow" aria-hidden="true">→</span></a>
     <a class="row" href="../services/marketing/"><span class="row-title">Marketing</span><span class="row-text">Campaign planning, ad management, performance reporting</span><span class="row-arrow" aria-hidden="true">→</span></a>
     <a class="row" href="../services/documents-decks/"><span class="row-title">Documents &amp; Decks</span><span class="row-text">Company profiles, proposals, presentations</span><span class="row-arrow" aria-hidden="true">→</span></a>
+  </div>
+</section>
+
+<section class="section-tight wrap chooser" id="chooser" aria-labelledby="chooser-title" data-chooser>
+  <div class="chooser-head">
+    <h2 id="chooser-title">Not sure which you need?</h2>
+    <p class="muted">Tap what you want to happen. Pick as many as apply.</p>
+  </div>
+  <div class="chooser-body">
+    <div class="picks" role="group" aria-label="What do you want to happen?">
+      <button type="button" class="pick" data-service="video-ads" data-brief="getting people to notice the product" data-why="A short, scripted ad built around one clear message, cut for each feed." aria-pressed="false">People stop scrolling and notice the product</button>
+      <button type="button" class="pick" data-service="ugc-content" data-brief="content that feels like a real customer talking" data-why="Creator-style clips with several openings, so you can test what works." aria-pressed="false">Content that feels like a real customer talking</button>
+      <button type="button" class="pick" data-service="websites" data-brief="a page to send people to after they see an ad" data-why="A landing page that carries the same message as the ad, so the click pays off." aria-pressed="false">A page to send people to after they see an ad</button>
+      <button type="button" class="pick" data-service="marketing" data-brief="someone to plan and run the ads, and report back" data-why="Campaign planning and ad management, agreed as a separate scope." aria-pressed="false">Someone to plan and run the ads, and report back</button>
+      <button type="button" class="pick" data-service="documents-decks" data-brief="a clear document to pitch or explain the business" data-why="A company profile, proposal or deck that says what you do in plain words." aria-pressed="false">A clear document to pitch or explain the business</button>
+    </div>
+    <div class="chooser-result" aria-live="polite" data-chooser-result>
+      <p class="chooser-empty">Your match will show here.</p>
+    </div>
   </div>
 </section>
 
