@@ -118,7 +118,7 @@
   $$('[data-faq]').forEach((list) => {
     const items = $$('details', list);
     items.forEach((item) => item.addEventListener('toggle', () => {
-      if (item.open) items.forEach((other) => { if (other !== item) other.open = false; });
+      if (item.open && !window.SPYDPrinting) items.forEach((other) => { if (other !== item) other.open = false; });
     }));
   });
 
@@ -162,6 +162,14 @@
     motion.onChange(update);
     label();
   });
+
+  /* Printing: every FAQ answer prints, not just the open one; the page is restored afterwards. */
+  let closedForPrint = [];
+  addEventListener('beforeprint', () => { window.SPYDPrinting = true; closedForPrint = $$('details:not([open])'); closedForPrint.forEach((d) => { d.open = true; }); });
+  addEventListener('afterprint', () => { closedForPrint.forEach((d) => { d.open = false; }); closedForPrint = []; setTimeout(() => { window.SPYDPrinting = false; }); });
+
+  /* Print buttons: shown only where printing is available. */
+  $$('[data-print]').forEach((b) => { if (typeof window.print === 'function') { b.hidden = false; b.addEventListener('click', () => window.print()); } });
 
   /* Contact details from src/site.json, for links built in JS. */
   window.SPYDLinks = {

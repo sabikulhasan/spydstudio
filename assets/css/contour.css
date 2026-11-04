@@ -78,3 +78,5 @@ body.home :is(.hero-note > p, .section-head > *, .direction figcaption, .process
 body.home #services { --halo-bg: #0B0B0B; }
 /* Photos and video beside a wash stay above it. */
 body.home :is(.direction-frame, .svc-media) { position: relative; z-index: 1; }
+/* Print: no contour lines, so the text washes have nothing to hide and would print as blocks. */
+@media print { body.home, body.home #services { --halo-bg: transparent; } }
